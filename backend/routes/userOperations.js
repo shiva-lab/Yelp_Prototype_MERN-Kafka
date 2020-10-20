@@ -1,0 +1,490 @@
+const express = require("express");
+const connection = require("../models/yelpschema");
+const userroute = express.Router();
+var multer = require('multer');
+
+var multerS3 = require('multer-s3');
+aws = require('aws-sdk'),
+
+aws.config.update({
+  secretAccessKey: '0am/9n/qQMhH4NnBJBasYvoM8enIMta/FirpNhAf',
+  accessKeyId: 'AKIAIX7RODER3FW5UBIA',
+  region: 'us-east-1'
+});
+
+var app = express(),
+    s3 = new aws.S3();
+
+    var upload = multer({
+      storage: multerS3({
+          s3: s3,
+          bucket: 'yelpa',
+          key: function (req, file, cb) {
+              console.log(file);
+              cb(null, file.originalname); //use Date.now() for unique file keys
+          }
+      })
+  });
+
+
+
+
+
+
+  userroute.post("/uviewrestaurant", (req, res, next) => {
+    console.log("Hello from User Restaurant View");
+    var zipcode = req.body.zipcode;
+    console.log("Zipcode from uviewrestaurant:",zipcode)
+    var sql = `SELECT * FROM dim_restaurant`;
+  
+    connection.query(sql, [zipcode], function (err, results) {
+      if (err) {
+        console.log("can not fetch restaurant");
+        res.status(400).json({ responseMessage: "can not fetch restaurant" });
+        
+      } else {
+        console.log("successfully retrived");
+        console.log(results);
+        res.send(JSON.stringify(results));
+      }
+    });
+  });
+  
+  userroute.post("/uviewmenu", (req, res) => {
+    var restaurant_id = req.body.restaurant_id;
+    console.log("view menu", restaurant_id);
+  
+    console.log("Restaurant ID ", restaurant_id);
+  
+    var sql = `SELECT * FROM dim_menu 
+          WHERE restaurant_id = ?`;
+  
+    connection.query(sql, [restaurant_id], function (err, results) {
+      if (err) {
+        console.log("can not fetch restaurant");
+        res.status(400).json({ responseMessage: "can not fetch restaurant" });
+        
+      } else {
+        console.log("successfully retrived");
+        console.log(results);
+        res.send(JSON.stringify(results));
+      }
+    });
+  });
+  
+  userroute.post("/addtocart", (req, res) => {
+    var item_id = req.body.item_id;
+    var itemname = req.body.itemname;
+    var restaurant_id = req.body.restaurant_id;
+    var price = req.body.price;
+    var path = req.body.path;
+    var user_id = req.body.user_id;
+    console.log(item_id, itemname, restaurant_id, price, user_id, path);
+  
+    var sql = `INSERT INTO dim_cart
+              (
+                item_id, itemname, restaurant_id, price, user_id, path
+              )
+              VALUES
+              (
+                  ?,?,?,?,?,?
+              )`;
+  
+    connection.query(
+      sql,
+      [item_id, itemname, restaurant_id, price, user_id, path],
+      function (err, data) {
+        if (err) {
+          console.log("error in adding data to cart");
+          res.status(400).json({ responseMessage: "error in adding data to cartt" });
+          
+        
+        } else {
+          console.log("Food Item Successfully Added to the Cart");
+          res.status(200).json({
+            responseMessage: "Food Item Successfully Added",
+          });
+        }
+      }
+    );
+  });
+  
+  userroute.post("/uviewcart", (req, res) => {
+    var user_id = req.body.user_id;
+    console.log("User ID:", user_id);
+  
+    var sql = `SELECT * FROM dim_cart
+          WHERE user_id = ?
+          and order_id is NULL`;
+  
+    connection.query(sql, [user_id], function (err, results) {
+      if (err) {
+        console.log("error in adding data");
+        res.status(400).json({ responseMessage: "can not fetch restaurant" });
+      } else {
+        console.log("successfully retrived");
+        console.log(results);
+        res.send(JSON.stringify(results));
+      }
+    });
+  });
+  
+  userroute.post("/deletefromcart", (req, res) => {
+    var item_id = req.body.item_id;
+    var itemname = req.body.itemname;
+    var restaurant_id = req.body.restaurant_id;
+    var price = req.body.price;
+    var foodimage = req.body.foodimage;
+    var user_id = req.body.user_id;
+    var cart_id = req.body.cart_id;
+    console.log(
+      item_id,
+      itemname,
+      restaurant_id,
+      price,
+      user_id,
+      foodimage,
+      cart_id
+    );
+  
+    var sql = `DELETE from dim_cart WHERE cart_id = ?`;
+  
+    connection.query(sql, [cart_id], function (err, data) {
+      if (err) {
+        console.log("error in adding data");
+        res.status(400).json({ responseMessage: "can not fetch restaurant" });
+      } else {
+        console.log("Food Item Successfully Deleted to the Cart");
+        res.status(200).json({
+          responseMessage: "Login Successful",
+        });
+      }
+
+    });
+  });
+  
+  userroute.post("/cartprice", (req, res) => {
+    var user_id = req.body.user_id;
+    console.log("User ID:", user_id);
+    var sql = `select round(sum(price),2) as price from dim_cart
+    where user_id = ? and order_id is NULL`;
+    connection.query(sql, [user_id], function (err, data) {
+      if (err) {
+        console.log("error in adding data");
+        return res.status(400).json({
+          status: 'error',
+          error: 'error in calculating price',
+        });
+      } else {
+        console.log("Price Calculated", data[0].price);
+        res.cookie("cartprice", data[0].price, {
+                      maxAge: 900000,
+                      httpOnly: false,
+                      path: "/",
+                    });
+        res.send(data);
+        
+      }
+    });
+  });
+  
+  // userroute.post("/createorder", (req, res) => {
+  //   var fullname = req.body.fullname;
+  //   var address = req.body.address;
+  //   var city = req.body.city;
+  //   var zipcode = req.body.zipcode;
+  //   //var mode = req.body.mode;
+  //   var deliverymode = req.body.deliverymode;
+  //   var contactnumber = req.body.contactnumber;
+  //   var email = req.body.email;
+  //   var restaurant_id = req.body.restaurant_id;
+  //   var user_id = req.body.user_id;
+  //   var cartprice = req.body.cartprice;
+  //   var status = "new order"
+  //   //var status = req.body.status;
+  //   console.log(fullname,address,city,zipcode,deliverymode,contactnumber,email,restaurant_id,user_id,cartprice,status)
+  
+  //   var sql = `INSERT INTO dim_order 
+  //         (
+  //             fullname,address,city,zipcode,deliverymode,contactnumber,email,restaurant_id,user_id,cartprice,status
+  //         )
+  //         VALUES
+  //         (
+  //             ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+  //         )`;
+  
+  //   connection.query(
+  //     sql,
+  //     [
+  //       fullname,address,city,zipcode,deliverymode,contactnumber,email,restaurant_id,user_id,cartprice, status
+  //     ],
+  //     function (err, data) {
+  //       if (err) {
+  //         console.log("error in adding data");
+  //         console.log(err)
+  //       } else {
+  //         res.cookie("order_id", data.insertId, {
+  //           maxAge: 900000,
+  //           httpOnly: false,
+  //           path: "/",
+  //         });
+  //         res.status(200).json({
+  //           responseMessage: "order placed",
+  //         });
+  //         console.log(JSON.stringify(data.insertId))
+  //         var order_id = JSON.stringify(data.insertId)
+
+  //         console.log("Order ID : ", order_id, restaurant_id, user_id)
+  //         var sql = `UPDATE dim_cart 
+  //         SET order_id = ?,
+  //         cartstatus = 'done'
+  //         WHERE restaurant_id = ?
+  //         and user_id = ?
+  //         and cartstatus is NULL`;
+  //         connection.query(sql,[order_id,restaurant_id,user_id], function (err, data){
+  //         if (err){
+  //           console.log("error in adding data");
+  //         }
+  //         else{
+  //           console.log("Success")
+  //           };
+  //         } 
+            
+  //           )
+
+
+  //       }
+  //     }
+  //   );
+  // });
+
+
+
+  userroute.post("/uviewprofile", (req, res) => {
+    var user_id = req.body.user_id;
+    console.log("User ID:", user_id);
+  
+    var sql = `SELECT *, DATE_FORMAT(ts, '%D %M %Y') as yelpingsince, DATE_FORMAT(dob, '%D %M %Y') as dob FROM dim_user
+          WHERE user_id = ?`;
+  
+    connection.query(sql, [user_id], function (err, results) {
+      if (err) {
+        console.log("error in adding data");
+        res.status(400).json({ responseMessage: "can not fetch restaurant" });
+      } else {
+        console.log("successfully retrived");
+        console.log(results);
+        res.send(JSON.stringify(results));
+      }
+    });
+  });
+
+// Updating user Profile
+  userroute.post("/uupdateprofile", upload.single('myfile'),(req, res, next) => {
+    try {
+      res.send(req.file);
+      console.log("hello")
+    }catch(err) {
+      res.send(400);
+    }  
+    var user_id = req.body.user_id;
+  var path = req.file.location;
+ 
+  var bio = req.body.bio;
+  var headline=req.body.headline;
+  var fname = req.body.fname;
+  var lname = req.body.lname;
+  var dob=req.body.dob;
+  var city = req.body.city;
+  var ustate=req.body.ustate;
+  var country=req.body.country;
+  var nick_name=req.body.nick_name;
+  var mobile = req.body.mobile;
+  var emailid=req.body.emailid;
+  var address = req.body.address;
+  var favorites = req.body.favorites;
+  var myblog=req.body.myblog;
+  var things_ilove=req.body.things_ilove;
+  var find_me_in=req.body.find_me_in;
+  
+  console.log(
+    bio,
+    headline,
+    fname,
+    lname,
+    city,
+    ustate,
+    country,
+    nick_name,
+    mobile,
+    emailid,
+    address,
+    favorites,
+    myblog,
+    things_ilove,
+    find_me_in,
+    path,
+    user_id,
+    dob
+
+  
+  );
+  var sql = `UPDATE dim_user  
+    SET bio= ?, 
+    headline=?,
+    fname =?,
+    lname=?, 
+    city=?,
+    ustate=?,
+    country=?,
+    nick_name=?,
+    mobile=?,
+    emailid=?,
+    address=?,
+    favorites=?,
+    myblog=?,
+    things_ilove=?,
+    find_me_in=?,
+    path=?,
+    dob = ?
+    WHERE  
+    user_id = ?`;
+
+  connection.query(
+    sql,
+    [
+      bio,
+      headline,
+      fname,
+      lname,
+      city,
+      ustate,
+      country,
+      nick_name,
+      mobile,
+      emailid,
+      address,
+      favorites,
+      myblog,
+      things_ilove,
+      find_me_in,
+      path,
+      dob,
+      user_id
+  
+    ],
+    function (err, data) {
+      if (err) {
+
+        console.log("Error in updating profile data");
+        return res.status(400).json(err);
+      } else {
+       return res.status(200);
+
+      }}
+      
+    
+  );
+});
+
+  // userroute.post("/userorderstatus", (req, res) => {
+  //   var order_id = req.body.order_id;
+  //   var user_id = req.body.user_id;
+  //   console.log("Order_ID:", order_id);
+  //   console.log("User_id:", user_id);
+
+  
+  //   var sql = `SELECT * FROM dim_order
+  //         WHERE user_id = ? ORDER BY ts DESC`;
+  
+  //   connection.query(sql, [user_id], function (err, results) {
+  //     if (err) {
+  //       console.log("error in adding data");
+  //       res.status(400).json({ responseMessage: "can not fetch restaurant" });
+  //     } else {
+  //       console.log("successfully retrived");
+  //       console.log(results);
+  //       res.send(JSON.stringify(results));
+  //     }
+  //   });
+  // });
+
+
+  // userroute.post("/uorderdetails", (req, res) => {
+  //   var order_id = req.body.order_id;
+  //   console.log("Order_ID:", order_id);
+
+  
+  //   var sql = `SELECT * FROM dim_cart
+  //         WHERE order_id = ?`;
+  
+  //   connection.query(sql, [order_id], function (err, results) {
+  //     if (err) {
+  //       console.log("error in adding data");
+  //       res.status(400).json({ responseMessage: "can not fetch restaurant" });
+  //     } else {
+  //       console.log("successfully retrived");
+  //       console.log(results);
+  //       res.send(JSON.stringify(results));
+  //     }
+  //   });
+  // });
+
+
+userroute.post("/addreview", upload.single('myfile'),(req, res, next) => {
+  try {
+    res.send(req.file);
+    console.log("hello")
+  }catch(err) {
+    res.send(400);
+  }
+  var review = req.body.review;
+  var rating = req.body.rating;
+  var order_id = req.body.order_id;
+  var restaurant_id = req.body.restaurant_id;
+  var user_id = req.body.user_id;
+  var path = req.file.location;
+ 
+
+
+  console.log(review, rating, restaurant_id,order_id,user_id, path);
+
+  var sql = `INSERT INTO dim_review 
+            (
+                review_desc, rating, restaurant_id, order_id, user_id, path
+            )
+            VALUES
+            (
+                ?, ?, ?, ? ,?,?
+            )`;
+
+  connection.query(sql, [review, rating, restaurant_id,order_id, user_id, path], function (err, data) {
+    if (err) {
+      console.log("error in adding data");
+      console.log(err)
+      res.status(400).json({ responseMessage: "error in adding data" });
+    } else {
+      res.status(200)
+      console.log("successfully added");
+      var newsql = `UPDATE dim_restaurant t2
+      join (SELECT  restaurant_id, round(avg(rating)) as rating from dim_review
+      group by 1) as t1  on t1.restaurant_id = t2.restaurant_id
+      SET t2.rating = t1.rating;`;
+      connection.query(newsql, function (err, data){
+        if (err) {
+          console.log("error in adding data");
+        } else {
+          console.log("successfully updated rating");
+        }
+      })
+      
+    }
+  });
+});
+
+
+
+
+
+  module.exports = userroute;
+

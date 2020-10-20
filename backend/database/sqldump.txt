@@ -1,0 +1,280 @@
+
+
+DROP TABLE IF EXISTS `dim_cart`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `dim_cart` (
+  `cart_id` int NOT NULL AUTO_INCREMENT,
+  `item_id` varchar(255) NOT NULL,
+  `itemname` varchar(40) NOT NULL,
+  `restaurant_id` varchar(40) NOT NULL,
+  `price` varchar(40) NOT NULL,
+  `path` varchar(255) NOT NULL,
+  `user_id` varchar(40) NOT NULL,
+  `order_id` varchar(45) DEFAULT NULL,
+  `ts` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `cartstatus` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`cart_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dim_cart`
+--
+
+LOCK TABLES `dim_cart` WRITE;
+/*!40000 ALTER TABLE `dim_cart` DISABLE KEYS */;
+INSERT INTO `dim_cart` VALUES (98,'20','Hae Mul Dol Sot Bap','20','10.99','https://yelpa.s3.amazonaws.com/dol.jpg','10','73','2020-10-09 23:59:53','done'),(99,'21','Chu Uh Tang','20','8.99','https://yelpa.s3.amazonaws.com/thang.jpg','10','73','2020-10-10 00:01:36','done'),(100,'20','Hae Mul Dol Sot Bap','20','10.99','https://yelpa.s3.amazonaws.com/dol.jpg','14','74','2020-10-10 10:36:11','done'),(101,'20','Hae Mul Dol Sot Bap','20','10.99','https://yelpa.s3.amazonaws.com/dol.jpg','14','75','2020-10-10 12:17:40','done'),(102,'21','Chu Uh Tang','20','8.99','https://yelpa.s3.amazonaws.com/thang.jpg','14','75','2020-10-10 12:18:12','done');
+/*!40000 ALTER TABLE `dim_cart` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `dim_event`
+--
+
+DROP TABLE IF EXISTS `dim_event`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `dim_event` (
+  `event_id` int NOT NULL AUTO_INCREMENT,
+  `restaurant_id` int DEFAULT NULL,
+  `eventname` varchar(255) NOT NULL,
+  `eventdescription` varchar(255) NOT NULL,
+  `date` date NOT NULL,
+  `time` time NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `eventimage` varchar(255) DEFAULT NULL,
+  `eventtype` varchar(255) DEFAULT NULL,
+  `hashtag` varchar(255) DEFAULT NULL,
+  `ts` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `path` varchar(255) DEFAULT NULL,
+  `signupcount` int DEFAULT NULL,
+  PRIMARY KEY (`event_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 ;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dim_event`
+--
+
+LOCK TABLES `dim_event` WRITE;
+/*!40000 ALTER TABLE `dim_event` DISABLE KEYS */;
+INSERT INTO `dim_event` VALUES (8,20,'Korean Swag','adas','2020-10-10','10:01:00','dsdfds','San Jose',NULL,'virtual','#BBQ','2020-10-09 23:27:54','https://yelpa.s3.amazonaws.com/1%20%281%29.png',4),(9,21,'Taste of the Mediterranean','Enjoy Mediterranean Feast','2020-12-12','12:30:00','4140 N 1st St #10, San Jose, CA 95134','San Jose',NULL,'onsite','#Mediterranean Food','2020-10-10 10:23:05','https://yelpa.s3.amazonaws.com/fest.jpg',2);
+/*!40000 ALTER TABLE `dim_event` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `dim_eventsignup`
+--
+
+DROP TABLE IF EXISTS `dim_eventsignup`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `dim_eventsignup` (
+  `signup_id` int NOT NULL AUTO_INCREMENT,
+  `restaurant_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  `event_id` int DEFAULT NULL,
+  PRIMARY KEY (`signup_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 ;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dim_eventsignup`
+--
+
+LOCK TABLES `dim_eventsignup` WRITE;
+/*!40000 ALTER TABLE `dim_eventsignup` DISABLE KEYS */;
+INSERT INTO `dim_eventsignup` VALUES (12,20,10,8),(13,21,14,9),(14,20,14,8),(15,20,NULL,8),(16,21,14,9),(17,20,14,8);
+/*!40000 ALTER TABLE `dim_eventsignup` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `dim_menu`
+--
+
+DROP TABLE IF EXISTS `dim_menu`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `dim_menu` (
+  `item_id` int NOT NULL AUTO_INCREMENT,
+  `restaurant_id` int NOT NULL,
+  `itemname` varchar(60) NOT NULL,
+  `price` float DEFAULT NULL,
+  `item_description` varchar(255) DEFAULT NULL,
+  `path` varchar(255) DEFAULT NULL,
+  `itemcategory` varchar(100) DEFAULT NULL,
+  `quantity` int DEFAULT NULL,
+  `ts` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `ingredients` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 ;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dim_menu`
+--
+
+LOCK TABLES `dim_menu` WRITE;
+/*!40000 ALTER TABLE `dim_menu` DISABLE KEYS */;
+INSERT INTO `dim_menu` VALUES (20,20,'Hae Mul Dol Sot Bap',10.99,'Steamed rice topped with vegetables & seafood','https://yelpa.s3.amazonaws.com/dol.jpg','maincourse',1,'2020-10-09 22:51:41','rice, vegetables'),(21,20,'Chu Uh Tang',8.99,'Mudish, vegetable in hot soup','https://yelpa.s3.amazonaws.com/thang.jpg','appetizer',1,'2020-10-09 22:56:07','Mudish, Vegetable'),(22,20,'Hae Mul Jim',32.99,'Spicy seafood casserole with soyabean sprouts','https://yelpa.s3.amazonaws.com/jim.jpeg','maincourse',1,'2020-10-09 22:59:18','seafood, sprouts,soyabean'),(23,21,'CHICKEN SHAWARMA',13,'Marinated & grilled to perfection','https://yelpa.s3.amazonaws.com/chi.jpeg','maincourse',1,'2020-10-10 10:09:06','Chicken'),(24,21,'Pita bread and chicken',12,'Freshly wrapped & stuffed with Steak Shawarma, garlic spread, tomato cucumber mix, mixed greens, diced pickles, sumac onion & a drizzle of tahini sauce. Comes with a side of hummus & pita chips.','https://yelpa.s3.amazonaws.com/pita.jpg','appetizer',1,'2020-10-10 10:11:19','Pita bread , chicken'),(25,21,'Rice and Beans',12,'Garbanzo Beans, Sumac Cauliflower on a bed of turmeric rice, tomato cucumber mix & beets. Comes with a side of spicy tahini & cilantro mint chutney','https://yelpa.s3.amazonaws.com/ricenb.jpg','maincourse',1,'2020-10-10 10:13:47','Rice, Beans, Vegetables');
+/*!40000 ALTER TABLE `dim_menu` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `dim_order`
+--
+
+DROP TABLE IF EXISTS `dim_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `dim_order` (
+  `order_id` int NOT NULL AUTO_INCREMENT,
+  `fullname` varchar(255) NOT NULL,
+  `address` varchar(40) NOT NULL,
+  `city` varchar(40) NOT NULL,
+  `zipcode` int NOT NULL,
+  `deliverymode` varchar(255) NOT NULL,
+  `contactnumber` varchar(80) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `restaurant_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `cartprice` varchar(40) NOT NULL,
+  `status` varchar(40) DEFAULT NULL,
+  `ts` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `cartstatus` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 ;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dim_order`
+--
+
+LOCK TABLES `dim_order` WRITE;
+/*!40000 ALTER TABLE `dim_order` DISABLE KEYS */;
+INSERT INTO `dim_order` VALUES (73,'Sheldon','2147 boly','Santa clara',95050,'Delivery','8983353110','sheldon@gmail.com',20,10,'19.98','Completed','2020-10-10 00:08:25',NULL),(74,'michael','1441,homedstead street','San Jose',95131,'Delivery','8983353110','micheal@gmail.com',20,14,'10.99','new order','2020-10-10 10:38:08',NULL),(75,'Michael','1535 Whitewood Ct','San Jose',95131,'Pickup','8983353110','micheal@gmail.com',20,14,'19.98','new order','2020-10-10 12:28:29',NULL);
+/*!40000 ALTER TABLE `dim_order` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `dim_restaurant`
+--
+
+DROP TABLE IF EXISTS `dim_restaurant`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `dim_restaurant` (
+  `restaurant_id` int NOT NULL AUTO_INCREMENT,
+  `restaurant_name` varchar(100) NOT NULL,
+  `emailid` varchar(40) NOT NULL,
+  `restpass` varchar(255) NOT NULL,
+  `location` varchar(40) NOT NULL,
+  `rdescription` varchar(254) DEFAULT NULL,
+  `contactinfo` varchar(40) DEFAULT NULL,
+  `cuisine` varchar(40) DEFAULT NULL,
+  `timings` varchar(255) DEFAULT NULL,
+  `zipcode` int DEFAULT NULL,
+  `restaurantimage` varchar(255) DEFAULT NULL,
+  `lat` varchar(100) DEFAULT NULL,
+  `lng` varchar(100) DEFAULT NULL,
+  `ts` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `website` varchar(45) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `rating` varchar(45) DEFAULT NULL,
+  `modeofdelivery` varchar(100) DEFAULT NULL,
+  `delivery_method` varchar(100) DEFAULT NULL,
+  `path` varchar(255) DEFAULT NULL,
+  `path1` varchar(255) DEFAULT NULL,
+  `path2` varchar(255) DEFAULT NULL,
+  `path3` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`restaurant_id`),
+  UNIQUE KEY `emailid_UNIQUE` (`emailid`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 ;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dim_restaurant`
+--
+
+LOCK TABLES `dim_restaurant` WRITE;
+/*!40000 ALTER TABLE `dim_restaurant` DISABLE KEYS */;
+INSERT INTO `dim_restaurant` VALUES (16,'the grand view restaurant ','grandview@gmail.com','$2a$10$DoKQ7BCGknDMsqbwJH6U/.oE2pdTWpXuPCdnONWw5YWPKHoz/wcDy','San Jose',NULL,NULL,NULL,NULL,NULL,NULL,'37.368985','-121.765760','2020-10-09 22:23:44',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(17,'Sizzle Spot','sizzle@gmail.com','$2a$10$ZVpxywzonZbokbUokiXsY.NcPzGEBn0/pGJ1cPn5RRsyYeQpiwpK2','San Jose',NULL,NULL,NULL,NULL,NULL,NULL,'37.332667','-121.857927','2020-10-09 22:24:34',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(18,'Curry up now','curryup@gmail.com','$2a$10$pegXPijjLNu4S5vpsncS3uCoKl3VNwwJwpp/kMgmR4J56cbdLsBlK','San Jose',NULL,NULL,NULL,NULL,NULL,NULL,'37.403618','-121.933091','2020-10-09 22:26:24',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(19,'The cheesecake factory','cheesecake@gmail.com','$2a$10$PIo5LN23s9cLwMeDIYaSy.UgoHYtSrwKqx7Koa6i7iMkTH0cTsgrC','Santa Clara',NULL,NULL,NULL,NULL,NULL,NULL,'37.327393','-121.946759','2020-10-09 22:27:29',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(20,'gooyi gooyi','gooyi@gmail.com','$2a$10$gSW5utgP1QA8rLAb2GWs..7RPStAxG6zS/tbcNqXX.SdZ7niETLaC','Santa Clara','Bustling Korean restaurant offering grill-your-own barbecue plus soups & rice dishes.','4086159292','Korean','Mon-Sat: 5pm-2am\nSun: 5pm-1am',95050,NULL,'37.355591','-121.966648','2020-10-09 22:28:13','http://places.singleplatform.com','2331 El Camino Real, Santa Clara','5','delivery','delivery','https://yelpa.s3.amazonaws.com/goyi1.jpg','https://yelpa.s3.amazonaws.com/goyi2.jpeg','https://yelpa.s3.amazonaws.com/goyi3.jpg','https://yelpa.s3.amazonaws.com/goyi4.jpeg'),(21,'Sajj Med.','sajjmed@gmail.com','$2a$10$1I7qoSxhG8nJM4AQMsHYxe3O7vdOi1sFo8ZMkCTRtUPALnoMbspb2','San Jose','Bright space heavy on natural light is the setting for Middle Eastern bites such as shawarma.','408944-9022','Mediterranean','Mon-Sun : 11AM - 8PM',95134,NULL,'37.417926','-121.953725','2020-10-10 09:47:00','https://www.sajjstreeteats.com/','4140 N 1st St #10, San Jose, CA 95134',NULL,'pickup','curbsidepickup','https://yelpa.s3.amazonaws.com/saj1.jpeg','https://yelpa.s3.amazonaws.com/saj2.jpg','https://yelpa.s3.amazonaws.com/saj3.jpg','https://yelpa.s3.amazonaws.com/saj4.jpg'),(22,'cocos','cocos@gmail.com','$2a$10$E4n7IaM874QwvVFkOcC9tOchEbmXb7.skrheXlFlMo.ls.k1gAiHa','san Jose',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2020-10-10 14:21:36',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `dim_restaurant` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `dim_review`
+--
+
+DROP TABLE IF EXISTS `dim_review`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `dim_review` (
+  `review_id` int NOT NULL AUTO_INCREMENT,
+  `review_desc` text NOT NULL,
+  `restaurant_id` varchar(40) NOT NULL,
+  `ts` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `user_id` varchar(45) DEFAULT NULL,
+  `order_id` varchar(45) DEFAULT NULL,
+  `rating` varchar(45) DEFAULT NULL,
+  `path` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`review_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dim_review`
+--
+
+LOCK TABLES `dim_review` WRITE;
+/*!40000 ALTER TABLE `dim_review` DISABLE KEYS */;
+INSERT INTO `dim_review` VALUES (14,'good food','20','2020-10-10 00:19:12','10','73','5','https://yelpa.s3.amazonaws.com/dol.jpg');
+/*!40000 ALTER TABLE `dim_review` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `dim_user`
+--
+
+DROP TABLE IF EXISTS `dim_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `dim_user` (
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `fname` varchar(255) DEFAULT NULL,
+  `lname` varchar(255) DEFAULT NULL,
+  `emailid` varchar(40) NOT NULL,
+  `mobile` varchar(40) DEFAULT NULL,
+  `dob` date DEFAULT NULL,
+  `city` varchar(40) DEFAULT NULL,
+  `country` varchar(40) DEFAULT NULL,
+  `path` varchar(255) DEFAULT NULL,
+  `bio` varchar(255) DEFAULT NULL,
+  `favorites` varchar(255) DEFAULT NULL,
+  `user_name` varchar(40) NOT NULL,
+  `userpass` varchar(255) NOT NULL,
+  `zipcode` int NOT NULL,
+  `ts` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `address` varchar(4255) DEFAULT NULL,
+  `things_ilove` varchar(255) DEFAULT NULL,
+  `find_me_in` varchar(200) DEFAULT NULL,
+  `ustate` varchar(40) DEFAULT NULL,
+  `myblog` varchar(45) DEFAULT NULL,
+  `nick_name` varchar(45) DEFAULT NULL,
+  `headline` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dim_user`
+--
+
+LOCK TABLES `dim_user` WRITE;
+/*!40000 ALTER TABLE `dim_user` DISABLE KEYS */;
+INSERT INTO `dim_user` VALUES (10,'Sheldon','Cooper','sheldon@gmail.com','8983353110',NULL,'Houston','United states','https://yelpa.s3.amazonaws.com/shel.jpg','Geek Guy','Korean','sheldon','$2a$10$Rio2iTP0Jr68.lIVLyrAJeWoGyPC9Rd82q0yWlere66C3UT6ylhKm',95050,'2020-10-09 22:13:45','1530,houston','trains','Lab','Texas','www.wordpress.com','Sheldon','Love science'),(11,NULL,NULL,'amy@gmail.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'amy','$2a$10$iabZl.DQeiR1qhwgxG2rvOyZJeop/.1hAehhkJZUcvmkBgYOxpu1K',95131,'2020-10-09 22:14:36',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(12,NULL,NULL,'peny@gmail.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'peny','$2a$10$Fmr6bMQZC6ckArYCvdtOpOl278sf7AVT.PtxGmIFy972fh5ARlTKK',95050,'2020-10-09 22:15:15',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(13,NULL,NULL,'rajesh@gmail.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Rajesh','$2a$10$NNlbQyUgQ0zsa95yb5wgZeVeuWlzISMKOZ0H33IXAegYo0EYPZBiG',95131,'2020-10-09 22:17:04',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(14,'Michael','Scott','micheal@gmail.com','8983353110','1975-02-10','San Jose','United states','https://yelpa.s3.amazonaws.com/mscott.png','“And I knew exactly what to do. But in a much more real sense, I had no idea what to do.”','Korean','Michael Scott','$2a$10$tc3Vkq//Dg.twi8.cQPQwOcnubaHmAP7rKmkGqG7GfZiLofC8IgHS',95050,'2020-10-09 22:19:22','1535 Whitewood Ct','My Team','Party','California','www.worldsbestboss.com','Mike','World\'s Best Boss');
+/*!40000 ALTER TABLE `dim_user` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
