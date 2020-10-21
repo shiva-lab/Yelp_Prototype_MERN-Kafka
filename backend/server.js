@@ -6,7 +6,7 @@ var cors=require("cors")
 const morgan = require('morgan');
 const { mongoDB } = require('./Utils/config');
 const mongoose = require('mongoose');
-//const routes=require('./routes/api');
+const routes=require('./routes/api');
 const loginroutes=require('./routes/loginRegisterOperations');
 // const userroute=require('./routes/userOperations');
 // const orderoute=require('./routes/order');
@@ -48,7 +48,7 @@ mongoose.connect(mongoDB, options, (err, res) => {
 
 //http request logger
 app.use(morgan('tiny'));
-//app.use('/',routes);
+app.use('/',routes);
 app.use('/',loginroutes);
 // app.use('/',userroute);
 // app.use('/',orderoute);

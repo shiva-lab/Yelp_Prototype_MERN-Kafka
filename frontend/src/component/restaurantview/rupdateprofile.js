@@ -67,7 +67,7 @@ class rupdateprofile extends React.Component {
     }
   
     //formData.append('photos',this.state.file);
-    formData.append('description',this.state.description)
+    formData.append('rdescription',this.state.description)
     formData.append('contactinfo', this.state.contactinfo)
     formData.append('cuisine', this.state.cuisine)
     formData.append('timings',this.state.timings)

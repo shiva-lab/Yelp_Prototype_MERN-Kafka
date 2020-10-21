@@ -22,8 +22,8 @@ loginroute.post(
         check('Emailid', 'Please enter valid email').isEmail(),
         check(
             'restpass',
-            'Please enter password with 6 or more characters',
-        ).isLength({ min: 6 }),
+            'Please enter password with 4 or more characters',
+        ).isLength({ min: 4 }),
         check('location', 'location is required').not().isEmpty(),
     ],
     
@@ -60,24 +60,25 @@ loginroute.post(
               location,
             });
             // Encrypt password
-          //  const salt = await bcyrpt.genSalt(10);
+          //  const salt = await bcyrpt.genSaßlt(10);
           
-            restaurant.restpass =  bcrypt.hashSync(restpass);
+            restaurant.restpass =  bcrypt.hashSync(restpass);//commnitng bcrypt for now
             await restaurant.save();
 
             const payload = {
               restaurant: { id: restaurant.id },
             };
-
+            res.writeHead(200, {
+              'Content-Type': 'text/plain'
+          })
+          res.end();
             // jwt.sign(payload, secret, {
             //     expiresIn: 1008000,
             // }, (err, token) => {
             //     if (err) throw err;
             //     res.json({ token });
             // });
-            res.status(200).json({
-                           responseMessage: "Login Successful",
-                      });
+           
 
         } catch (err) {
             console.error(err.message);
@@ -88,6 +89,114 @@ loginroute.post(
     },
 );
 
+// loginroute.post('/restaurantlogin',(req, res) => {
+//   Restaurant.findOne({ Emailid: req.body.Emailid, restpass: req.body.restpass }, (error, restuser) => {
+
+//     const {
+//       Emailid,
+//       restpass,
+//   } = req.body;
+//   console.log("Data in forlogin",
+//     Emailid,
+//     restpass)
+
+//       if (error) {
+//           res.writeHead(500, {
+//               'Content-Type': 'text/plain'
+//           })
+//           res.end("Error Occured");
+//       }
+//       if (restuser) {
+//           res.cookie('restaurant_id', restuser.Emailid, { maxAge: 900000, httpOnly: false, path: '/' });
+          
+//           res.writeHead(200, {
+//               'Content-Type': 'text/plain'
+//           })
+//           res.end();
+//       }
+//       else {
+//           res.writeHead(401, {
+//               'Content-Type': 'text/plain'
+//           })
+//           res.end("Invalid Credentials");
+//       }
+//   });    
+// });
+
+loginroute.post(
+  '/restaurantlogin', [
+      check('Emailid', 'Please enter valid email').isEmail(),
+      check(
+          'restpass',
+          'Password is required',
+      ).exists(),
+  ],
+  // eslint-disable-next-line consistent-return
+  async(req, res) => {
+      //const errors = validationResult(req);
+      // if (!errors.isEmpty()) {
+      //     return res.status(400).json({ errors: errors.array() });
+      // }
+
+      const {
+
+          Emailid,
+          restpass,
+
+      } = req.body;
+      console.log(Emailid, restpass)
+
+      try {
+          // see if user exists
+          const restuser = await Restaurant.findOne({  Emailid: req.body.Emailid, });
+          if (!restuser) {
+              return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
+          }
+
+          const isMatch = await bcrypt.compareSync(req.body.restpass, restuser.restpass);
+          if (!isMatch) {
+              return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
+          }
+          else {
+             res.cookie('restaurant_id', restuser._id.toString(), { maxAge: 900000, httpOnly: false, path: '/' });
+          //req.session.user = user;
+          res.writeHead(200, {
+              'Content-Type': 'text/plain'
+          })
+          res.end();
+      }
+
+                }
+
+          // const payload = {
+          //     restuser: { id: restuser.id },
+          // };
+
+          // jwt.sign(payload, secret, {
+          //     expiresIn: 1008000,
+          // }, (err, token) => {
+          //     if (err) throw err;
+          //     res.json({ token });
+          // });
+       catch (err) {
+          console.error(err.message);
+          res.status(500).send('Server Error');
+      }
+
+      // console.log(req.body);
+  },
+);
+
+
+loginroute.get("/logout", function (req, res) {
+  console.log("Deleting Cookie");
+  res.clearCookie("restaurant_id");
+  //res.clearCookie("restaurant_id_menu");
+  //res.clearCookie("cookie1");
+ // res.clearCookie("userzipcode");
+  //res.clearCookie("cartprice");
+  res.json(true);
+});
 module.exports = loginroute;
 
 
@@ -277,4 +386,4 @@ module.exports = loginroute;
 //   res.clearCookie("cartprice");
 //   res.json(true);
 // });
-module.exports = loginroute;
+// module.exports = loginroute;

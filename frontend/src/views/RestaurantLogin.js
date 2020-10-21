@@ -20,7 +20,7 @@ class RestaurantLogin extends React.Component {
     super(props);
     //maintain the state required for this component
     this.state = {
-      emailid: "",
+      Emailid: "",
       restpass: "",
       message: "",
       authFlag: false
@@ -41,7 +41,7 @@ class RestaurantLogin extends React.Component {
   emailChangeHandler = e => {
     console.log("Inside email change handler");
     this.setState({
-      emailid: e.target.value
+      Emailid: e.target.value
     });
   };
   //password change handler to update state variable with the text entered by the user
@@ -54,7 +54,7 @@ class RestaurantLogin extends React.Component {
     let formIsValid = true;
 
     //Email
-    if (!this.state.emailid) {
+    if (!this.state.Emailid) {
       formIsValid = false;
       alert("Email is a Required field");
       console.log("Email cannot be empty");
@@ -78,9 +78,10 @@ class RestaurantLogin extends React.Component {
     if (this.handleValidation()) {
       console.log(" Restaurant Login Form submitted");
       const data = {
-        emailid: this.state.emailid,
+        Emailid: this.state.Emailid,
         restpass: this.state.restpass
       };
+      console.log(data)
 
       //set the with credentials to true
       // axios.defaults.withCredentials = true;
@@ -116,7 +117,7 @@ class RestaurantLogin extends React.Component {
 
     if (cookie.load('restaurant_id')) {
       redirectVar = <Redirect to="/rhome" />
-      localStorage.setItem('email', this.state.emailid);
+      localStorage.setItem('email', this.state.Emailid);
       console.log("Saving email to localstorage");
       //Fetching Restaurant ID Value from Cookie and setting the local storage
       var restaurnt_id = (cookie.load('restaurant_id'))
@@ -146,7 +147,7 @@ class RestaurantLogin extends React.Component {
                         <br />
                       </div>
                       <form>
-                        <input type="text" id="emailid" name="emailid" placeholder="Email" onChange={this.emailChangeHandler} required /><br /><br />
+                        <input type="text" id="Emailid" name="Emailid" placeholder="Email" onChange={this.emailChangeHandler} required /><br /><br />
                         <input type="password" id="restpass" placeholder="Password" name="restpass" onChange={this.passwordChangeHandler} required /><br />
                         <br></br>
                         <button onClick={this.submitRestLogin} class="btn btn-primary">Login</button>

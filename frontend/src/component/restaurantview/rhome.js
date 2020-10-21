@@ -220,7 +220,7 @@ class rhome extends React.Component {
                                       Email Address
                                     </th>
                                     <td className="profiletdfont">
-                                      {food.emailid}{" "}
+                                      {food.Emailid}{" "}
                                     </td>
                                   </tr>
 
