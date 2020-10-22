@@ -1,36 +1,139 @@
 
-// const express = require("express");
+const express = require("express");
 // //const connection = require("../models/yelpschema");
-// const User = require('../models/User');
+//const User = require('../models/User');
 
-// const Event = require('../models/Event');
-// const eventroute = express.Router();
-// var multer = require('multer');
-// var multerS3 = require('multer-s3');
-// aws = require('aws-sdk'),
-
-
-// aws.config.update({
-//   secretAccessKey: '0am/9n/qQMhH4NnBJBasYvoM8enIMta/FirpNhAf',
-//   accessKeyId: 'AKIAIX7RODER3FW5UBIA',
-//   region: 'us-east-1'
-// });
-
-// var app = express(),
-//     s3 = new aws.S3();
-
-//     var upload = multer({
-//       storage: multerS3({
-//           s3: s3,
-//           bucket: 'yelpa',
-//           key: function (req, file, cb) {
-//               console.log(file);
-//               cb(null, file.originalname); //use Date.now() for unique file keys
-//           }
-//       })
-//   });
+const Event = require('../models/Event');
+const eventroute = express.Router();
+var multer = require('multer');
+var multerS3 = require('multer-s3');
+aws = require('aws-sdk'),
 
 
+aws.config.update({
+  secretAccessKey: '0am/9n/qQMhH4NnBJBasYvoM8enIMta/FirpNhAf',
+  accessKeyId: 'AKIAIX7RODER3FW5UBIA',
+  region: 'us-east-1'
+});
+
+var app = express(),
+    s3 = new aws.S3();
+
+    var upload = multer({
+      storage: multerS3({
+          s3: s3,
+          bucket: 'yelpa',
+          key: function (req, file, cb) {
+              console.log(file);
+              cb(null, file.originalname); //use Date.now() for unique file keys
+          }
+      })
+  });
+
+  eventroute.post("/addevent", upload.single("myfile"), async (req, res, next) =>{
+  try {
+    console.log("Uploading event Image...");
+  } catch (err) {
+    res.send(400);
+  }
+  var path = req.file.location;
+  console.log("Add event API Checkpoint");
+  console.log("Image Path on AWS: ", path);
+  const {
+    restaurant_id,
+    eventname,
+    eventdescription,
+    date,
+    time,
+    address,
+     city,
+     eventtype,
+    hashtag
+  } = req.body;
+
+  console.log(
+    "Data in backend",
+    restaurant_id,
+    eventname,
+        eventdescription,
+        date,
+        time,
+        address,
+         city,
+         eventtype,
+        hashtag,
+        path
+  );
+  try {
+    // see if user exists
+    let event = await Event.findOne({ eventname });
+    if (event) {
+        return res.status(400).json({ errors: [{ msg: 'Event Already Exists' }] });
+    }
+   
+
+    event = new Event({
+        restaurant_id,
+        eventname,
+        eventdescription,
+        date,
+        time,
+        address,
+         city,
+         eventtype,
+        hashtag,
+        path
+
+    });
+   
+    
+  
+    
+    await event.save();
+
+    const payload = {
+      event: { id: event.id },
+    };
+    res.writeHead(200, {
+      'Content-Type': 'text/plain'
+  })
+  res.end();
+    // jwt.sign(payload, secret, {
+    //     expiresIn: 1008000,
+    // }, (err, token) => {
+    //     if (err) throw err;
+    //     res.json({ token });
+    // });
+   
+
+} catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+}
+
+// console.log(req.body);
+},
+);
+
+eventroute.post("/vieweventlisting", (req, res) => {
+    console.log(req.body.restaurant_id);
+    Event.find({ restaurant_id: req.body.restaurant_id } , (error, result) => {
+      if (error) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end();
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        console.log(result);
+        res.end(JSON.stringify(result));
+      }
+    });
+  });
+  
+  
 // eventroute.post("/addevent", upload.single('myfile'),(req, res, next) => {
 //   try {
   
@@ -277,4 +380,4 @@
 //     });
 //   });
   
-//   module.exports = eventroute;
+   module.exports = eventroute;

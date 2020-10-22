@@ -15,8 +15,8 @@ class UserLogin extends React.Component {
     super(props);
     //maintain the state required for this component
     this.state = {
-      emailid: "",
-      restpass: "",
+      Emailid: "",
+      userpass: "",
       message: "",
       authFlag: false,
     };
@@ -36,7 +36,7 @@ class UserLogin extends React.Component {
   emailChangeHandler = (e) => {
     console.log("Inside email change handler");
     this.setState({
-      emailid: e.target.value,
+      Emailid: e.target.value,
     });
   };
   //password change handler to update state variable with the text entered by the user
@@ -49,7 +49,7 @@ class UserLogin extends React.Component {
     let formIsValid = true;
 
     //Email
-    if (!this.state.emailid) {
+    if (!this.state.Emailid) {
       formIsValid = false;
       alert("Email is a Required field");
       console.log("Email cannot be empty");
@@ -72,7 +72,7 @@ class UserLogin extends React.Component {
     if (this.handleValidation()) {
       console.log(" user Login Form submitted");
       const data = {
-        emailid: this.state.emailid,
+        Emailid: this.state.Emailid,
         userpass: this.state.userpass,
       };
 
@@ -112,7 +112,7 @@ class UserLogin extends React.Component {
       localStorage.setItem("user_id", user_id_cookie);
       redirectVar = <Redirect to="/allRestaurant" />;
       
-      localStorage.setItem("email", this.state.emailid);
+      localStorage.setItem("email", this.state.Emailid);
       console.log("Saving email to localstorage");
     }
     return (
@@ -141,8 +141,8 @@ class UserLogin extends React.Component {
                         <input
                           type="text"
                           style={{ borderRadius: "3px" }}
-                          id="useremailid"
-                          name="useremailid"
+                          id="Emailid"
+                          name="Emailid"
                           placeholder="Email"
                           onChange={this.emailChangeHandler}
                           required

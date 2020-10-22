@@ -187,6 +187,155 @@ loginroute.post(
   },
 );
 
+loginroute.post(
+  '/usersignup', [
+      check('user_name', 'Name is required').not().isEmpty(),
+      check('Emailid', 'Please enter valid email').isEmail(),
+      check(
+          'userpass',
+          'Please enter password with 4 or more characters',
+      ).isLength({ min: 4 }),
+      check('zipcode', 'zipcode is required').not().isEmpty(),
+  ],
+  
+  async(req, res) => {
+    console.log("Hello")
+      // const errors = validationResult(req);
+      // if (!errors.isEmpty()) {
+      //     return res.status(400).json({ errors: errors.array() });
+      // }
+      
+
+      const {
+        user_name,
+          Emailid,
+          userpass,
+          zipcode
+      } = req.body;
+      console.log("Data in backend",user_name,
+        Emailid,
+        userpass,
+        zipcode)
+      try {
+          // see if user exists
+          let user = await User.findOne({ Emailid });
+          if (user) {
+              return res.status(400).json({ errors: [{ msg: 'User Already Exists' }] });
+          }
+         
+
+          user = new User({
+            user_name,
+            Emailid,
+            userpass,
+            zipcode,
+          });
+          // Encrypt password
+        //  const salt = await bcyrpt.genSaßlt(10);
+        
+          user.userpass =  bcrypt.hashSync(userpass);
+          await user.save();
+
+          // const payload = {
+          //   restaurant: { id: user.id },
+          // };
+          res.writeHead(200, {
+            'Content-Type': 'text/plain'
+        })
+        res.end();
+          // jwt.sign(payload, secret, {
+          //     expiresIn: 1008000,
+          // }, (err, token) => {
+          //     if (err) throw err;
+          //     res.json({ token });
+          // });
+         
+
+      } catch (err) {
+          console.error(err.message);
+          res.status(500).send('Server Error');
+      }
+
+      // console.log(req.body);
+  },
+);
+
+
+loginroute.post(
+  '/userlogin', [
+      check('Emailid', 'Please enter valid email').isEmail(),
+      check(
+          'userpass',
+          'Password is required',
+      ).exists(),
+  ],
+  // eslint-disable-next-line consistent-return
+  async(req, res) => {
+      //const errors = validationResult(req);
+      // if (!errors.isEmpty()) {
+      //     return res.status(400).json({ errors: errors.array() });
+      // }
+
+      const {
+
+          Emailid,
+          userpass,
+
+      } = req.body;
+      console.log(Emailid, userpass)
+
+      try {
+          // see if user exists
+          const user = await User.findOne({  Emailid: req.body.Emailid, });
+          if (!user) {
+              return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
+          }
+
+          const isMatch = await bcrypt.compareSync(req.body.userpass, user.userpass);
+          if (!isMatch) {
+              return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
+          }
+          else {
+             //res.cookie('restaurant_id', restuser._id.toString(), { maxAge: 900000, httpOnly: false, path: '/' });
+             res.cookie("cookie1", user._id.toString(), {
+                          maxAge: 900000,
+                          httpOnly: false,
+                          path: "/",
+                        });
+                        res.cookie("userzipcode", user.zipcode, {
+                          maxAge: 900000,
+                          httpOnly: false,
+                          path: "/",
+                        });
+             //req.session.user = user;
+    
+          res.writeHead(200, {
+              'Content-Type': 'text/plain'
+          })
+          res.end();
+      }
+
+                }
+
+          // const payload = {
+          //     restuser: { id: restuser.id },
+          // };
+
+          // jwt.sign(payload, secret, {
+          //     expiresIn: 1008000,
+          // }, (err, token) => {
+          //     if (err) throw err;
+          //     res.json({ token });
+          // });
+       catch (err) {
+          console.error(err.message);
+          res.status(500).send('Server Error');
+      }
+
+      // console.log(req.body);
+  },
+);
+
 
 loginroute.get("/logout", function (req, res) {
   console.log("Deleting Cookie");
@@ -287,7 +436,7 @@ module.exports = loginroute;
 //     });
 //   });
   
-  
+
   
 // //Adding API for user registration
 // loginroute.post("/usersignup", (req, res) => {

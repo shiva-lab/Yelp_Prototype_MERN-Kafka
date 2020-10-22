@@ -17,7 +17,7 @@ constructor(props) {
   //maintain the state required for this component
   this.state = {
     user_name: '',
-    emailid: '',
+    Emailid: '',
     userpass: '',
     zipcode: ''
     //authFlag: false
@@ -43,7 +43,7 @@ constructor(props) {
 //email change handler to update state variable with the text entered by the user
 emailChangeHandler = e => {
   this.setState({
-    emailid: e.target.value
+    Emailid: e.target.value
   });
 };
 //password change handler to update state variable with the text entered by the user
@@ -78,7 +78,7 @@ handleValidation() {
     console.log("Password cannot be empty");
   }
   //Email
-  if (!this.state.emailid) {
+  if (!this.state.Emailid) {
     formIsValid = false;
     alert("Login ID is a Required field");
     console.log("Login ID cannot be empty");
@@ -102,17 +102,17 @@ handleValidation() {
     alert("User name is a Required field");
     console.log("user name cannot be empty");
   }
-  if (typeof this.state.emailid !== "undefined") {
-      let lastAtPos = this.state.emailid.lastIndexOf("@");
-      let lastDotPos = this.state.emailid.lastIndexOf(".");
+  if (typeof this.state.Emailid !== "undefined") {
+      let lastAtPos = this.state.Emailid.lastIndexOf("@");
+      let lastDotPos = this.state.Emailid.lastIndexOf(".");
 
       if (
         !(
           lastAtPos < lastDotPos &&
           lastAtPos > 0 &&
-          this.state.emailid.indexOf("@@") === -1 &&
+          this.state.Emailid.indexOf("@@") === -1 &&
           lastDotPos > 2 &&
-          this.state.emailid.length - lastDotPos > 2
+          this.state.Emailid.length - lastDotPos > 2
         )
       ) {
         formIsValid = false;
@@ -145,7 +145,7 @@ handleValidation() {
     
         const payloaddata = {
           user_name: this.state.user_name,
-          emailid: this.state.emailid,
+          Emailid: this.state.Emailid,
           userpass: this.state.userpass,
           zipcode: this.state.zipcode
 
@@ -210,8 +210,8 @@ handleValidation() {
                    
                     <input  style={{borderRadius: '3px'}}
                         type="text" 
-                        id="emailid" 
-                        name="emailid" placeholder="email ID"
+                        id="Emailid" 
+                        name="Emailid" placeholder="email ID"
                         
                         onChange = {this.emailChangeHandler}
                         /><br /><br />

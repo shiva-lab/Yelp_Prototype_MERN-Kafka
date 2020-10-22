@@ -4,7 +4,7 @@ const eventSchema = new Schema({
 
       event_id: {
         type: String,
-        required: true,
+        
     },
     restaurant_id: {
         type: String,
@@ -20,44 +20,53 @@ const eventSchema = new Schema({
         required: true,
     },
     date: {
-        type: Date,
-        required=true
+        type: Date
+        
     },
     time: {
-        type: Date,
+        type: String
         
     },
     address: {
-        type: String,
-        required=true
+        type: String
+      
     },
     city: {
-        type: String,
-        required=true
+        type: String
         
     }, 
-    path: {
-        type: String,
+    // eventtype: {
+    //     type: String
+        
+    // },
+    hashtag: {
+        type: String
         
     },
+    eventtype: {
+        type: String,
+        enum: ["On site", "virtual"]
+    },
+    path: {
+        type: String
+        
+    },
+    
     ts: {
         type: Date,
         default: Date.now,
     },
     signupcount: {
         type: String,
-        required: true,
+        
     },
-    eventtype: {
-        type: String,
-        enum: ["On site", "Virtual"]
-    },
+    
     signedup : [
         {
-            signupID : {type : String , required : true} ,
+            signupID : {type : String } ,
 
-            user_id : {type : String , required : true} ,
-             restaurant_id:{type : String , required : true} 
+            user_id : {type : String } ,
+             restaurant_id:{type : String } 
         }
     ]
 
@@ -66,5 +75,5 @@ const eventSchema = new Schema({
     versionKey: false
 }
 );
-const Event = mongoose.model('menu', eventSchema);
+const Event = mongoose.model('event', eventSchema);
 module.exports = Event;

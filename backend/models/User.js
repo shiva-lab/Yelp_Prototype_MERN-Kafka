@@ -4,7 +4,7 @@ const UserSchema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId
       },
-    userName: {
+      user_name: {
         type: String,
         required: true,
     },
@@ -31,66 +31,53 @@ const UserSchema = new mongoose.Schema({
         default: Date.now,
     },
     mobile: {
-        type: String,
-        required: true,
+        type: String
     },
     dob: {
-        type: Date,
-        required: true,
+        type: Date
+        
     },
 
     city: {
-        type: String,
-        required: true,
+        type: String
+        
     },
     country: {
-        type: String,
-        required: true,
+        type: String
     },
     path: {
-        type: String,
-        required: true,
+        type: String
     },
     bio: {
-        type: String,
-        required: true,
+        type: String
     },
     favorites: {
-        type: String,
-        required: true,
+        type: String
     },
     username: {
-        type: String,
-        required: true,
+        type: String
     },
    
     zipcode: {
-        type: String,
-        required: true,
+        type: String
     },
     things_i_love: {
-        type: String,
-        required: true,
+        type: String
     },
     find_me_in: {
-        type: String,
-        required: true,
+        type: String
     },
     myblog: {
-        type: String,
-        required: true,
+        type: String
     },
     ustate: {
-        type: String,
-        required: true,
+        type: String
     },
     nick_name: {
-        type: String,
-        required: true,
+        type: String
     },
     headline: {
-        type: String,
-        required: true,
+        type: String
     },
 },
 {

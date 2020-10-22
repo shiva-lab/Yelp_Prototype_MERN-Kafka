@@ -8,6 +8,7 @@ const { mongoDB } = require('./Utils/config');
 const mongoose = require('mongoose');
 const routes=require('./routes/api');
 const loginroutes=require('./routes/loginRegisterOperations');
+const eventroute = require('./routes/event');
 // const userroute=require('./routes/userOperations');
 // const orderoute=require('./routes/order');
 
@@ -52,7 +53,7 @@ app.use('/',routes);
 app.use('/',loginroutes);
 // app.use('/',userroute);
 // app.use('/',orderoute);
-// app.use('/',eventroute);
+ app.use('/',eventroute);
 
 app.listen(port, () =>{
  console.log(`Server Up on ${port}`)

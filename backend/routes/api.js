@@ -71,6 +71,7 @@ router.post("/viewhome", (req, res) => {
   });
 });
 
+
 // router.get("/homeviewrestaurant", (req, res, next) => {
 //   console.log("Hello from home Restaurant View");
 //   var sql = `SELECT * FROM dim_restaurant`;
@@ -285,7 +286,23 @@ var objData={ itemname:req.body.itemname,price:req.body.price,description:req.bo
 //     }
 //   );
 // });
-
+router.post("/viewmenu", (req, res) => {
+  console.log(req.body.restaurant_id);
+  Restaurant.find({ _id: req.body.restaurant_id },{'menu':{}}, (error, result) => {
+    if (error) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end();
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      console.log(result);
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 // router.post("/viewmenu", (req, res) => {
 //   var restaurant_id = req.body.restaurant_id;
 //   //console.log("view menu", fool);
