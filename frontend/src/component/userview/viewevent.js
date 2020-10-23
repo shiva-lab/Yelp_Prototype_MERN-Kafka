@@ -21,11 +21,11 @@ class viewevent extends React.Component {
     });
   };
   
-  viewdetailsHandler(event_id)  {
+  viewdetailsHandler(_id)  {
     return function () {
       
-      console.log("event ID:", event_id);
-      localStorage.setItem('event_id_selected',event_id);
+      console.log("event ID:", _id);
+      localStorage.setItem('event_id_selected',_id);
       return <Redirect to="/vieweventdetails" />;
     };
   };
@@ -52,14 +52,14 @@ class viewevent extends React.Component {
   }
 
 
-  handleClick(event_id, restaurant_id) {
+  handleClick(_id, restaurant_id) {
     return function () {
       const user_id = cookie.load('cookie1');
-      console.log(event_id, restaurant_id, user_id);
+      console.log(_id, restaurant_id, user_id);
       const newdata = {
         user_id,
         restaurant_id,
-        event_id
+        _id
       };
       console.log(newdata);
       fetch("/eventsignup", {
@@ -161,7 +161,7 @@ class viewevent extends React.Component {
                         <td>
                           <Link>
                             <button
-                              onClick={this.handleClick(event.event_id, event.restaurant_id)}
+                              onClick={this.handleClick(event._id, event.restaurant_id)}
                             >
                               Sign Up
                             </button>
@@ -172,7 +172,7 @@ class viewevent extends React.Component {
 
                           <Link to='/vieweventdetails'>
                             <button
-                              onClick={this.viewdetailsHandler(event.event_id)}
+                              onClick={this.viewdetailsHandler(event._id)}
                             >
                               View Details
                             </button>

@@ -1,30 +1,31 @@
-// const express = require("express");
+ const express = require("express");
 // const connection = require("../models/yelpschema");
-// const userroute = express.Router();
-// var multer = require('multer');
+ const userroute = express.Router();
+ const User = require('../models/User');
+ var multer = require('multer');
 
-// var multerS3 = require('multer-s3');
-// aws = require('aws-sdk'),
+var multerS3 = require('multer-s3');
+aws = require('aws-sdk'),
 
-// aws.config.update({
-//   secretAccessKey: '0am/9n/qQMhH4NnBJBasYvoM8enIMta/FirpNhAf',
-//   accessKeyId: 'AKIAIX7RODER3FW5UBIA',
-//   region: 'us-east-1'
-// });
+aws.config.update({
+  secretAccessKey: '0am/9n/qQMhH4NnBJBasYvoM8enIMta/FirpNhAf',
+  accessKeyId: 'AKIAIX7RODER3FW5UBIA',
+  region: 'us-east-1'
+});
 
-// var app = express(),
-//     s3 = new aws.S3();
+var app = express(),
+    s3 = new aws.S3();
 
-//     var upload = multer({
-//       storage: multerS3({
-//           s3: s3,
-//           bucket: 'yelpa',
-//           key: function (req, file, cb) {
-//               console.log(file);
-//               cb(null, file.originalname); //use Date.now() for unique file keys
-//           }
-//       })
-//   });
+    var upload = multer({
+      storage: multerS3({
+          s3: s3,
+          bucket: 'yelpa',
+          key: function (req, file, cb) {
+              console.log(file);
+              cb(null, file.originalname); //use Date.now() for unique file keys
+          }
+      })
+  });
 
 
 
@@ -259,28 +260,110 @@
 //   // });
 
 
-
-//   userroute.post("/uviewprofile", (req, res) => {
-//     var user_id = req.body.user_id;
-//     console.log("User ID:", user_id);
-  
-//     var sql = `SELECT *, DATE_FORMAT(ts, '%D %M %Y') as yelpingsince, DATE_FORMAT(dob, '%D %M %Y') as dob FROM dim_user
-//           WHERE user_id = ?`;
-  
-//     connection.query(sql, [user_id], function (err, results) {
-//       if (err) {
-//         console.log("error in adding data");
-//         res.status(400).json({ responseMessage: "can not fetch restaurant" });
-//       } else {
-//         console.log("successfully retrived");
-//         console.log(results);
-//         res.send(JSON.stringify(results));
-//       }
-//     });
-//   });
+userroute.post("/uviewprofile", (req, res) => {
+  console.log(req.body.user_id);
+  User.find({ _id: req.body.user_id }, (error, result) => {
+    if (error) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end();
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      console.log(result);
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 
 // // Updating user Profile
-//   userroute.post("/uupdateprofile", upload.single('myfile'),(req, res, next) => {
+userroute.post("/uupdateprofile", upload.single("myfile"), async (req, res, next) => {
+  try {
+    console.log("Uploading user Image...");
+  } catch (err) {
+    res.send(400);
+  }
+  var path = req.file.location;
+  console.log("Add userupdae API Checkpoint");
+  console.log("Image Path on AWS: ", path);
+  const {
+    bio,
+    headline,
+    fname,
+    lname,
+    city,
+    ustate,
+    country,
+    nick_name,
+    mobile,
+    emailid,
+    address,
+    favorites,
+    myblog,
+    things_ilove,
+    find_me_in,
+    user_id,
+    dob
+  } = req.body;
+
+  console.log(
+    "Data in backend",
+    bio,
+    headline,
+    fname,
+    lname,
+    city,
+    ustate,
+    country,
+    nick_name,
+    mobile,
+    emailid,
+    address,
+    favorites,
+    myblog,
+    things_ilove,
+    find_me_in,
+    path,
+    user_id,
+    dob
+  );
+
+  User.findByIdAndUpdate(
+    { _id: req.body.user_id },
+    {
+    bio,
+    headline,
+    fname,
+    lname,
+    city,
+    ustate,
+    country,
+    nick_name,
+    mobile,
+    emailid,
+    address,
+    favorites,
+    myblog,
+    things_ilove,
+    find_me_in,
+    path,
+    dob
+    },
+    (error, results) => {
+      if (error) {
+        console.log("error");
+      } else {
+        console.log("Success");
+        console.log(results);
+        res.send(JSON.stringify(results));
+      }
+    }
+  );
+}
+);
+
 //     try {
 //       res.send(req.file);
 //       console.log("hello")
@@ -486,5 +569,5 @@
 
 
 
-//   module.exports = userroute;
+ module.exports = userroute;
 

@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const routes=require('./routes/api');
 const loginroutes=require('./routes/loginRegisterOperations');
 const eventroute = require('./routes/event');
-// const userroute=require('./routes/userOperations');
+ const userroute=require('./routes/userOperations');
 // const orderoute=require('./routes/order');
 
 var bodyParser = require('body-parser');
@@ -51,7 +51,7 @@ mongoose.connect(mongoDB, options, (err, res) => {
 app.use(morgan('tiny'));
 app.use('/',routes);
 app.use('/',loginroutes);
-// app.use('/',userroute);
+app.use('/',userroute);
 // app.use('/',orderoute);
  app.use('/',eventroute);
 

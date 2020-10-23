@@ -29,9 +29,11 @@ class viewmenu extends React.Component {
           throw new Error("Bad response from server");
         }
         return response.json();
-      })
+      })  
       .then((data) => {
-        self.setState({ menu: data });
+        console.log("data")
+        console.log(data[0].menu)
+        self.setState({ menu: data[0].menu });
       })
       .catch((err) => {
         console.log("caught it!", err);

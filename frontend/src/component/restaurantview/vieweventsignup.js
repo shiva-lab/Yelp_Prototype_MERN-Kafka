@@ -30,7 +30,10 @@ class vieweventsignup extends React.Component {
         return response.json();
       })
       .then((data) => {
-        self.setState({ eventview: data });
+        console.log(data[0].eventview)
+        self.setState({ eventview: data[0].eventview });
+       // self.setState({ eventview: data[0]});
+        
       })
       .catch((err) => {
         console.log("caught it!", err);

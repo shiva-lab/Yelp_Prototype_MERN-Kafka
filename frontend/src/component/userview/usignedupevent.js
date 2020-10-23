@@ -33,6 +33,7 @@ class usignedupevent extends React.Component {
       })
       .then((data) => {
         self.setState({ eventdata: data });
+        
       })
       .catch((err) => {
         console.log("caught it!", err);
@@ -76,7 +77,7 @@ class usignedupevent extends React.Component {
                           <h3>Event Type</h3>
                           <Card.Text>{newevent.eventtype}</Card.Text>
                           <h3>Date</h3>
-                          <Card.Text>{newevent.eventdate}</Card.Text>
+                          <Card.Text>{newevent.date}</Card.Text>
                           <h3>Time</h3>
                           <Card.Text>{newevent.time}</Card.Text>
                           <h3>City</h3>

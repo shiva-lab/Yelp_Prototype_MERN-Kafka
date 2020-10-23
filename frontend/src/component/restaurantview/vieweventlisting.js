@@ -37,10 +37,10 @@ class vieweventlisting extends React.Component {
       });
   }
 
-  handleClickevent(event_id) {
+  handleClickevent(_id) {
     return function () {
-      console.log(event_id);
-      localStorage.setItem("event_id_eventsignup", event_id);
+      console.log(_id);
+      localStorage.setItem("event_id_eventsignup",_id);
       console.log("redirecting");
       return <Redirect to="/vieweventsignup" />;
     };
@@ -103,7 +103,7 @@ class vieweventlisting extends React.Component {
 
                     <Link to="/vieweventsignup">
                       <td>
-                        <button onClick={this.handleClickevent(event.event_id)}>
+                        <button onClick={this.handleClickevent(event._id)}>
                           Signup Details
                         </button>
                       </td>

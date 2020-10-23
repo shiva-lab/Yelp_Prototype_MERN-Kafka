@@ -187,7 +187,7 @@ class allRestaurant extends React.Component {
                           {this.state.resturantlist.map(food => (
                             <tr>
                               <td>
-                                {food.restaurant_name}
+                                {food.restaurantname}
                                 {' '}
                               </td>
                               <td><img src={food.path} width={150} height={120} mode="fit" /></td>

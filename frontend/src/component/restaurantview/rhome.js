@@ -101,7 +101,7 @@ class rhome extends React.Component {
                                       Restaurant Name
                                     </th>
                                     <td className="profiletdfont">
-                                      <b>{food.restaurant_name} </b>
+                                      <b>{food.restaurantname} </b>
                                     </td>
                                   </tr>
 

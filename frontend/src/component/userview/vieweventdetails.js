@@ -41,14 +41,14 @@ class viewevetdetails extends React.Component {
         console.log("caught it!", err);
       });
   }
-  handleClick(event_id, restaurant_id) {
+  handleClick(_id, restaurant_id) {
     return function () {
       const user_id = cookie.load('cookie1');
-      console.log(event_id, restaurant_id, user_id);
+      console.log(_id, restaurant_id, user_id);
       const newdata = {
         user_id,
         restaurant_id,
-        event_id
+        _id
       };
       console.log(newdata);
       fetch("/eventsignup", {
@@ -124,7 +124,7 @@ class viewevetdetails extends React.Component {
                       <div>
               <Link>
                             <button
-                              onClick={this.handleClick(eve.event_id, eve.restaurant_id)}
+                              onClick={this.handleClick(eve._id, eve.restaurant_id)}
                             >
                               Sign Up
                             </button>

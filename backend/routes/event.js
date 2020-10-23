@@ -1,12 +1,13 @@
 
 const express = require("express");
 // //const connection = require("../models/yelpschema");
-//const User = require('../models/User');
+const User = require('../models/User');
 
 const Event = require('../models/Event');
 const eventroute = express.Router();
 var multer = require('multer');
 var multerS3 = require('multer-s3');
+const { findById } = require("../models/Event");
 aws = require('aws-sdk'),
 
 
@@ -132,6 +133,141 @@ eventroute.post("/vieweventlisting", (req, res) => {
       }
     });
   });
+  
+
+  eventroute.post("/viewevent", async(req, res, next) => {
+    await Event.find({}, (error, result) => {
+      if (error) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end();
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        console.log(result);
+        res.end(JSON.stringify(result));
+      }
+    });
+  });
+
+  eventroute.post("/vieweventdetails", async(req, res, next) => {
+    console.log(req.body.event_id)
+    await Event.find({_id:req.body.event_id}, (error, result) => {
+      if (error) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end();
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        console.log(result);
+        res.end(JSON.stringify(result));
+      }
+    });
+  });
+
+  eventroute.post("/eventsignup", async (req, res, next) => {
+   
+    const {
+      user_id,
+      restaurant_id,
+      _id
+    } = req.body;
+  //var objData={ user_id:req.body.user_id,restaurant_id:req.body.restaurant_id};
+  var objData=User.findOne({_id:req.body.user_id},'fname lname user_name user_id');
+  
+    console.log(
+      "Data in backend",
+      user_id,
+      restaurant_id,
+      _id
+    );
+    console.log("data for user" ,objData)
+    try {
+      Event.findByIdAndUpdate(
+        { _id: req.body._id },
+        { $push: {signedup : objData  }},
+        (error, results) => {
+          if (error) {
+            console.log("error");
+          } else {
+            res.writeHead(200, {
+              "Content-Type": "text/plain",
+            });
+            res.end();
+          } 
+          })
+        }
+     catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  });
+  
+  eventroute.post("/viewusersignedupevent", (req, res, next) => {
+
+    console.log("Inside viewusersignedupevent",req.body.user_id);
+   // Event.find({ user_id: req.body.user_id },{'signedup':[]}, (error, result) => {
+    Event.find({ user_id: req.body.user_id },{}, (error, result) => {
+      if (error) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end();
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        console.log(result);
+        res.end(JSON.stringify(result));
+      }
+    });
+  });
+
+
+
+  eventroute.post("/vieweventsignup", (req, res, next) => {
+
+    console.log("Inside vieweventsignup",req.body.event_id,req.body.restaurant_id);
+    Event.findOne({ _id: req.body.event_id },{'signedup':[]}, (error, result) => {
+      if (error) {
+        console.log(error)
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end();
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        console.log("result")
+        console.log(result);
+        res.end(JSON.stringify(result));
+      }
+    });
+  });
+   // Event.find({ user_id: req.body.user_id },{'signedup':[]}, (error, result) => {
+  //  Event.find({ _id: req.body.event_id },{'signedup':[]}, (error, result) => {
+  //  // Restaurant.find({ _id: req.body.event_id },{'signedup':[]}, (error, result)
+  //     if (error) {
+  //       res.writeHead(500, {
+  //         "Content-Type": "text/plain",
+  //       });
+  //       res.end();
+  //     } else {
+  //       res.writeHead(200, {
+  //         "Content-Type": "application/json",
+  //       });
+  //       console.log(result);
+  //       res.end(JSON.stringify(result));
+  //     }
+  //   });
+  // });
+
   
   
 // eventroute.post("/addevent", upload.single('myfile'),(req, res, next) => {

@@ -5,10 +5,8 @@ var bcrypt = require("bcrypt-nodejs");
 
 // registering and adding users
 const jwt = require('jsonwebtoken');
-//const bcyrpt = require('bcryptjs');
 const { check, validationResult } = require('express-validator');
 const { secret } = require('../Utils/config');
-//const RestUser = require('../../../models/RestUser');
 const Restaurant = require('../models/Restaurant');
 const User = require('../models/User');
 // const { auth } = require('../../../config/passportjwt');
@@ -59,10 +57,8 @@ loginroute.post(
               restpass,
               location,
             });
-            // Encrypt password
-          //  const salt = await bcyrpt.genSaßlt(10);
           
-            restaurant.restpass =  bcrypt.hashSync(restpass);//commnitng bcrypt for now
+            restaurant.restpass =  bcrypt.hashSync(restpass);
             await restaurant.save();
 
             const payload = {
@@ -341,8 +337,8 @@ loginroute.get("/logout", function (req, res) {
   console.log("Deleting Cookie");
   res.clearCookie("restaurant_id");
   //res.clearCookie("restaurant_id_menu");
-  //res.clearCookie("cookie1");
- // res.clearCookie("userzipcode");
+  res.clearCookie("cookie1");
+  res.clearCookie("userzipcode");
   //res.clearCookie("cartprice");
   res.json(true);
 });

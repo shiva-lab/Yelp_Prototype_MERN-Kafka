@@ -8,10 +8,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    firstName: {
+    fname: {
         type: String,
     },
-    lastName: {
+    lname: {
         type: String,
     },
     Emailid: {

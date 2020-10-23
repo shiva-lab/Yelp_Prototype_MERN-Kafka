@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 const eventSchema = new Schema({
 
       event_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId
         
     },
     restaurant_id: {
@@ -60,15 +60,14 @@ const eventSchema = new Schema({
         type: String,
         
     },
+    user_id : {type : String } ,
     
-    signedup : [
-        {
-            signupID : {type : String } ,
-
-            user_id : {type : String } ,
-             restaurant_id:{type : String } 
-        }
-    ]
+    signedup : [{
+            fname : {type : String } ,
+            lname:{type : String },
+            user_name : {type : String } ,
+            user_id : {type : String } 
+        }]
 
 },
 {

@@ -84,25 +84,25 @@ class rupdateprofile extends React.Component {
           'content-type': 'multipart/form-data'
       }
     };
-   // this.props.updateRestProfile(formData);
+    this.props.updateRestProfile(formData);
 
-      axios.post("/restaurantupdate",formData,config)
-      .then(response => {
-        console.log("inside success")
-        console.log("Status Code : ", response.status);
-        if (response.status === 200) {
-            console.log("success", response)
-            alert("profile updated successfully")
-            //window.location.reload();
-            // console.log(response)
-        }
-    })
-        .catch(() => {
-          console.log('Internal server error');
-          alert("Internal server error");
-        });;
+    //   axios.post("/restaurantupdate",formData,config)
+    //   .then(response => {
+    //     console.log("inside success")
+    //     console.log("Status Code : ", response.status);
+    //     if (response.status === 200) {
+    //         console.log("success", response)
+    //         alert("profile updated successfully")
+    //         //window.location.reload();
+    //         // console.log(response)
+    //     }
+    // })
+    //     .catch(() => {
+    //       console.log('Internal server error');
+    //       alert("Internal server error");
+    //     });;
 
-    };
+    // };
 
   //   resetUserInputs = () => {
   //     this.setState({
@@ -113,7 +113,7 @@ class rupdateprofile extends React.Component {
   //       zipcode: '',
   //       restaurantimage: ''
   //     });
-  // };
+  };
 //   onChange(e) {
 //     this.setState({file:e.target.files});
 // }
