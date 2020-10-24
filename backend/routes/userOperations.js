@@ -2,6 +2,8 @@
 // const connection = require("../models/yelpschema");
  const userroute = express.Router();
  const User = require('../models/User');
+ const Order = require('../models/Order');
+ const Restaurant = require("../models/Restaurant");
  var multer = require('multer');
 
 var multerS3 = require('multer-s3');
@@ -51,7 +53,25 @@ var app = express(),
 //     });
 //   });
   
-//   userroute.post("/uviewmenu", (req, res) => {
+   userroute.post("/uviewmenu", (req, res) => {
+  console.log(req.body.restaurant_id);
+  Restaurant.find({ _id: req.body.restaurant_id },{'menu':[]}, (error, result) => {
+    if (error) {
+      console.log(error)
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end();
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      console.log("result")
+      console.log(result);
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 //     var restaurant_id = req.body.restaurant_id;
 //     console.log("view menu", restaurant_id);
   
@@ -72,8 +92,7 @@ var app = express(),
 //       }
 //     });
 //   });
-  
-//   userroute.post("/addtocart", (req, res) => {
+   //userroute.post("/addtocart", (req, res) => {
 //     var item_id = req.body.item_id;
 //     var itemname = req.body.itemname;
 //     var restaurant_id = req.body.restaurant_id;

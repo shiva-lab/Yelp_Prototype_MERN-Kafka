@@ -172,47 +172,42 @@ eventroute.post("/vieweventlisting", (req, res) => {
 
   eventroute.post("/eventsignup", async (req, res, next) => {
    
-    const {
-      user_id,
-      restaurant_id,
-      _id
-    } = req.body;
+    const {user_id,restaurant_id,_id } = req.body;
   //var objData={ user_id:req.body.user_id,restaurant_id:req.body.restaurant_id};
-  var objData=User.findOne({_id:req.body.user_id},'fname lname user_name user_id');
+  //var objData=User.find({_id:req.body.user_id},'fname lname user_name user_id');
   
     console.log(
-      "Data in backend",
-      user_id,
-      restaurant_id,
-      _id
+      "Data in backend",user_id,restaurant_id,_id
     );
-    console.log("data for user" ,objData)
-    try {
-      Event.findByIdAndUpdate(
-        { _id: req.body._id },
-        { $push: {signedup : objData  }},
-        (error, results) => {
-          if (error) {
-            console.log("error");
-          } else {
-            res.writeHead(200, {
-              "Content-Type": "text/plain",
-            });
-            res.end();
-          } 
+    Event.updateOne(
+      { _id: req.body._id },
+      { $push: { registrations: user_id } },
+      { upsert: true }
+    )
+      .then(response => {
+        User.updateOne(
+          { _id: user_id },
+          { $push: { registeredEvents: req.body._id } },
+          { upsert: true }
+        )
+          .then(response => {
+            return res.status(200).json("Successfully Updated");
           })
-        }
-     catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server Error");
-    }
-  });
+          .catch(err => {
+            console.log(err);
+            return res.status(500).json({ error: err });
+          });
+      })
+    });
+      
+    
+  
   
   eventroute.post("/viewusersignedupevent", (req, res, next) => {
 
     console.log("Inside viewusersignedupevent",req.body.user_id);
    // Event.find({ user_id: req.body.user_id },{'signedup':[]}, (error, result) => {
-    Event.find({ user_id: req.body.user_id },{}, (error, result) => {
+    Event.find({ user_id: req.body.user_id },{'signedup':[]}, (error, result) => {
       if (error) {
         res.writeHead(500, {
           "Content-Type": "text/plain",
@@ -228,28 +223,43 @@ eventroute.post("/vieweventlisting", (req, res) => {
     });
   });
 
+  eventroute.post("/vieweventsignup", async(req, res, next) => {
 
-
-  eventroute.post("/vieweventsignup", (req, res, next) => {
-
-    console.log("Inside vieweventsignup",req.body.event_id,req.body.restaurant_id);
-    Event.findOne({ _id: req.body.event_id },{'signedup':[]}, (error, result) => {
-      if (error) {
-        console.log(error)
-        res.writeHead(500, {
-          "Content-Type": "text/plain",
-        });
-        res.end();
-      } else {
-        res.writeHead(200, {
-          "Content-Type": "application/json",
-        });
-        console.log("result")
-        console.log(result);
-        res.end(JSON.stringify(result));
-      }
-    });
+     console.log("Inside vieweventsignup",req.body.event_id,req.body.restaurant_id);
+  //   Event.findOne({ _id: req.body.event_id },{'signedup':[]}, (error, result) => {
+  //     if (error) {
+  //       console.log(error)
+  //       res.writeHead(500, {
+  //         "Content-Type": "text/plain",
+  //       });
+  //       res.end();
+  //     } else {
+  //       res.writeHead(200, {
+  //         "Content-Type": "application/json",
+  //       });
+  //       console.log("result")
+  //       console.log(result);
+  //       res.end(JSON.stringify(result));
+  //     }
+  //   });
+  // });
+  var eventId = req.body.eventId;
+  console.log("Event id", eventId);
+  await Event.findById(eventId, function(err, events) {
+    console.log("registeredEvents Array", events.registrations);
+    if (err) return res.status(500).json({ error: err });
+    User.find({ _id: { $in: events.registrations } })
+      .exec()
+      .then(result => {
+        console.log("Reg events are:::", result);
+        res.status(200).json(result);
+      })
+      .catch(err => {
+        res.status(500).json({ error: err });
+      });
   });
+});
+
    // Event.find({ user_id: req.body.user_id },{'signedup':[]}, (error, result) => {
   //  Event.find({ _id: req.body.event_id },{'signedup':[]}, (error, result) => {
   //  // Restaurant.find({ _id: req.body.event_id },{'signedup':[]}, (error, result)

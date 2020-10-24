@@ -306,7 +306,7 @@ var objData={ itemname:req.body.itemname,price:req.body.price,description:req.bo
 // });
 router.post("/viewmenu", (req, res) => {
   console.log(req.body.restaurant_id);
-  Restaurant.find({ restaurant_id: req.body.restaurant_id },{'menu':[]}, (error, result) => {
+  Restaurant.find({ _id: req.body.restaurant_id },{'menu':[]}, (error, result) => {
     if (error) {
       console.log(error)
       res.writeHead(500, {

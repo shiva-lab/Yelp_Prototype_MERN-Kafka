@@ -41,18 +41,18 @@ class rviewprofile extends React.Component {
       });
   }
 
-  handleClick(restaurant_id_menu) {
-    return function () {
-      console.log(restaurant_id_menu);
-      localStorage.setItem("restaurant_id_menu", restaurant_id_menu);
-      return <Redirect to="/uviewmenu" />;
-    };
-  }
+  // handleClick(_id) {
+  //   return function () {
+  //     console.log(_id);
+  //     localStorage.setItem("restaurant_id_allrest",_id);
+  //     return <Redirect to="/uviewmenu" />;
+  //   };
+  // }
 
-  handleReviewClick(restaurant_id, user_id) {
+  handleReviewClick(_id, user_id) {
     return function () {
-      console.log("Restaurant ID:", restaurant_id);
-      localStorage.setItem("restaurant_id_review", restaurant_id);
+      console.log("Restaurant ID:",_id);
+      localStorage.setItem("restaurant_id_review",_id);
       console.log("User ID:", user_id);
       localStorage.setItem("user_id_review", user_id);
       return <Redirect to="/addreview" />;
@@ -130,9 +130,7 @@ class rviewprofile extends React.Component {
                                   <Link to="/uviewmenu">
                                   <button
                                     className="btn btn-danger"
-                                    onClick={this.handleClick(
-                                      food.restaurant_id
-                                    )}
+                                    onClick={()=>{ localStorage.getItem('restaurant_id_allrest');}}
                                   >
                                     View Menu
                                   </button>
@@ -142,7 +140,7 @@ class rviewprofile extends React.Component {
                                   <button
                                     className="btn btn-danger"
                                     onClick={this.handleReviewClick(
-                                      food.restaurant_id,
+                                      food._id,
                                       food.user_id
                                     )}
                                   >

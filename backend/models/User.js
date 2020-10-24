@@ -38,47 +38,22 @@ const UserSchema = new mongoose.Schema({
         
     },
 
-    city: {
-        type: String
-        
-    },
-    country: {
-        type: String
-    },
-    path: {
-        type: String
-    },
-    bio: {
-        type: String
-    },
-    favorites: {
-        type: String
-    },
-    username: {
-        type: String
-    },
+    city: {type: String },
+    country: {type: String },
+    path: {type: String },
+    bio:{type: String },
+    favorites: {type: String },
+    username: {type: String },
    
-    zipcode: {
-        type: String
-    },
-    things_i_love: {
-        type: String
-    },
-    find_me_in: {
-        type: String
-    },
-    myblog: {
-        type: String
-    },
-    ustate: {
-        type: String
-    },
-    nick_name: {
-        type: String
-    },
-    headline: {
-        type: String
-    },
+    zipcode: {type: String },
+    things_i_love:{type: String },
+    find_me_in: {type: String },
+    myblog: {type: String },
+    ustate:{type: String },
+    nick_name: {type: String },
+    headline: {type: String },
+
+    registeredEvents: { type: Array, max: 100 },
 },
 {
     versionKey: false

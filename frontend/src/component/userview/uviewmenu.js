@@ -14,7 +14,7 @@ class uviewmenu extends React.Component {
 
   componentDidMount() {
     const self = this;
-    const restaurant_id = localStorage.getItem("restaurant_id_menu");
+    const restaurant_id = localStorage.getItem("restaurant_id_allrest");
     const data = { restaurant_id };
     fetch("/uviewmenu", {
       method: "POST",
@@ -30,7 +30,9 @@ class uviewmenu extends React.Component {
         return response.json();
       })
       .then((data) => {
-        self.setState({ items: data });
+        console.log("data")
+        console.log(data)
+        self.setState({ items: data[0].menu});
       })
       .catch((err) => {
         console.log("caught it!", err);

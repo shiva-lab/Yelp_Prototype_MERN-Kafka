@@ -62,12 +62,13 @@ const eventSchema = new Schema({
     },
     user_id : {type : String } ,
     
-    signedup : [{
-            fname : {type : String } ,
-            lname:{type : String },
-            user_name : {type : String } ,
-            user_id : {type : String } 
-        }]
+    // signedup : [{
+    //         fname : {type : String } ,
+    //         lname:{type : String },
+    //         user_name : {type : String } ,
+    //         user_id : {type : String } 
+    //     }]
+    registrations: { type: Array }
 
 },
 {

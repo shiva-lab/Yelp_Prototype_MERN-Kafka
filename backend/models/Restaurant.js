@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const RestaurantSchema = new mongoose.Schema({
-    restaurant_id: {
-        type: mongoose.Schema.Types.ObjectId,
-      unique:true},
-      restaurant_name: {type: String},
+    // restaurant_id: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //   unique:true},
+    restaurantname: {type: String},
     
     Emailid: {type: String,unique: true},
     restpass: {type: String},

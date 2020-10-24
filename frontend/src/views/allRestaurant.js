@@ -15,6 +15,7 @@ class allRestaurant extends React.Component {
 
     };
     this.search1Handler = this.search1Handler.bind(this);
+
   }
 
   componentDidMount() {
@@ -49,14 +50,14 @@ class allRestaurant extends React.Component {
   //     }
   //     }
 
-  handleClick(restaurant_id) {
+  // handleClick(_id) {
     
-    return function () {
-      console.log("Restaurant ID:", restaurant_id);
-      localStorage.setItem('restaurant_id_allrest', restaurant_id);
-      return <Redirect to="/rviewprofile" />;
-    };
-  }
+  //   return function () {
+  //     console.log("Restaurant ID:",_id);
+  //     localStorage.setItem('restaurant_id_allrest',_id);
+  //     return <Redirect to="/rviewprofile" />;
+  //   };
+  // }
 
   search1Handler = async(e) => {
     
@@ -70,6 +71,7 @@ class allRestaurant extends React.Component {
   
 
   render() {
+    
     //localStorage.setItem("search1", this.state.search1);
     // let redirectVar = null;
 
@@ -200,13 +202,15 @@ class allRestaurant extends React.Component {
                               <td>{food.address}</td>
 
                               <td>
-                                <Link to="/rviewprofile">
+                                <Link to="/rviewprofile"> 
                                   <button
-                                    onClick={()=>this.handleClick(food.restaurant_id)}
+                                    onClick={()=>{ localStorage.setItem('restaurant_id_allrest',food._id);}}
+    //                                 onClick={()=>{localStorage.setItem("search1", this.state.search1);
+    // this.props.history.push('/searchrestaurant');}}
                                   >
                                     View Restaurant
                                   </button>
-                                </Link>
+                                 </Link> 
                               </td>
                             </tr>
                           ))}
