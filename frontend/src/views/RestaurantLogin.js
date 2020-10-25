@@ -8,8 +8,8 @@ import { connect } from 'react-redux';
 import { restLogin } from '../redux/action/loginaction'
 //import { Navbar } from "react-bootstrap";
 import Footer from '../component/Footer';
-
 import Header from '../component/Header';
+const jwt_decode = require('jwt-decode')
 
 
 class RestaurantLogin extends React.Component {
@@ -31,6 +31,10 @@ class RestaurantLogin extends React.Component {
     //this.submitCustomerLogin = this.submitCustomerLogin.bind(this);
     this.submitRestLogin = this.submitRestLogin.bind(this);
   }
+
+
+
+
   //Call the Will Mount to set the auth Flag to false
   componentWillMount() {
     this.setState({
@@ -110,6 +114,9 @@ class RestaurantLogin extends React.Component {
 
     }
   }
+
+
+
   render() {
     console.log("Rendering again");
     let redirectVar = null;
@@ -120,11 +127,11 @@ class RestaurantLogin extends React.Component {
       localStorage.setItem('email', this.state.Emailid);
       console.log("Saving email to localstorage");
       //Fetching Restaurant ID Value from Cookie and setting the local storage
-      var restaurnt_id = (cookie.load('restaurant_id'))
-      console.log(restaurnt_id)
-      localStorage.setItem('restaurant_id', restaurnt_id);
+      var restaurant_id = (cookie.load('restaurant_id'))
+      console.log(restaurant_id)
+      localStorage.setItem('restaurant_id', restaurant_id);
     } else {
-      errorMsg = <p> Hey Stranger! We don't recognize that login. Spell check your info and try again! </p>
+      errorMsg = <p> Try again! </p>
     }
 
 

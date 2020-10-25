@@ -1,19 +1,20 @@
 const express = require("express");
 const loginroute = express.Router();
 var bcrypt = require("bcrypt-nodejs");
-
-
+const keys = require('../config/keys')
 // registering and adding users
 const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
 const { secret } = require('../Utils/config');
 const Restaurant = require('../models/Restaurant');
 const User = require('../models/User');
+const passport = require("passport")
 // const { auth } = require('../../../config/passportjwt');
 
 // @route  POST /api/restusers
 // @Desc   Resgister User
 // @access Public
+// Restaurant Registration
 loginroute.post(
     '/restaurantregister', [
         check('restaurantname', 'Name is required').not().isEmpty(),
@@ -32,7 +33,6 @@ loginroute.post(
         //     return res.status(400).json({ errors: errors.array() });
         // }
         
-
         const {
             restaurantname,
             Emailid,
@@ -47,10 +47,9 @@ loginroute.post(
             // see if user exists
             let restaurant = await Restaurant.findOne({ Emailid });
             if (restaurant) {
-                return res.status(400).json({ errors: [{ msg: 'User Already Exists' }] });
+                return res.status(400).json({ errors: [{ msg: 'Restaurant Already Exists' }] });
             }
-           
-
+          
             restaurant = new Restaurant({
               restaurantname,
               Emailid,
@@ -59,7 +58,8 @@ loginroute.post(
             });
           
             restaurant.restpass =  bcrypt.hashSync(restpass);
-            await restaurant.save();
+            await restaurant.save()
+            .catch(err => console.log(err))
 
             const payload = {
               restaurant: { id: restaurant.id },
@@ -119,6 +119,7 @@ loginroute.post(
 //   });    
 // });
 
+// Adding Login Functionality For the Restaurant using JWT & Passport
 loginroute.post(
   '/restaurantlogin', [
       check('Emailid', 'Please enter valid email').isEmail(),
@@ -134,32 +135,54 @@ loginroute.post(
       //     return res.status(400).json({ errors: errors.array() });
       // }
 
+    //Getting Restaurant Email and Password from the Body
       const {
-
           Emailid,
           restpass,
-
       } = req.body;
       console.log(Emailid, restpass)
 
+      //Find the Restaurant in MongoDB
       try {
           // see if user exists
           const restuser = await Restaurant.findOne({  Emailid: req.body.Emailid, });
           if (!restuser) {
-              return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
+              return res.status(404).json({ errors: [{ msg: 'Restaurant Not Found' }] });
           }
-
+          //Check Password 
           const isMatch = await bcrypt.compareSync(req.body.restpass, restuser.restpass);
           if (!isMatch) {
-              return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
+              return res.status(404).json({ errors: [{ msg: 'Invalid Password' }] });
           }
           else {
+            //User Matched 
+            console.log("User Matched - Creating Payload")
+            const payload = {
+              id: restuser._id,
+              restaurantname: restuser.restaurantname,
+              location: restuser.location,
+              Emailid: restuser.Emailid,
+             
+            } // Create JWT Payload
+
+            //Sign Token
+            console.log("Creating Token")
+            jwt.sign(payload, 
+                     keys.secretOrKey,
+                     {expiresIn: 3600 },(err,token) =>{
+                       res.json({
+                         success:true,
+                         token: 'Bearer ' + token
+                                           })
+
+            }
+             );
              res.cookie('restaurant_id', restuser._id.toString(), { maxAge: 900000, httpOnly: false, path: '/' });
           //req.session.user = user;
-          res.writeHead(200, {
-              'Content-Type': 'text/plain'
-          })
-          res.end();
+          // res.writeHead(200, {
+          //     'Content-Type': 'text/plain'
+          // })
+          // res.end();
       }
 
                 }
@@ -182,6 +205,9 @@ loginroute.post(
       // console.log(req.body);
   },
 );
+
+
+
 
 loginroute.post(
   '/usersignup', [
@@ -531,4 +557,20 @@ module.exports = loginroute;
 //   res.clearCookie("cartprice");
 //   res.json(true);
 // });
-// module.exports = loginroute;
+
+
+
+// @route  POST /api/restusers
+// @Desc   Return Current User
+// @access Private
+loginroute.get(
+  '/current',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    res.json(req.restaurantdata)
+  }
+
+);
+
+
+module.exports = loginroute;

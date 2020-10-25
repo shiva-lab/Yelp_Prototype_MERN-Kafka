@@ -10,6 +10,7 @@ const routes=require('./routes/api');
 const loginroutes=require('./routes/loginRegisterOperations');
 const eventroute = require('./routes/event');
  const userroute=require('./routes/userOperations');
+ const passport = require('passport')
 // const orderoute=require('./routes/order');
 
 var bodyParser = require('body-parser');
@@ -38,6 +39,7 @@ var options = {
   bufferMaxEntries: 0
 };
 
+// MongoDB Connection
 mongoose.connect(mongoDB, options, (err, res) => {
   if (err) {
       console.log(err);
@@ -46,6 +48,15 @@ mongoose.connect(mongoDB, options, (err, res) => {
       console.log(`MongoDB Connected`);
   }
 });
+
+// Passport Middleware
+app.use(passport.initialize());
+
+//Passport Config
+require('./config/passport')(passport);
+
+
+
 
 //http request logger
 app.use(morgan('tiny'));
