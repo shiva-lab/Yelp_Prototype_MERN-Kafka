@@ -1,14 +1,12 @@
  const express = require("express");
 // const connection = require("../models/yelpschema");
- const userroute = express.Router();
- const User = require('../models/User');
- const Order = require('../models/Order');
- const Restaurant = require("../models/Restaurant");
- var multer = require('multer');
-
+const userroute = express.Router();
+const User = require('../models/User');
+const Order = require('../models/Order');
+const Restaurant = require("../models/Restaurant");
+var multer = require('multer');
 var multerS3 = require('multer-s3');
 aws = require('aws-sdk'),
-
 aws.config.update({
   secretAccessKey: '0am/9n/qQMhH4NnBJBasYvoM8enIMta/FirpNhAf',
   accessKeyId: 'AKIAIX7RODER3FW5UBIA',

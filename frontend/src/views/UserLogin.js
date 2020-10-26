@@ -17,15 +17,26 @@ class UserLogin extends React.Component {
     this.state = {
       Emailid: "",
       userpass: "",
-      message: "",
-      authFlag: false,
     };
-    //Bind the handlers to this class
-    this.emailChangeHandler = this.emailChangeHandler.bind(this);
-    this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
-    //this.submitCustomerLogin = this.submitCustomerLogin.bind(this);
-    this.submituserLogin = this.submituserLogin.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/allRestaurant");
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/allRestaurant");
+    }
+
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   //Call the Will Mount to set the auth Flag to false
   componentWillMount() {
     this.setState({
@@ -33,75 +44,25 @@ class UserLogin extends React.Component {
     });
   }
   //email change handler to update state variable with the text entered by the user
-  emailChangeHandler = (e) => {
-    console.log("Inside email change handler");
-    this.setState({
-      Emailid: e.target.value,
-    });
-  };
   //password change handler to update state variable with the text entered by the user
-  passwordChangeHandler = (e) => {
-    this.setState({
-      userpass: e.target.value,
-    });
-  };
-  handleValidation() {
-    let formIsValid = true;
+  //Email
+  //Password
+  //submit Login handler to send a request to the node backend
+  onSubmit(e) {
+    e.preventDefault();
 
-    //Email
-    if (!this.state.Emailid) {
-      formIsValid = false;
-      alert("Email is a Required field");
-      console.log("Email cannot be empty");
-    }
+    const userData = {
+      Emailid: this.state.Emailid,
+      userpass: this.state.userpass,
+    };
 
-    //Password
-    if (!this.state.userpass) {
-      formIsValid = false;
-      alert("Password is a Required field");
-      console.log("Password cannot be empty");
-    }
-
-    return formIsValid;
+    this.props.userLogin(userData);
   }
 
-  async submituserLogin(event) {
-    console.log("Inside submit login");
-    //prevent page from refresh
-    event.preventDefault();
-    if (this.handleValidation()) {
-      console.log(" user Login Form submitted");
-      const data = {
-        Emailid: this.state.Emailid,
-        userpass: this.state.userpass,
-      };
-
-      // //set the with credentials to true
-      // axios.defaults.withCredentials = true;
-      // //make a post request with the user data
-      // axios
-      //     .post("/userlogin", data)
-      //     .then(response => {
-      //         console.log("Status Code : ", response.status);
-      //         if (response.status === 200) {
-      //             console.log("shiva inside login")
-      //             this.setState({
-      //                 authFlag: true
-      //             });
-      //         }
-      //     })
-      //     .catch(error => {
-      //         this.setState({
-      //             ...this.state,
-      //             message: "!!!!Incorrect username or password!!!!"
-      //         });
-      //         console.log("Error is:", error);
-      //         // alert("Authentication Failed! Please try again");
-      //     });
-      await this.props.userLogin(data);
-      console.log(this.props);
-    }
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
   }
+
   render() {
     let redirectVar = null;
 
@@ -137,14 +98,15 @@ class UserLogin extends React.Component {
                         <h1 class="heading">User Login</h1>
                         <br />
                       </div>
-                      <form>
+                      <form onSubmit={this.onSubmit}>
                         <input
                           type="text"
                           style={{ borderRadius: "3px" }}
                           id="Emailid"
                           name="Emailid"
                           placeholder="Email"
-                          onChange={this.emailChangeHandler}
+                          value={this.state.Emailid}
+                          onChange={this.onChange}
                           required
                         />
                         <br />
@@ -156,14 +118,14 @@ class UserLogin extends React.Component {
                           id="userpass"
                           name="userpass"
                           placeholder="Password"
-                          onChange={this.passwordChangeHandler}
+                          value={this.state.password}
+                          onChange={this.onChange}
                           required
                         />
                         <br />
                         <br></br>
 
                         <button
-                          onClick={this.submituserLogin}
                           class="btn btn-primary"
                         >
                           Login
@@ -195,8 +157,12 @@ UserLogin.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.login.user,
+    auth: state.auth,
+  user: state.login.user,
   };
 };
 
 export default connect(mapStateToProps, { userLogin })(UserLogin);
+
+
+

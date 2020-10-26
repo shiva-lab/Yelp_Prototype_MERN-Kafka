@@ -1,88 +1,78 @@
 const express = require("express");
 const loginroute = express.Router();
 var bcrypt = require("bcrypt-nodejs");
-const keys = require('../config/keys')
-// registering and adding users
-const jwt = require('jsonwebtoken');
-const { check, validationResult } = require('express-validator');
-const { secret } = require('../Utils/config');
-const Restaurant = require('../models/Restaurant');
-const User = require('../models/User');
-const passport = require("passport")
-// const { auth } = require('../../../config/passportjwt');
+const keys = require("../config/keys");
+const jwt = require("jsonwebtoken");
+const { check, validationResult } = require("express-validator");
+const { secret } = require("../Utils/config");
+const Restaurant = require("../models/Restaurant");
+const User = require("../models/User");
+const passport = require("passport");
 
 // @route  POST /api/restusers
 // @Desc   Resgister User
 // @access Public
 // Restaurant Registration
 loginroute.post(
-    '/restaurantregister', [
-        check('restaurantname', 'Name is required').not().isEmpty(),
-        check('Emailid', 'Please enter valid email').isEmail(),
-        check(
-            'restpass',
-            'Please enter password with 4 or more characters',
-        ).isLength({ min: 4 }),
-        check('location', 'location is required').not().isEmpty(),
-    ],
-    
-    async(req, res) => {
-      console.log("Hello")
-        // const errors = validationResult(req);
-        // if (!errors.isEmpty()) {
-        //     return res.status(400).json({ errors: errors.array() });
-        // }
-        
-        const {
-            restaurantname,
-            Emailid,
-            restpass,
-            location
-        } = req.body;
-        console.log("Data in backend",restaurantname,
-          Emailid,
-          restpass,
-          location)
-        try {
-            // see if user exists
-            let restaurant = await Restaurant.findOne({ Emailid });
-            if (restaurant) {
-                return res.status(400).json({ errors: [{ msg: 'Restaurant Already Exists' }] });
-            }
-          
-            restaurant = new Restaurant({
-              restaurantname,
-              Emailid,
-              restpass,
-              location,
-            });
-          
-            restaurant.restpass =  bcrypt.hashSync(restpass);
-            await restaurant.save()
-            .catch(err => console.log(err))
+  "/restaurantregister",
+  [
+    check("restaurantname", "Name is required").not().isEmpty(),
+    check("Emailid", "Please enter valid email").isEmail(),
+    check(
+      "restpass",
+      "Please enter password with 4 or more characters"
+    ).isLength({ min: 4 }),
+    check("location", "location is required").not().isEmpty(),
+  ],
 
-            const payload = {
-              restaurant: { id: restaurant.id },
-            };
-            res.writeHead(200, {
-              'Content-Type': 'text/plain'
-          })
-          res.end();
-            // jwt.sign(payload, secret, {
-            //     expiresIn: 1008000,
-            // }, (err, token) => {
-            //     if (err) throw err;
-            //     res.json({ token });
-            // });
-           
+  async (req, res) => {
+    console.log("Hello");
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty()) {
+    //     return res.status(400).json({ errors: errors.array() });
+    // }
 
-        } catch (err) {
-            console.error(err.message);
-            res.status(500).send('Server Error');
-        }
+    const { restaurantname, Emailid, restpass, location } = req.body;
+    console.log("Data in backend", restaurantname, Emailid, restpass, location);
+    try {
+      // see if user exists
+      let restaurant = await Restaurant.findOne({ Emailid });
+      if (restaurant) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "Restaurant Already Exists" }] });
+      }
 
-        // console.log(req.body);
-    },
+      restaurant = new Restaurant({
+        restaurantname,
+        Emailid,
+        restpass,
+        location,
+      });
+
+      restaurant.restpass = bcrypt.hashSync(restpass);
+      await restaurant.save().catch((err) => console.log(err));
+
+      const payload = {
+        restaurant: { id: restaurant.id },
+      };
+      res.writeHead(200, {
+        "Content-Type": "text/plain",
+      });
+      res.end();
+      // jwt.sign(payload, secret, {
+      //     expiresIn: 1008000,
+      // }, (err, token) => {
+      //     if (err) throw err;
+      //     res.json({ token });
+      // });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+
+    // console.log(req.body);
+  }
 );
 
 // loginroute.post('/restaurantlogin',(req, res) => {
@@ -104,7 +94,7 @@ loginroute.post(
 //       }
 //       if (restuser) {
 //           res.cookie('restaurant_id', restuser.Emailid, { maxAge: 900000, httpOnly: false, path: '/' });
-          
+
 //           res.writeHead(200, {
 //               'Content-Type': 'text/plain'
 //           })
@@ -116,247 +106,207 @@ loginroute.post(
 //           })
 //           res.end("Invalid Credentials");
 //       }
-//   });    
+//   });
 // });
 
-// Adding Login Functionality For the Restaurant using JWT & Passport
+//////////////////////////////////////////////////////////////
+//Restaurant Login Section
+/////////////////////////////////////////////////////////////
+
 loginroute.post(
-  '/restaurantlogin', [
-      check('Emailid', 'Please enter valid email').isEmail(),
-      check(
-          'restpass',
-          'Password is required',
-      ).exists(),
+  "/restaurantlogin",
+  [
+    check("Emailid", "Please enter valid email").isEmail(),
+    check("restpass", "Password is required").exists(),
   ],
-  // eslint-disable-next-line consistent-return
-  async(req, res) => {
-      //const errors = validationResult(req);
-      // if (!errors.isEmpty()) {
-      //     return res.status(400).json({ errors: errors.array() });
-      // }
-
+  async (req, res) => {
     //Getting Restaurant Email and Password from the Body
-      const {
-          Emailid,
-          restpass,
-      } = req.body;
-      console.log(Emailid, restpass)
-
-      //Find the Restaurant in MongoDB
-      try {
-          // see if user exists
-          const restuser = await Restaurant.findOne({  Emailid: req.body.Emailid, });
-          if (!restuser) {
-              return res.status(404).json({ errors: [{ msg: 'Restaurant Not Found' }] });
-          }
-          //Check Password 
-          const isMatch = await bcrypt.compareSync(req.body.restpass, restuser.restpass);
-          if (!isMatch) {
-              return res.status(404).json({ errors: [{ msg: 'Invalid Password' }] });
-          }
-          else {
-            //User Matched 
-            console.log("User Matched - Creating Payload")
-            const payload = {
-              id: restuser._id,
-              restaurantname: restuser.restaurantname,
-              location: restuser.location,
-              Emailid: restuser.Emailid,
-             
-            } // Create JWT Payload
-
-            //Sign Token
-            console.log("Creating Token")
-            jwt.sign(payload, 
-                     keys.secretOrKey,
-                     {expiresIn: 3600 },(err,token) =>{
-                       res.json({
-                         success:true,
-                         token: 'Bearer ' + token
-                                           })
-
-            }
-             );
-             res.cookie('restaurant_id', restuser._id.toString(), { maxAge: 900000, httpOnly: false, path: '/' });
-          //req.session.user = user;
-          // res.writeHead(200, {
-          //     'Content-Type': 'text/plain'
-          // })
-          // res.end();
+    const { Emailid, restpass } = req.body;
+    console.log(Emailid, restpass);
+    try {
+      // see if user exists
+      const restuser = await Restaurant.findOne({ Emailid: req.body.Emailid });
+      if (!restuser) {
+        return res
+          .status(404)
+          .json({ errors: [{ msg: "Restaurant Not Found" }] });
       }
-
-                }
-
-          // const payload = {
-          //     restuser: { id: restuser.id },
-          // };
-
-          // jwt.sign(payload, secret, {
-          //     expiresIn: 1008000,
-          // }, (err, token) => {
-          //     if (err) throw err;
-          //     res.json({ token });
-          // });
-       catch (err) {
-          console.error(err.message);
-          res.status(500).send('Server Error');
+      //Check Password
+      const isMatch = await bcrypt.compareSync(
+        req.body.restpass,
+        restuser.restpass
+      );
+      if (!isMatch) {
+        return res.status(404).json({ errors: [{ msg: "Invalid Password" }] });
+      } else {
+        //User Matched
+        console.log("User Matched - Creating Payload");
+        const payload = {
+          id: restuser._id,
+          restaurantname: restuser.restaurantname,
+          location: restuser.location,
+          Emailid: restuser.Emailid,
+        }; // Create JWT Payload
+        console.log("Creating Token");
+        jwt.sign(
+          payload,
+          keys.secretOrKey,
+          { expiresIn: 3600 },
+          (err, token) => {
+            res.json({
+              success: true,
+              token: "Bearer " + token,
+            });
+          }
+        );
+        res.cookie("restaurant_id", restuser._id.toString(), {
+          maxAge: 900000,
+          httpOnly: false,
+          path: "/",
+        });
       }
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
 
-      // console.log(req.body);
-  },
+//////////////////////////////////////////////////////////////
+//User Login Section
+/////////////////////////////////////////////////////////////
+
+loginroute.post(
+  "/userlogin",
+  [
+    check("Emailid", "Please enter valid email").isEmail(),
+    check("userpass", "Password is required").exists(),
+  ],
+  async (req, res) => {
+    const { Emailid, userpass } = req.body;
+    console.log(Emailid, userpass);
+    try {
+      const user = await User.findOne({ Emailid: req.body.Emailid });
+      if (!user) {
+        return res
+          .status(404)
+          .json({ errors: [{ msg: "User Not Found" }] });
+      }
+      const isMatch = await bcrypt.compareSync(
+        req.body.userpass,
+        user.userpass
+      );
+      if (!isMatch) {
+        return res
+          .status(404)
+          .json({ errors: [{ msg: "Invalid Password" }] });
+      } else {
+        console.log("User Matched - Creating Payload");
+        const payload = {
+          id: user._id,
+          username: user.username,
+          location: user.location,
+          Emailid: user.Emailid,
+        }; // Create JWT Payload
+        console.log("Creating Token");
+        jwt.sign(
+          payload,
+          keys.secretOrKey,
+          { expiresIn: 3600 },
+          (err, token) => {
+            res.json({
+              success: true,
+              token: "Bearer " + token,
+            });
+          }
+        );
+        res.cookie("cookie1", user._id.toString(), {
+          maxAge: 900000,
+          httpOnly: false,
+          path: "/",
+        });
+        res.cookie("userzipcode", user.zipcode, {
+          maxAge: 900000,
+          httpOnly: false,
+          path: "/",
+        });
+      }
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
 );
 
 
-
+//////////////////////////////////////////////////////////////
+//User Signup Section
+/////////////////////////////////////////////////////////////
 
 loginroute.post(
-  '/usersignup', [
-      check('user_name', 'Name is required').not().isEmpty(),
-      check('Emailid', 'Please enter valid email').isEmail(),
-      check(
-          'userpass',
-          'Please enter password with 4 or more characters',
-      ).isLength({ min: 4 }),
-      check('zipcode', 'zipcode is required').not().isEmpty(),
+  "/usersignup",
+  [
+    check("user_name", "Name is required").not().isEmpty(),
+    check("Emailid", "Please enter valid email").isEmail(),
+    check(
+      "userpass",
+      "Please enter password with 4 or more characters"
+    ).isLength({ min: 4 }),
+    check("zipcode", "zipcode is required").not().isEmpty(),
   ],
-  
-  async(req, res) => {
-    console.log("Hello")
-      // const errors = validationResult(req);
-      // if (!errors.isEmpty()) {
-      //     return res.status(400).json({ errors: errors.array() });
-      // }
-      
 
-      const {
+  async (req, res) => {
+    console.log("Hello");
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty()) {
+    //     return res.status(400).json({ errors: errors.array() });
+    // }
+
+    const { user_name, Emailid, userpass, zipcode } = req.body;
+    console.log("Data in backend", user_name, Emailid, userpass, zipcode);
+    try {
+      // see if user exists
+      let user = await User.findOne({ Emailid });
+      if (user) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "User Already Exists" }] });
+      }
+
+      user = new User({
         user_name,
-          Emailid,
-          userpass,
-          zipcode
-      } = req.body;
-      console.log("Data in backend",user_name,
         Emailid,
         userpass,
-        zipcode)
-      try {
-          // see if user exists
-          let user = await User.findOne({ Emailid });
-          if (user) {
-              return res.status(400).json({ errors: [{ msg: 'User Already Exists' }] });
-          }
-         
+        zipcode,
+      });
+      // Encrypt password
+      //  const salt = await bcyrpt.genSaßlt(10);
 
-          user = new User({
-            user_name,
-            Emailid,
-            userpass,
-            zipcode,
-          });
-          // Encrypt password
-        //  const salt = await bcyrpt.genSaßlt(10);
-        
-          user.userpass =  bcrypt.hashSync(userpass);
-          await user.save();
+      user.userpass = bcrypt.hashSync(userpass);
+      await user.save();
 
-          // const payload = {
-          //   restaurant: { id: user.id },
-          // };
-          res.writeHead(200, {
-            'Content-Type': 'text/plain'
-        })
-        res.end();
-          // jwt.sign(payload, secret, {
-          //     expiresIn: 1008000,
-          // }, (err, token) => {
-          //     if (err) throw err;
-          //     res.json({ token });
-          // });
-         
+      // const payload = {
+      //   restaurant: { id: user.id },
+      // };
+      res.writeHead(200, {
+        "Content-Type": "text/plain",
+      });
+      res.end();
+      // jwt.sign(payload, secret, {
+      //     expiresIn: 1008000,
+      // }, (err, token) => {
+      //     if (err) throw err;
+      //     res.json({ token });
+      // });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
 
-      } catch (err) {
-          console.error(err.message);
-          res.status(500).send('Server Error');
-      }
-
-      // console.log(req.body);
-  },
+    // console.log(req.body);
+  }
 );
 
-
-loginroute.post(
-  '/userlogin', [
-      check('Emailid', 'Please enter valid email').isEmail(),
-      check(
-          'userpass',
-          'Password is required',
-      ).exists(),
-  ],
-  // eslint-disable-next-line consistent-return
-  async(req, res) => {
-      //const errors = validationResult(req);
-      // if (!errors.isEmpty()) {
-      //     return res.status(400).json({ errors: errors.array() });
-      // }
-
-      const {
-
-          Emailid,
-          userpass,
-
-      } = req.body;
-      console.log(Emailid, userpass)
-
-      try {
-          // see if user exists
-          const user = await User.findOne({  Emailid: req.body.Emailid, });
-          if (!user) {
-              return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
-          }
-
-          const isMatch = await bcrypt.compareSync(req.body.userpass, user.userpass);
-          if (!isMatch) {
-              return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
-          }
-          else {
-             //res.cookie('restaurant_id', restuser._id.toString(), { maxAge: 900000, httpOnly: false, path: '/' });
-             res.cookie("cookie1", user._id.toString(), {
-                          maxAge: 900000,
-                          httpOnly: false,
-                          path: "/",
-                        });
-                        res.cookie("userzipcode", user.zipcode, {
-                          maxAge: 900000,
-                          httpOnly: false,
-                          path: "/",
-                        });
-             //req.session.user = user;
-    
-          res.writeHead(200, {
-              'Content-Type': 'text/plain'
-          })
-          res.end();
-      }
-
-                }
-
-          // const payload = {
-          //     restuser: { id: restuser.id },
-          // };
-
-          // jwt.sign(payload, secret, {
-          //     expiresIn: 1008000,
-          // }, (err, token) => {
-          //     if (err) throw err;
-          //     res.json({ token });
-          // });
-       catch (err) {
-          console.error(err.message);
-          res.status(500).send('Server Error');
-      }
-
-      // console.log(req.body);
-  },
-);
 
 
 loginroute.get("/logout", function (req, res) {
@@ -370,8 +320,6 @@ loginroute.get("/logout", function (req, res) {
 });
 module.exports = loginroute;
 
-
-
 // loginroute.post("/restaurantregister", (req, res) => {
 //     const rhashedPassword = bcrypt.hashSync(req.body.restpass);
 //     // console.log("hashed pwd",hashedPassword)
@@ -380,7 +328,7 @@ module.exports = loginroute;
 //     var restpass = rhashedPassword;
 //     var location = req.body.location;
 //     console.log(restaurant_name, emailid, restpass, location);
-//     var sql = `INSERT INTO dim_restaurant 
+//     var sql = `INSERT INTO dim_restaurant
 //           (
 //               restaurant_name, emailid, restpass, location
 //           )
@@ -388,7 +336,7 @@ module.exports = loginroute;
 //           (
 //               ?, ?, ?, ?
 //           )`;
-  
+
 //     connection.query(
 //       sql,
 //       [restaurant_name, emailid, restpass, location],
@@ -414,7 +362,7 @@ module.exports = loginroute;
 //       }
 //     );
 //   });
-  
+
 //    // Validate Restaurant login
 //    loginroute.route("/restaurantlogin").post(function (req, res) {
 //     console.log("from rest Login");
@@ -422,7 +370,7 @@ module.exports = loginroute;
 //     var restpass = req.body.restpass;
 //     console.log(emailid, restpass);
 //     var sql = `SELECT * FROM dim_restaurant WHERE emailid = ? `;
-  
+
 //     connection.query(sql, [emailid], function (err, results) {
 //       if (err) {
 //         console.log("error in adding data");
@@ -457,9 +405,7 @@ module.exports = loginroute;
 //       }
 //     });
 //   });
-  
 
-  
 // //Adding API for user registration
 // loginroute.post("/usersignup", (req, res) => {
 //   console.log("Hello from Userzsignup");
@@ -471,7 +417,7 @@ module.exports = loginroute;
 //   var userpass = hashedPassword;
 //   var zipcode = req.body.zipcode;
 //   console.log(user_name, emailid, userpass, zipcode);
-//   var sql = `INSERT INTO dim_user 
+//   var sql = `INSERT INTO dim_user
 //             (
 //                 user_name, emailid, userpass, zipcode
 //             )
@@ -546,7 +492,6 @@ module.exports = loginroute;
 //       }
 //     });
 //   });
-  
 
 //   loginroute.get("/logout", function (req, res) {
 //   console.log("Deleting Cookie");
@@ -558,19 +503,15 @@ module.exports = loginroute;
 //   res.json(true);
 // });
 
-
-
 // @route  POST /api/restusers
 // @Desc   Return Current User
 // @access Private
 loginroute.get(
-  '/current',
-  passport.authenticate('jwt', { session: false }),
+  "/current",
+  passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    res.json(req.restaurantdata)
+    res.json(req.restaurantdata);
   }
-
 );
-
 
 module.exports = loginroute;

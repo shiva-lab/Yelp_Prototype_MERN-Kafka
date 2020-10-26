@@ -21,7 +21,7 @@ class RestaurantLogin extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentDidMount() {
+componentDidMount() {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/rhome");
     }
