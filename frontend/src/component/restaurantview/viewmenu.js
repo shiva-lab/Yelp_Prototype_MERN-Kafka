@@ -1,19 +1,18 @@
-import React, { Component } from "react";
+import React, { Component,useState, useEffect } from "react";
 import { Link, Redirect } from 'react-router-dom';
 
 import cookie from "react-cookies";
 import Navbar from "./rNavbar";
-import ReactPaginate from "react-paginate";
 
-const PER_PAGE = 10;
+
 // import Modal from 'react-modal';
 class viewmenu extends React.Component {
   constructor(props) {
 
-    const [currentPage, setCurrentPage] = useState(0)
+   // const [currentPage, setCurrentPage] = useState(0)
     super();
     this.state = {
-      menu: [],
+      menu: []
       
       
     };
@@ -40,7 +39,7 @@ class viewmenu extends React.Component {
       .then((data) => {
         console.log("data")
        // console.log(data[0].menu)
-       // self.setState({ menu: data[0].menu });
+        //self.setState({ menu: data[0].menu });
         self.setState({ menu: data });
       })
       .catch((err) => {
@@ -48,10 +47,10 @@ class viewmenu extends React.Component {
       });
   }
 
-  handleClick(item_id) {
+  handleClick(_id) {
     return function () {
-      console.log(item_id);
-      localStorage.setItem('item_id_menudetails', item_id);
+      console.log(_id);
+      localStorage.setItem('item_id_menudetails', _id);
       return <Redirect to="/editmenu" />;
     };
   }
@@ -61,7 +60,7 @@ class viewmenu extends React.Component {
     return function () {
       const self = this;
       console.log(_id);
-      const newdata = {_id };
+      const newdata = { _id };
       console.log(newdata);
       fetch("/deletefrommenu", {
         method: "POST",
@@ -69,17 +68,36 @@ class viewmenu extends React.Component {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newdata),
-      }).then(res => res.json());
+      }).then((response) => {
+        if (response.status== 200) {
+          //throw new Error("Bad response from server");
+          alert("Item deleted successfully")
+        }
+       // return response.json();
+      })  
+    //   .then(res => {
+    //     console.log("data")
+    //    // console.log(data[0].menu)
+    //  alert("Item added successfully")
+    //   })
+      .catch((err) => {
+        console.log("caught it!", err);
+      });
     };
   }
 
-  handlePageClick({ selected: selectedPage }) {
-    setCurrentPage(selectedPage);
-  }
 
+  // function handlePageClick({ selected: selectedPage }) {
+  //   setCurrentPage(selectedPage);
+  // }
 
+  // const offset = currentPage * PER_PAGE;
 
+  // const currentPageData = data
+  //   .slice(offset, offset + PER_PAGE)
+  //   .map(({ thumburl }) => <img src={thumburl} />);
 
+  // const pageCount = Math.ceil(data.length / PER_PAGE);
 
   render() {
     let redirectVar = null;
@@ -129,20 +147,15 @@ class viewmenu extends React.Component {
                                 {' '}
                               </td>
                               <td>
-                                {food.ingredients}
+                                {food.Ingredients}
                                 {' '}
                               </td>
                               <td>{food.price}</td>
                               <td>{food.itemcategory}</td>
                               <td>
                                 <Link to="/editmenu">
-                                 
-                                  <button
-                                    className="btn btn-danger"
-                                    onClick={()=>{ localStorage.setItem('item_id_menudetails',food._id);}}
-                                  >Edit</button>
+                                  <button onClick={this.handleClick(food._id)}>Edit</button>
                                 </Link>
-                              
                               </td>
                               <td>
                                 <Link>
@@ -154,17 +167,7 @@ class viewmenu extends React.Component {
                         </tbody>
                       </table>
                     </div>
-                    <ReactPaginate
-        previousLabel={"← Previous"}
-        nextLabel={"Next →"}
-       // pageCount={pageCount}
-        onPageChange={handlePageClick}
-        containerClassName={"pagination"}
-        previousLinkClassName={"pagination__link"}
-        nextLinkClassName={"pagination__link"}
-        disabledClassName={"pagination__link--disabled"}
-        activeClassName={"pagination__link--active"}
-      />
+                    
                   </div>
                 </div>
               </div>

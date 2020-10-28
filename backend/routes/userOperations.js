@@ -1,21 +1,12 @@
  const express = require("express");
 // const connection = require("../models/yelpschema");
-<<<<<<< Updated upstream
 const userroute = express.Router();
 const User = require('../models/User');
 const Order = require('../models/Order');
 const Restaurant = require("../models/Restaurant");
+const Menu = require("../models/Menu");
+const Cart = require("../models/Cart");
 var multer = require('multer');
-=======
- const userroute = express.Router();
- const User = require('../models/User');
- const Order = require('../models/Order');
- const Restaurant = require("../models/Restaurant");
- const Menu = require("../models/Menu");
- const Cart = require("../models/Cart");
- var multer = require('multer');
-
->>>>>>> Stashed changes
 var multerS3 = require('multer-s3');
 aws = require('aws-sdk'),
 aws.config.update({
@@ -397,197 +388,7 @@ userroute.post("/uviewprofile", (req, res) => {
   });
 });
 
-// // Updating user Profile
-userroute.post("/uupdateprofile", upload.single("myfile"), async (req, res, next) => {
-  try {
-    console.log("Uploading user Image...");
-  } catch (err) {
-    res.send(400);
-  }
-  var path = req.file.location;
-  console.log("Add userupdae API Checkpoint");
-  console.log("Image Path on AWS: ", path);
-  const {
-    bio,
-    headline,
-    fname,
-    lname,
-    city,
-    ustate,
-    country,
-    nick_name,
-    mobile,
-    emailid,
-    address,
-    favorites,
-    myblog,
-    things_ilove,
-    find_me_in,
-    user_id,
-    dob
-  } = req.body;
 
-  console.log(
-    "Data in backend",
-    bio,
-    headline,
-    fname,
-    lname,
-    city,
-    ustate,
-    country,
-    nick_name,
-    mobile,
-    emailid,
-    address,
-    favorites,
-    myblog,
-    things_ilove,
-    find_me_in,
-    path,
-    user_id,
-    dob
-  );
-
-  User.findByIdAndUpdate(
-    { _id: req.body.user_id },
-    {
-    bio,
-    headline,
-    fname,
-    lname,
-    city,
-    ustate,
-    country,
-    nick_name,
-    mobile,
-    emailid,
-    address,
-    favorites,
-    myblog,
-    things_ilove,
-    find_me_in,
-    path,
-    dob
-    },
-    (error, results) => {
-      if (error) {
-        console.log("error");
-      } else {
-        console.log("Success");
-        console.log(results);
-        res.send(JSON.stringify(results));
-      }
-    }
-  );
-}
-);
-
-//     try {
-//       res.send(req.file);
-//       console.log("hello")
-//     }catch(err) {
-//       res.send(400);
-//     }  
-//     var user_id = req.body.user_id;
-//   var path = req.file.location;
- 
-//   var bio = req.body.bio;
-//   var headline=req.body.headline;
-//   var fname = req.body.fname;
-//   var lname = req.body.lname;
-//   var dob=req.body.dob;
-//   var city = req.body.city;
-//   var ustate=req.body.ustate;
-//   var country=req.body.country;
-//   var nick_name=req.body.nick_name;
-//   var mobile = req.body.mobile;
-//   var emailid=req.body.emailid;
-//   var address = req.body.address;
-//   var favorites = req.body.favorites;
-//   var myblog=req.body.myblog;
-//   var things_ilove=req.body.things_ilove;
-//   var find_me_in=req.body.find_me_in;
-  
-//   console.log(
-//     bio,
-//     headline,
-//     fname,
-//     lname,
-//     city,
-//     ustate,
-//     country,
-//     nick_name,
-//     mobile,
-//     emailid,
-//     address,
-//     favorites,
-//     myblog,
-//     things_ilove,
-//     find_me_in,
-//     path,
-//     user_id,
-//     dob
-
-  
-//   );
-//   var sql = `UPDATE dim_user  
-//     SET bio= ?, 
-//     headline=?,
-//     fname =?,
-//     lname=?, 
-//     city=?,
-//     ustate=?,
-//     country=?,
-//     nick_name=?,
-//     mobile=?,
-//     emailid=?,
-//     address=?,
-//     favorites=?,
-//     myblog=?,
-//     things_ilove=?,
-//     find_me_in=?,
-//     path=?,
-//     dob = ?
-//     WHERE  
-//     user_id = ?`;
-
-//   connection.query(
-//     sql,
-//     [
-//       bio,
-//       headline,
-//       fname,
-//       lname,
-//       city,
-//       ustate,
-//       country,
-//       nick_name,
-//       mobile,
-//       emailid,
-//       address,
-//       favorites,
-//       myblog,
-//       things_ilove,
-//       find_me_in,
-//       path,
-//       dob,
-//       user_id
-  
-//     ],
-//     function (err, data) {
-//       if (err) {
-
-//         console.log("Error in updating profile data");
-//         return res.status(400).json(err);
-//       } else {
-//        return res.status(200);
-
-//       }}
-      
-    
-//   );
-// });
 
 //   // userroute.post("/userorderstatus", (req, res) => {
 //   //   var order_id = req.body.order_id;
@@ -803,23 +604,6 @@ userroute.post("/deletefromcart", (req, res) => {
         });
   
 
-        userroute.post("/uviewprofile", (req, res) => {
-          console.log(req.body.user_id);
-          User.find({ _id: req.body.user_id }, (error, result) => {
-            if (error) {
-              res.writeHead(500, {
-                "Content-Type": "text/plain",
-              });
-              res.end();
-            } else {
-              res.writeHead(200, {
-                "Content-Type": "application/json",
-              });
-              console.log(result);
-              res.end(JSON.stringify(result));
-            }
-          });
-        });
         
         // // Updating user Profile
         userroute.post("/uupdateprofile", upload.single("myfile"), async (req, res, next) => {

@@ -230,14 +230,22 @@ router.post("/addmenu", upload.single("myfile"), async (req, res, next) => {
     res.send(400);
   }
   var path = req.file.location;
-  var quantity='1';
+  var quantity = "1";
   console.log("Add Menu Item API Checkpoint");
   console.log("Image Path on AWS: ", path);
+  console.log("Quantity",quantity)
   const {  itemname,price,itemdescription,itemcategory,ingredients,restaurant_id,
   } = req.body;
 // var objData={ itemname:req.body.itemname,price:req.body.price,description:req.body.description,path:path,itemcategory:req.body.itemcategory, ingredients:req.body.ingredients};
   console.log(
-    "Data in backend",itemname, price,itemdescription,quantity,itemcategory,ingredients, path,
+    "Data in backend",
+    itemname, 
+    price,
+    itemdescription,
+    quantity,
+    itemcategory,
+    ingredients, 
+    path,
     restaurant_id
   );
     menu = new Menu({
@@ -426,6 +434,22 @@ router.post("/viewmenu", (req, res) => {
     }
   );
   
+  router.post("/deletefrommenu", (req, res) => {
+    console.log(req.body._id);
+    Menu.deleteOne({ _id: req.body._id }, (error, result) => {
+      try{
+        res.writeHead(200, {
+          'Content-Type': 'text/plain'
+      })
+      res.end();
+       
+      
+      } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+      }
+    });
+  });
 // router.post("/viewmenu", (req, res) => {
 //   var restaurant_id = req.body.restaurant_id;
 //   //console.log("view menu", fool);

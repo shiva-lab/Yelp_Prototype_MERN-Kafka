@@ -182,7 +182,6 @@ loginroute.post(
     check("Emailid", "Please enter valid email").isEmail(),
     check("userpass", "Password is required").exists(),
   ],
-<<<<<<< Updated upstream
   async (req, res) => {
     const { Emailid, userpass } = req.body;
     console.log(Emailid, userpass);
@@ -231,60 +230,6 @@ loginroute.post(
           httpOnly: false,
           path: "/",
         });
-=======
-  
-  async(req, res) => {
-      // const errors = validationResult(req);
-      // if (!errors.isEmpty()) {
-      //     return res.status(400).json({ errors: errors.array() });
-      // }
-      const {
-        user_name,
-          Emailid,
-          userpass,
-          zipcode
-      } = req.body;
-      console.log("Data in backend",user_name,
-        Emailid,
-        userpass,
-        zipcode)
-      try {
-          // see if user exists
-          let user = await User.findOne({ Emailid });
-          if (user) {
-              return res.status(400).json({ errors: [{ msg: 'User Already Exists' }] });
-          }
-          user = new User({
-            user_name,
-            Emailid,
-            userpass,
-            zipcode,
-          });
-          // Encrypt password
-        //  const salt = await bcyrpt.genSaßlt(10);
-        
-          user.userpass =  bcrypt.hashSync(userpass);
-          await user.save();
-
-          // const payload = {
-          //   restaurant: { id: user.id },
-          // };
-          res.writeHead(200, {
-            'Content-Type': 'text/plain'
-        })
-        res.end();
-          // jwt.sign(payload, secret, {
-          //     expiresIn: 1008000,
-          // }, (err, token) => {
-          //     if (err) throw err;
-          //     res.json({ token });
-          // });
-         
-
-      } catch (err) {
-          console.error(err.message);
-          res.status(500).send('Server Error');
->>>>>>> Stashed changes
       }
     } catch (err) {
       console.error(err.message);
