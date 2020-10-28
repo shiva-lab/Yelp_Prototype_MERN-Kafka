@@ -3,12 +3,19 @@ import { Link, Redirect } from 'react-router-dom';
 
 import cookie from "react-cookies";
 import Navbar from "./rNavbar";
+import ReactPaginate from "react-paginate";
+
+const PER_PAGE = 10;
 // import Modal from 'react-modal';
 class viewmenu extends React.Component {
   constructor(props) {
+
+    const [currentPage, setCurrentPage] = useState(0)
     super();
     this.state = {
       menu: [],
+      
+      
     };
   }
 
@@ -64,6 +71,13 @@ class viewmenu extends React.Component {
       }).then(res => res.json());
     };
   }
+
+  handlePageClick({ selected: selectedPage }) {
+    setCurrentPage(selectedPage);
+  }
+
+
+
 
 
   render() {
@@ -134,6 +148,17 @@ class viewmenu extends React.Component {
                         </tbody>
                       </table>
                     </div>
+                    <ReactPaginate
+        previousLabel={"← Previous"}
+        nextLabel={"Next →"}
+       // pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}
+        previousLinkClassName={"pagination__link"}
+        nextLinkClassName={"pagination__link"}
+        disabledClassName={"pagination__link--disabled"}
+        activeClassName={"pagination__link--active"}
+      />
                   </div>
                 </div>
               </div>
