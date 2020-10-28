@@ -1,10 +1,21 @@
  const express = require("express");
 // const connection = require("../models/yelpschema");
+<<<<<<< Updated upstream
 const userroute = express.Router();
 const User = require('../models/User');
 const Order = require('../models/Order');
 const Restaurant = require("../models/Restaurant");
 var multer = require('multer');
+=======
+ const userroute = express.Router();
+ const User = require('../models/User');
+ const Order = require('../models/Order');
+ const Restaurant = require("../models/Restaurant");
+ const Menu = require("../models/Menu");
+ const Cart = require("../models/Cart");
+ var multer = require('multer');
+
+>>>>>>> Stashed changes
 var multerS3 = require('multer-s3');
 aws = require('aws-sdk'),
 aws.config.update({
@@ -53,7 +64,88 @@ var app = express(),
   
    userroute.post("/uviewmenu", (req, res) => {
   console.log(req.body.restaurant_id);
-  Restaurant.find({ _id: req.body.restaurant_id },{'menu':[]}, (error, result) => {
+  console.log(req.body.restaurant_id);
+  Menu.find({ restaurant_id: req.body.restaurant_id }, (error, result) => {
+    if (error) {
+      console.log(error)
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end();
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      console.log("result")
+      console.log(result);
+      res.end(JSON.stringify(result));
+    }
+  });
+  // Restaurant.find({ _id: req.body.restaurant_id },{'menu':[]}, (error, result) => {
+  //   if (error) {
+  //     console.log(error)
+  //     res.writeHead(500, {
+  //       "Content-Type": "text/plain",
+  //     });
+  //     res.end();
+  //   } else {
+  //     res.writeHead(200, {
+  //       "Content-Type": "application/json",
+  //     });
+  //     console.log("result")
+  //     console.log(result);
+  //     res.end(JSON.stringify(result));
+  //   }
+  // });
+});
+
+userroute.post("/addtocart", async(req, res) => {
+  const { itemname,price,path,restaurant_id,user_id, 
+  } = req.body;
+//     console.log(item_id, itemname, restaurant_id, price, user_id, path);
+var cartstatus="New Order"
+var itemid=req.body._id
+//  var objData={ itemname:req.body.itemname,itemid:req.body._id,price:req.body.price,path:req.body.path,cartstatus:cartstatus,user_id:req.body.user_id};
+//  console.log(objData)
+try {
+ 
+cart = new Cart({
+  itemname,
+  itemid,
+  price,
+  restaurant_id,
+  cartstatus,
+  user_id,
+  path
+
+});
+
+await cart.save();
+
+// const payload = {
+// event: { id: event.id },
+// };
+
+res.writeHead(200, {
+'Content-Type': 'text/plain'
+})
+res.end();
+
+
+} catch (err) {
+console.error(err.message);
+res.status(500).send('Server Error');
+}
+
+// console.log(req.body);
+},
+);
+
+
+userroute.post("/uviewcart", (req, res) => {
+  console.log(req.body.user_id);
+  
+  Cart.find({ user_id: req.body.user_id }, (error, result) => {
     if (error) {
       console.log(error)
       res.writeHead(500, {
@@ -70,27 +162,37 @@ var app = express(),
     }
   });
 });
-//     var restaurant_id = req.body.restaurant_id;
-//     console.log("view menu", restaurant_id);
+userroute.post("/deletefromcart", (req, res) => {
+  console.log(req.body.itemid);
   
-//     console.log("Restaurant ID ", restaurant_id);
+  Cart.deleteOne({ itemid: req.body.itemid }, (error, result) => {
+    if (error) {
+      res.writeHead(500, {
+          'Content-Type': 'text/plain'
+      })
+      res.end();
+  }
+  // if (result.n == 0) {
+  //     res.writeHead(400, {
+  //         'Content-Type': 'text/plain'
+  //     })
+  //     res.end("item ID does not exists");
+  // }
+  else {
+      res.writeHead(200, {
+          'Content-Type': 'text/plain'
+      })
+      res.end();
+  }
+          })
+
+
+         // Books.deleteOne({ BookID: req.body.BookID }, (error, result) => {
+           
+        });
   
-//     var sql = `SELECT * FROM dim_menu 
-//           WHERE restaurant_id = ?`;
-  
-//     connection.query(sql, [restaurant_id], function (err, results) {
-//       if (err) {
-//         console.log("can not fetch restaurant");
-//         res.status(400).json({ responseMessage: "can not fetch restaurant" });
-        
-//       } else {
-//         console.log("successfully retrived");
-//         console.log(results);
-//         res.send(JSON.stringify(results));
-//       }
-//     });
-//   });
-   //userroute.post("/addtocart", (req, res) => {
+
+
 //     var item_id = req.body.item_id;
 //     var itemname = req.body.itemname;
 //     var restaurant_id = req.body.restaurant_id;

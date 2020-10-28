@@ -44,13 +44,13 @@ class uplaceorder extends React.Component {
       });
   }
 
-  handleClick(item_id, itemname, restaurant_id, price, path, cart_id) {
+  handleClick(itemid, itemname, restaurant_id, price, path, cart_id) {
     return function () {
       const self = this;
       const user_id = cookie.load('cookie1');
-      console.log(item_id, itemname, restaurant_id, price, path, cart_id, user_id);
+      console.log(itemid, itemname, restaurant_id, price, path, cart_id, user_id);
       const newdata = {
-        item_id,
+        itemid,
         itemname,
         restaurant_id,
         price,
@@ -65,7 +65,21 @@ class uplaceorder extends React.Component {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newdata),
-      }).then(res => res.json());
+      }) .then((response) => {
+        if (response.status== 200) {
+          //throw new Error("Bad response from server");
+          alert("Item deleted successfully")
+        }
+       // return response.json();
+      })  
+    //   .then(res => {
+    //     console.log("data")
+    //    // console.log(data[0].menu)
+    //  alert("Item added successfully")
+    //   })
+      .catch((err) => {
+        console.log("caught it!", err);
+      });
     };
   }
 
@@ -133,13 +147,13 @@ class uplaceorder extends React.Component {
                                 {' '}
                               </td>
                               <td>{item.price}</td>
-                              <td>{item.item_id}</td>
+                              <td>{item.itemid}</td>
                               <td>{item.cart_id}</td>
                               <td>
                                 <Link to="/uplaceorder">
                                   <button
                                     onClick={this.handleClick(
-                                      item.item_id,
+                                      item.itemid,
                                       item.itemname,
                                       item.restaurant_id,
                                       item.price,

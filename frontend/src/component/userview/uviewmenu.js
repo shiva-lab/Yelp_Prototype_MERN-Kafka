@@ -32,7 +32,7 @@ class uviewmenu extends React.Component {
       .then((data) => {
         console.log("data")
         console.log(data)
-        self.setState({ items: data[0].menu});
+        self.setState({ items: data});
       })
       .catch((err) => {
         console.log("caught it!", err);
@@ -40,12 +40,12 @@ class uviewmenu extends React.Component {
   }
 
 
-  handleClick(item_id, itemname, restaurant_id, price, path) {
+  handleClick(_id, itemname, restaurant_id, price, path) {
     return function () {
       const user_id = cookie.load('cookie1');
-      console.log(item_id, itemname, restaurant_id, price, path);
+      console.log(_id, itemname, restaurant_id, price, path);
       const newdata = {
-        item_id,
+        _id,
         itemname,
         restaurant_id,
         price,
@@ -59,10 +59,23 @@ class uviewmenu extends React.Component {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newdata),
-      }).then(res => res.json());{
-        alert("Item added to cart")
-      }
-    };
+      })      .then((response) => {
+        if (response.status== 200) {
+          //throw new Error("Bad response from server");
+          alert("Item added successfully")
+        }
+       // return response.json();
+      })  
+    //   .then(res => {
+    //     console.log("data")
+    //    // console.log(data[0].menu)
+    //  alert("Item added successfully")
+    //   })
+      .catch((err) => {
+        console.log("caught it!", err);
+      });
+  }
+
   }
 
 
@@ -120,7 +133,7 @@ class uviewmenu extends React.Component {
                               <td>{item.itemcategory}</td>
                               <td>
                                 <button
-                                  onClick={this.handleClick(item.item_id, item.itemname, item.restaurant_id, item.price, item.path)}
+                                  onClick={this.handleClick(item._id, item.itemname, item.restaurant_id, item.price, item.path)}
                                 >
                                   Add to cart
                                 </button>

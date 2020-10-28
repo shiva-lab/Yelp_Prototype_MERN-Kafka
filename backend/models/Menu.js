@@ -1,57 +1,22 @@
-// const mongoose = require('mongoose');
-// var Schema = mongoose.Schema;
-// const MenuSchema = new Schema({
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-//       item_id: {
-//         type: String,
-//         required: true,
-//     },
-//     restaurant_id: {
-//         type: String,
-//         required: true  
-//     },
-   
-//     itemname: {
-//         type: String,
-//         required: true,
-//     },
-//     price: {
-//         type: String,
-        
-//     },
-//     item_description: {
-//         type: String,
-//     },
-//     path: {
-//         type: String,
-        
-//     }, 
-//     itemcategory: {
-//         type: String,
-//         required: true,
-//     },
-//     quantity: {
-//         type: String,
-//         required: true,
-//     },
-   
+var menuSchema = new Schema({
     
-//     ts: {
-//         type: Date,
-//         default: Date.now,
-//     },
-
-   
-//     Ingredients: {
-//         type: String,
-//         required: true,
-//     }
-    
+    itemname:  {type: String},
+    price:  {type: String},
+    item_description: {type: String},
+    path:  {type: String},
+    itemcategory:  {type: String},
+    quantity:  {type: String},
+    Ingredients: {type: String},  
+    restaurant_id:{type: String},
  
-// },
-// {
-//     versionKey: false
-// }
-// );
-// const Menu = mongoose.model('menu', MenuSchema);
-// module.exports = Menu;
+
+},
+{
+    versionKey: false
+}
+);
+const Menu = mongoose.model('menu', menuSchema);
+module.exports = Menu;

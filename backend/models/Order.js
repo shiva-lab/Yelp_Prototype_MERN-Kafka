@@ -59,19 +59,13 @@ const orderSchema = new Schema({
        
     },
     cart:[{
-    
         itemname:  {type: String},
         itemid:  {type: String},
         price:  {type: String},
         path:  {type: String},
         cartstatus:  {type: String},
-        quantity:  {type: String},
-        
-     
-    }],
-
-    
- 
+        user_id:{type: String},  
+    }],  
 },
 {
     versionKey: false

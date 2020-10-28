@@ -4,14 +4,21 @@ import Navbar from "../restaurantview/rNavbar";
 import cookie from "react-cookies";
 
 class editmenu extends React.Component{
-    state = {
+  constructor(props) {
+    super(props);
+    this.state = {
         itemname: "",
         price: "",
         itemdescription: "",
         foodimage: "",
         itemcategory: "",
-        ingredients: ""
+        ingredients: "",
+        file: null,
       };
+      this.submit = this.submit.bind(this);
+      this.onChange = this.onChange.bind(this);
+   
+    };
       handleChange = ({ target }) => {
         const { name, value } = target;
         this.setState({ [name]: value });
@@ -23,49 +30,53 @@ class editmenu extends React.Component{
         let item_id = localStorage.getItem("item_id_menudetails");
         console.log("RestaurantID - Update", restaurant_id);
     
-        const payload = {
-          itemname: this.state.itemname,
-          itemdescription: this.state.itemdescription,
-          price: this.state.price,
-          foodimage: this.state.foodimage,
-          itemcategory: this.state.itemcategory,
-          ingredients: this.state.ingredients,
-          restaurant_id,
-          item_id
+        const formData = new FormData();
+        formData.append('myfile',this.state.file);
+        formData.append('itemdescription', this.state.itemdescription)
+        formData.append('price', this.state.price)
+        formData.append('itemname', this.state.itemname)
+        formData.append('itemcategory',this.state.itemcategory)
+        formData.append('ingredients',this.state.ingredients)
+        formData.append('restaurant_id',restaurant_id)
+        formData.append('item_id',item_id)
+        const config = {
+          headers: {
+              'content-type': 'multipart/form-data'
+          }
         };
     
-        axios({
-          url: "/editmenu",
-          method: "POST",
-          data: payload,
-        })
-          .then(response => {
+        axios.post("/editmenu",formData,config)
+    
+        .then(response => {
             if (response.status === 200) {
             alert("Item Successfully Updated")
             console.log(response);
             }
           })
-          .then(() => {
-            console.log("Data has been sent to the server");
-            this.resetUserInputs();
-          })
+          // .then(() => {
+          //   console.log("Data has been sent to the server");
+          //   this.resetUserInputs();
+          // })
         
           .catch(() => {
             console.log("Internal server error");
+           
           });
       };
     
-      resetUserInputs = () => {
-        this.setState({
-          itemname: "",
-          itemdescription: "",
-          price: "",
-          foodimage: "",
-          itemcategory: "",
-          ingredients:"",
-        });
-      };
-    
+      // resetUserInputs = () => {
+      //   this.setState({
+      //     itemname: "",
+      //     itemdescription: "",
+      //     price: "",
+      //     foodimage: "",
+      //     itemcategory: "",
+      //     ingredients:"",
+      //   });
+      // };
+      onChange(e) {
+        this.setState({file:e.target.files[0]});
+    }
     render(){
         console.log("State: ", this.state);
         var restaurnt_id = cookie.load("cookie");
@@ -129,18 +140,7 @@ class editmenu extends React.Component{
                         <br />
                         <br />
     
-                        <input
-                          style={{ borderRadius: "3px" }}
-                          type="text"
-                          id="foodimage"
-                          name="foodimage"
-                          placeholder="Food Image URL"
-                          value={this.state.foodimage}
-                          onChange={this.handleChange}
-                        />
-                        <br />
-                        <br />
-    
+                       
                         <select
                           value={this.state.value}
                           onChange={this.handleChange}
@@ -155,6 +155,12 @@ class editmenu extends React.Component{
                           <option value="dessert">Desserts</option>
                           <option value="beverages">Bevereges</option>
                         </select>
+
+                        <br />
+                    <br />
+                    <input type="file" name="myfile" onChange= {this.onChange} required/>
+                    <br />
+                    <br />
     
                         <br />
                         <br />

@@ -144,52 +144,7 @@ class Placeorderform extends React.Component {
         
           <div class="login-form">
             <form onSubmit={this.submit}>
-            <h1>Delivery/Pickup Details</h1>
-              <input
-                style={{ borderRadius: "3px" }}
-                type="text"
-                id="fullname"
-                name="fullname"
-                placeholder="Full Name"
-                value={this.state.fullname}
-                onChange={this.handleChange}
-              />
-              <br />
-              <br />
-              <input
-                style={{ borderRadius: "3px" }}
-                type="text"
-                id="address"
-                name="address"
-                placeholder="Address"
-                value={this.state.address}
-                onChange={this.handleChange}
-              />
-              <br />
-              <br />
-              <input
-                style={{ borderRadius: "3px" }}
-                type="text"
-                id="city"
-                name="city"
-                placeholder="City"
-                value={this.state.city}
-                onChange={this.handleChange}
-              />
-              <br />
-              <br />
-              <input
-                style={{ borderRadius: "3px" }}
-                type="text"
-                id="zipcode"
-                name="zipcode"
-                placeholder="Zipcode"
-                value={this.state.zipcode}
-                onChange={this.handleChange}
-              />
-              <br />
-              <br />
-              <br />
+           
               
               
                 {/* <label>Mode of Delivery</label>
@@ -213,28 +168,7 @@ class Placeorderform extends React.Component {
               
               <br />
 
-              <br />
-              <input
-                style={{ borderRadius: "3px" }}
-                type="text"
-                id="contactnumber"
-                name="contactnumber"
-                placeholder="Contact Number"
-                value={this.state.contactnumber}
-                onChange={this.handleChange}
-              />
-              <br />
-              <br />
-              <br />
-              <input
-                style={{ borderRadius: "3px" }}
-                type="email"
-                id="email"
-                name="email"
-                placeholder="Email Address"
-                value={this.state.email}
-                onChange={this.handleChange}
-              />
+            
               <div>
                 <br />
                 <br />

@@ -39,8 +39,9 @@ class viewmenu extends React.Component {
       })  
       .then((data) => {
         console.log("data")
-        console.log(data[0].menu)
-        self.setState({ menu: data[0].menu });
+       // console.log(data[0].menu)
+       // self.setState({ menu: data[0].menu });
+        self.setState({ menu: data });
       })
       .catch((err) => {
         console.log("caught it!", err);
@@ -56,11 +57,11 @@ class viewmenu extends React.Component {
   }
 
 
-  handleClickdelete(item_id) {
+  handleClickdelete(_id) {
     return function () {
       const self = this;
-      console.log(item_id);
-      const newdata = { item_id };
+      console.log(_id);
+      const newdata = {_id };
       console.log(newdata);
       fetch("/deletefrommenu", {
         method: "POST",
@@ -135,12 +136,17 @@ class viewmenu extends React.Component {
                               <td>{food.itemcategory}</td>
                               <td>
                                 <Link to="/editmenu">
-                                  <button onClick={this.handleClick(food.item_id)}>Edit</button>
+                                 
+                                  <button
+                                    className="btn btn-danger"
+                                    onClick={()=>{ localStorage.setItem('item_id_menudetails',food._id);}}
+                                  >Edit</button>
                                 </Link>
+                              
                               </td>
                               <td>
                                 <Link>
-                                  <button onClick={this.handleClickdelete(food.item_id)}>Delete</button>
+                                  <button onClick={this.handleClickdelete(food._id)}>Delete</button>
                                 </Link>
                               </td>
                             </tr>

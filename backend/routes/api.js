@@ -3,6 +3,7 @@ const router = express.Router();
 //const connection = require("../models/yelpschema");
 var multer = require("multer");
 const Restaurant = require("../models/Restaurant");
+const Menu = require("../models/Menu");
 const jwt = require("jsonwebtoken");
 
 const { check, validationResult } = require("express-validator");
@@ -31,28 +32,7 @@ var upload = multer({
 });
 
 
-// var storage = multer.diskStorage({
-//   destination: function(req, file, cb) {
-//       cb(null, './upload');
-//    },
-//   filename: function (req, file, cb) {
-//       cb(null , file.originalname);
-//   }
-// });
 
-// var upload = multer({ storage: storage })
-
-// router.post("/imageupload",upload.single('myfile'),(req, res, next) => {
-//   try {
-
-//     res.send(req.file);
-//     console.log(req.file)
-//     console.log("hello")
-//   }catch(err) {
-//     res.send(400);
-//   }
-
-// });
 router.post("/viewhome", (req, res) => {
   console.log(req.body.restaurant_id);
   Restaurant.find({ _id: req.body.restaurant_id }, (error, result) => {
@@ -193,6 +173,56 @@ router.post(
 );
 
 // Addmenu
+// router.post("/addmenu", upload.single("myfile"), async (req, res, next) => {
+//   try {
+//     console.log("Uploading Menu Item Image...");
+//   } catch (err) {
+//     res.send(400);
+//   }
+//   var path = req.file.location;
+//   console.log("Add Menu Item API Checkpoint");
+//   console.log("Image Path on AWS: ", path);
+//   const {
+//     itemname,
+//     price,
+//     itemdescription,
+//     itemcategory,
+//     ingredients,
+//     restaurant_id,
+//   } = req.body;
+// var objData={ itemname:req.body.itemname,price:req.body.price,description:req.body.description,path:path,itemcategory:req.body.itemcategory, ingredients:req.body.ingredients};
+//   console.log(
+//     "Data in backend",
+//     itemname,
+//     price,
+//     itemdescription,
+//     itemcategory,
+//     ingredients,
+//     path,
+//     restaurant_id
+//   );
+//   try {
+//     Restaurant.findByIdAndUpdate(
+//       { _id: req.body.restaurant_id },
+//       { $push: { menu: objData  } },
+//       (error, results) => {
+//         if (error) {
+//           console.log("error");
+//         } else {
+//           res.writeHead(200, {
+//             "Content-Type": "text/plain",
+//           });
+//           res.end();
+//         } 
+//         })
+//       }
+//    catch (err) {
+//     console.error(err.message);
+//     res.status(500).send("Server Error");
+//   }
+// });
+
+// Addmenu
 router.post("/addmenu", upload.single("myfile"), async (req, res, next) => {
   try {
     console.log("Uploading Menu Item Image...");
@@ -200,47 +230,44 @@ router.post("/addmenu", upload.single("myfile"), async (req, res, next) => {
     res.send(400);
   }
   var path = req.file.location;
+  var quantity='1';
   console.log("Add Menu Item API Checkpoint");
   console.log("Image Path on AWS: ", path);
-  const {
-    itemname,
-    price,
-    itemdescription,
-    itemcategory,
-    ingredients,
-    restaurant_id,
+  const {  itemname,price,itemdescription,itemcategory,ingredients,restaurant_id,
   } = req.body;
-var objData={ itemname:req.body.itemname,price:req.body.price,description:req.body.description,path:path,itemcategory:req.body.itemcategory, ingredients:req.body.ingredients};
+// var objData={ itemname:req.body.itemname,price:req.body.price,description:req.body.description,path:path,itemcategory:req.body.itemcategory, ingredients:req.body.ingredients};
   console.log(
-    "Data in backend",
-    itemname,
-    price,
-    itemdescription,
-    itemcategory,
-    ingredients,
-    path,
+    "Data in backend",itemname, price,itemdescription,quantity,itemcategory,ingredients, path,
     restaurant_id
   );
-  try {
-    Restaurant.findByIdAndUpdate(
-      { _id: req.body.restaurant_id },
-      { $push: { menu: objData  } },
-      (error, results) => {
-        if (error) {
-          console.log("error");
-        } else {
-          res.writeHead(200, {
-            "Content-Type": "text/plain",
-          });
-          res.end();
-        } 
-        })
-      }
-   catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
-});
+    menu = new Menu({
+      itemname,
+      price,
+      itemdescription,
+      itemcategory,
+      quantity,
+      ingredients,
+      path,
+      restaurant_id
+  });
+  
+  await menu.save()
+  try{
+  res.writeHead(200, {
+    'Content-Type': 'text/plain'
+})
+res.end();
+ 
+
+} catch (err) {
+  console.error(err.message);
+  res.status(500).send('Server Error');
+}
+
+// console.log(req.body);
+},
+);
+
 
 // router.post("/addmenu", upload.single("myfile"), (req, res, next) => {
 //   try {
@@ -304,9 +331,28 @@ var objData={ itemname:req.body.itemname,price:req.body.price,description:req.bo
 //     }
 //   );
 // });
+// router.post("/viewmenu", (req, res) => {
+//   console.log(req.body.restaurant_id);
+//   Restaurant.find({ _id: req.body.restaurant_id },{'menu':[]}, (error, result) => {
+//     if (error) {
+//       console.log(error)
+//       res.writeHead(500, {
+//         "Content-Type": "text/plain",
+//       });
+//       res.end();
+//     } else {
+//       res.writeHead(200, {
+//         "Content-Type": "application/json",
+//       });
+//       console.log("result")
+//       console.log(result);
+//       res.end(JSON.stringify(result));
+//     }
+//   });
+// });
 router.post("/viewmenu", (req, res) => {
   console.log(req.body.restaurant_id);
-  Restaurant.find({ _id: req.body.restaurant_id },{'menu':[]}, (error, result) => {
+  Menu.find({ restaurant_id: req.body.restaurant_id }, (error, result) => {
     if (error) {
       console.log(error)
       res.writeHead(500, {
@@ -323,6 +369,63 @@ router.post("/viewmenu", (req, res) => {
     }
   });
 });
+
+// router.post("/editmenu", (req, res) => {
+  router.post( "/editmenu",upload.single("myfile"), (req, res, next) => {
+    try {
+      console.log("Uploading Menu Item Image...");
+    } catch (err) {
+      res.send(400);
+    }
+    var path = req.file.location;
+    console.log("Add Menu Item API Checkpoint");
+    console.log("Image Path on AWS: ", path);
+    const {
+      itemname,
+      price,
+      itemdescription,
+      itemcategory,
+      ingredients,
+      restaurant_id,
+      item_id
+    } = req.body;
+    console.log(
+      "Data in backend",
+      itemname,
+      price,
+      itemdescription,
+      itemcategory,
+      ingredients,
+      path,
+      restaurant_id,
+      item_id
+      
+    );
+
+      Menu.findByIdAndUpdate(
+        { _id: req.body.item_id, },
+        {
+          itemname,
+          price,
+          itemdescription,
+          itemcategory,
+          ingredients, 
+        path
+         
+        },
+        (error, results) => {
+          if (error) {
+            console.log("error");
+          } else {
+            console.log("Success");
+            console.log(results);
+            res.send(JSON.stringify(results));
+          }
+        }
+      );
+    }
+  );
+  
 // router.post("/viewmenu", (req, res) => {
 //   var restaurant_id = req.body.restaurant_id;
 //   //console.log("view menu", fool);
