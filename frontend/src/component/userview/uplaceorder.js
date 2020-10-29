@@ -169,7 +169,7 @@ class uplaceorder extends React.Component {
                           ))}
                         </tbody>
                       </table>
-                      <div className="cartbtn">
+                      {/* <div className="cartbtn">
                         <button onClick={this.handlePrice()}>
                           Calculate Bill Amount
                         </button>
@@ -183,8 +183,8 @@ class uplaceorder extends React.Component {
                           <br/>
                         </h1>
 
-                      ))}
-                    </div>
+                      ))}*/}
+                    </div> 
                     <Placeorderform />
                   </div>
                 </div>

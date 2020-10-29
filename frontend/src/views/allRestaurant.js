@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-
+import ReactDOM from 'react-dom';
+//import Paginate from '../component/restaurantview/Paginate';
 import cookie from "react-cookies";
 import Navbar from "../component/userview/uNavbar";
 import MapContainer from '../component/userview/mapContainer';
+import {  Col, Row,Pagination } from 'react-bootstrap';
 
 // import Modal from 'react-modal';
 class allRestaurant extends React.Component {
@@ -11,11 +13,12 @@ class allRestaurant extends React.Component {
     super();
     this.state = {
       resturantlist: [],
-      search1: ""
+      search1: "",
+      activePage: 1
 
     };
     this.search1Handler = this.search1Handler.bind(this);
-
+    this.changePage = this.changePage.bind(this);
   }
 
   componentDidMount() {
@@ -69,6 +72,19 @@ class allRestaurant extends React.Component {
     
   };
   
+  changePage = (e) => {
+    let page = this.state.activePage;
+    if (e.target.text === ">" && page !== parseInt(e.target.name)) {
+        page += 1;
+    } else if (e.target.text === "<" && page !== parseInt(e.target.name)) {
+        page -= 1;
+    } else {
+        page = parseInt(e.target.name);
+    }
+    this.setState({
+        activePage: page
+    });
+};
 
   render() {
     
@@ -78,11 +94,42 @@ class allRestaurant extends React.Component {
     // if (!cookie.load("cookie1")) {
     //   redirectVar = <Redirect to="/" />;
     // }
+    let 
+    active = 1,
+    itemsToShow = 1,
+    pagesBar = null;
 
+
+if (this.state && this.state.activePage) {
+    active = this.state.activePage;
+}
+if (this.state && this.state.resturantlist && this.state.resturantlist.length > 0) {
+let pages = [];
+let restaurantlist=this.state.resturantlist;
+let pageCount = Math.ceil(restaurantlist.length / itemsToShow);
+
+for (let i = 1; i <= pageCount; i++) {
+    pages.push(
+        <Pagination.Item active={i === active} name={i} key={i} onClick={this.changePage}>
+            {i}
+        </Pagination.Item>
+    );
+}
+pagesBar = (
+    <div>
+        <Pagination>
+            <Pagination.Prev name="1" onClick={this.changePage} />
+            {pages}
+            <Pagination.Next name={pageCount} onClick={this.changePage} />
+        </Pagination>
+    </div>
+
+);
+}
     return (
-      <div>
-        {/* {redirectVar} */}
-        <div>
+       <div>
+         {/* {redirectVar} */}
+         <div>
           <div>
             <Navbar />
             <br />
@@ -216,7 +263,10 @@ class allRestaurant extends React.Component {
                           ))}
                         </tbody>
                       </table>
-
+                      <Row>
+                    <Col sm={5}></Col>
+                    <Col>{pagesBar}</Col>
+                </Row>
                     </div>
                   </div>
 
@@ -231,8 +281,9 @@ class allRestaurant extends React.Component {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+          
+         </div>
+       </div>
     );
   }
 }

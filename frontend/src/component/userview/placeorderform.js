@@ -95,17 +95,22 @@ class Placeorderform extends React.Component {
     console.log("user_id:", user_id);
     console.log("cartprice:", cartprice);
 
+    // const payload = {
+    //   fullname: this.state.fullname,
+    //   address: this.state.address,
+    //   city: this.state.city,
+    //   zipcode: this.state.zipcode,
+    //   deliverymode: this.state.deliverymode,
+    //   contactnumber: this.state.contactnumber,
+    //   email: this.state.email,
+    //   restaurant_id,
+    //   user_id,
+    //   cartprice
+    // };
     const payload = {
-      fullname: this.state.fullname,
-      address: this.state.address,
-      city: this.state.city,
-      zipcode: this.state.zipcode,
       deliverymode: this.state.deliverymode,
-      contactnumber: this.state.contactnumber,
-      email: this.state.email,
-      restaurant_id,
-      user_id,
-      cartprice
+         restaurant_id,
+         user_id,
     };
 
     axios({

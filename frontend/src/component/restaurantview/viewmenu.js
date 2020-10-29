@@ -1,5 +1,7 @@
 import React, { Component,useState, useEffect } from "react";
 import { Link, Redirect } from 'react-router-dom';
+import ReactDOM from 'react-dom';
+import Paginate from './Paginate';
 
 import cookie from "react-cookies";
 import Navbar from "./rNavbar";
@@ -166,6 +168,7 @@ class viewmenu extends React.Component {
                           ))}
                         </tbody>
                       </table>
+                      <Paginate/>
                     </div>
                     
                   </div>
