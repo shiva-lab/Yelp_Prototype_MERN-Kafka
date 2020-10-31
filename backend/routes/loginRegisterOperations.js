@@ -8,72 +8,110 @@ const { secret } = require("../Utils/config");
 const Restaurant = require("../models/Restaurant");
 const User = require("../models/User");
 const passport = require("passport");
+var kafka = require("../kafka/client");
 
 // @route  POST /api/restusers
 // @Desc   Resgister User
 // @access Public
 // Restaurant Registration
+
+
+//****************** */
+// Kafka Version//
+//***************** */
 loginroute.post(
-  "/restaurantregister",
-  [
-    check("restaurantname", "Name is required").not().isEmpty(),
-    check("Emailid", "Please enter valid email").isEmail(),
-    check(
-      "restpass",
-      "Please enter password with 4 or more characters"
-    ).isLength({ min: 4 }),
-    check("location", "location is required").not().isEmpty(),
-  ],
-
-  async (req, res) => {
-    console.log("Hello");
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //     return res.status(400).json({ errors: errors.array() });
-    // }
-
+  "/restaurantregister", async (req, res) => {
+    console.log("From Node Backend - Sending Request to Kafka");
     const { restaurantname, Emailid, restpass, location } = req.body;
     console.log("Data in backend", restaurantname, Emailid, restpass, location);
     try {
-      // see if user exists
-      let restaurant = await Restaurant.findOne({ Emailid });
-      if (restaurant) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: "Restaurant Already Exists" }] });
+      const body = req.body;
+      const data = {
+        data: body,
+        path: 'create_restaurant'
       }
-
-      restaurant = new Restaurant({
-        restaurantname,
-        Emailid,
-        restpass,
-        location,
+      kafka.make_request('restaurant', data, (err, results) => {
+        if (err) {
+          return res.status(400).json({
+            success: 0,
+            message: err
+          });
+        }
+        return res.status(200).json({
+          success: 1,
+          data: results,
+          message: "Registration Successful"
+        });
       });
+      
+    }catch (err) {
+            console.error(err.message);
+            res.status(500).send("Server Error");
+          }
+  });
 
-      restaurant.restpass = bcrypt.hashSync(restpass);
-      await restaurant.save().catch((err) => console.log(err));
 
-      const payload = {
-        restaurant: { id: restaurant.id },
-      };
-      res.writeHead(200, {
-        "Content-Type": "text/plain",
-      });
-      res.end();
-      // jwt.sign(payload, secret, {
-      //     expiresIn: 1008000,
-      // }, (err, token) => {
-      //     if (err) throw err;
-      //     res.json({ token });
-      // });
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server Error");
-    }
 
-    // console.log(req.body);
-  }
-);
+
+
+
+
+//************ */
+//Without Kafka
+//*********** */
+// loginroute.post(
+//   "/restaurantregister",
+//   [
+//     check("restaurantname", "Name is required").not().isEmpty(),
+//     check("Emailid", "Please enter valid email").isEmail(),
+//     check(
+//       "restpass",
+//       "Please enter password with 4 or more characters"
+//     ).isLength({ min: 4 }),
+//     check("location", "location is required").not().isEmpty(),
+//   ],
+
+//   async (req, res) => {
+//     console.log("Hello");
+//     // const errors = validationResult(req);
+//     // if (!errors.isEmpty()) {
+//     //     return res.status(400).json({ errors: errors.array() });
+//     // }
+
+//     const { restaurantname, Emailid, restpass, location } = req.body;
+//     console.log("Data in backend", restaurantname, Emailid, restpass, location);
+//     try {
+//       // see if user exists
+//       let restaurant = await Restaurant.findOne({ Emailid });
+//       if (restaurant) {
+//         return res
+//           .status(400)
+//           .json({ errors: [{ msg: "Restaurant Already Exists" }] });
+//       }
+
+//       restaurant = new Restaurant({
+//         restaurantname,
+//         Emailid,
+//         restpass,
+//         location,
+//       });
+
+//       restaurant.restpass = bcrypt.hashSync(restpass);
+//       await restaurant.save().catch((err) => console.log(err));
+
+//       const payload = {
+//         restaurant: { id: restaurant.id },
+//       };
+//       res.writeHead(200, {
+//         "Content-Type": "text/plain",
+//       });
+//       res.end();
+//     } catch (err) {
+//       console.error(err.message);
+//       res.status(500).send("Server Error");
+//     }
+//   }
+// );
 
 // loginroute.post('/restaurantlogin',(req, res) => {
 //   Restaurant.findOne({ Emailid: req.body.Emailid, restpass: req.body.restpass }, (error, restuser) => {
@@ -243,69 +281,99 @@ loginroute.post(
 //User Signup Section
 /////////////////////////////////////////////////////////////
 
-loginroute.post(
-  "/usersignup",
-  [
-    check("user_name", "Name is required").not().isEmpty(),
-    check("Emailid", "Please enter valid email").isEmail(),
-    check(
-      "userpass",
-      "Please enter password with 4 or more characters"
-    ).isLength({ min: 4 }),
-    check("zipcode", "zipcode is required").not().isEmpty(),
-  ],
+loginroute.post("/usersignup", async (req, res) => {
+      console.log("From Node Backend - Sending Request to Kafka");
+    //   const { restaurantname, Emailid, restpass, location } = req.body;
+      console.log("Data in backend", req.body);
+      try {
+        const body = req.body;
+        const data = {
+          data: body,
+          path: 'create_user'
+        }
+        kafka.make_request('user', data, (err, results) => {
+          if (err) {
+            return res.status(400).json({
+              success: 0,
+              message: err
+            });
+          }
+          return res.status(200).json({
+            success: 1,
+            data: results,
+            message: "Registration Successful"
+          });
+        });
+        
+      }catch (err) {
+              console.error(err.message);
+              res.status(500).send("Server Error");
+            }
+    });
+  
+//////////////////////////////////////////////////////
+// without Kafka
+///////////////////////////////////////////////////
+// loginroute.post(
+//   "/usersignup",
+//   [
+//     check("user_name", "Name is required").not().isEmpty(),
+//     check("Emailid", "Please enter valid email").isEmail(),
+//     check(
+//       "userpass",
+//       "Please enter password with 4 or more characters"
+//     ).isLength({ min: 4 }),
+//     check("zipcode", "zipcode is required").not().isEmpty(),
+//   ],
 
-  async (req, res) => {
-    console.log("Hello");
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //     return res.status(400).json({ errors: errors.array() });
-    // }
+//   async (req, res) => {
+//     console.log("Hello");
+  
 
-    const { user_name, Emailid, userpass, zipcode } = req.body;
-    console.log("Data in backend", user_name, Emailid, userpass, zipcode);
-    try {
-      // see if user exists
-      let user = await User.findOne({ Emailid });
-      if (user) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: "User Already Exists" }] });
-      }
+//     const { user_name, Emailid, userpass, zipcode } = req.body;
+//     console.log("Data in backend", user_name, Emailid, userpass, zipcode);
+//     try {
+//       // see if user exists
+//       let user = await User.findOne({ Emailid });
+//       if (user) {
+//         return res
+//           .status(400)
+//           .json({ errors: [{ msg: "User Already Exists" }] });
+//       }
 
-      user = new User({
-        user_name,
-        Emailid,
-        userpass,
-        zipcode,
-      });
-      // Encrypt password
-      //  const salt = await bcyrpt.genSaßlt(10);
+//       user = new User({
+//         user_name,
+//         Emailid,
+//         userpass,
+//         zipcode,
+//       });
+//       // Encrypt password
+//       //  const salt = await bcyrpt.genSaßlt(10);
 
-      user.userpass = bcrypt.hashSync(userpass);
-      await user.save();
+//       user.userpass = bcrypt.hashSync(userpass);
+//       await user.save();
 
-      // const payload = {
-      //   restaurant: { id: user.id },
-      // };
-      res.writeHead(200, {
-        "Content-Type": "text/plain",
-      });
-      res.end();
-      // jwt.sign(payload, secret, {
-      //     expiresIn: 1008000,
-      // }, (err, token) => {
-      //     if (err) throw err;
-      //     res.json({ token });
-      // });
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server Error");
-    }
+//       // const payload = {
+//       //   restaurant: { id: user.id },
+//       // };
+//       res.writeHead(200, {
+//         "Content-Type": "text/plain",
+//       });
+//       res.end();
+//       // jwt.sign(payload, secret, {
+//       //     expiresIn: 1008000,
+//       // }, (err, token) => {
+//       //     if (err) throw err;
+//       //     res.json({ token });
+//       // });
+//     } catch (err) {
+//       console.error(err.message);
+//       res.status(500).send("Server Error");
+//     }
 
-    // console.log(req.body);
-  }
-);
+//     // console.log(req.body);
+//   }
+// );
 
 
 
@@ -320,178 +388,7 @@ loginroute.get("/logout", function (req, res) {
 });
 module.exports = loginroute;
 
-// loginroute.post("/restaurantregister", (req, res) => {
-//     const rhashedPassword = bcrypt.hashSync(req.body.restpass);
-//     // console.log("hashed pwd",hashedPassword)
-//     var restaurant_name = req.body.restaurant_name;
-//     var emailid = req.body.emailid;
-//     var restpass = rhashedPassword;
-//     var location = req.body.location;
-//     console.log(restaurant_name, emailid, restpass, location);
-//     var sql = `INSERT INTO dim_restaurant
-//           (
-//               restaurant_name, emailid, restpass, location
-//           )
-//           VALUES
-//           (
-//               ?, ?, ?, ?
-//           )`;
 
-//     connection.query(
-//       sql,
-//       [restaurant_name, emailid, restpass, location],
-//       function (err, results) {
-//         if (err) {
-//           console.log("error in adding data");
-//         } else {
-//           console.log("successfully added");
-//           //res.send(data)
-//           var restaurant_id = results.insertId;
-//           console.log("Restaurant ID: ", restaurant_id);
-//           var sql = `SELECT restaurant_name, emailid, restpass, location FROM dim_restaurant WHERE restaurant_id = ?`;
-//           connection.query(sql, [restaurant_id], function (err, results) {
-//             if (err) {
-//               console.log("error");
-//             } else {
-//               console.log("Success");
-//               console.log(results);
-//               res.send(JSON.stringify(results));
-//             }
-//           });
-//         }
-//       }
-//     );
-//   });
-
-//    // Validate Restaurant login
-//    loginroute.route("/restaurantlogin").post(function (req, res) {
-//     console.log("from rest Login");
-//     var emailid = req.body.emailid;
-//     var restpass = req.body.restpass;
-//     console.log(emailid, restpass);
-//     var sql = `SELECT * FROM dim_restaurant WHERE emailid = ? `;
-
-//     connection.query(sql, [emailid], function (err, results) {
-//       if (err) {
-//         console.log("error in adding data");
-//         console.log(err)
-//         res
-//           .status(400)
-//           .json({ responseMessage: "User doesn't exist, Please sign up!" });
-//       } else {
-//         if (
-//           results.length == 0 ||
-//           !bcrypt.compareSync(req.body.restpass, results[0].restpass)
-//         ) {
-//           res.writeHead(402, {
-//             "Content-type": "text/plain",
-//           });
-//           console.log("Invalid Credentails");
-//           res.end("Invalid credentials");
-//         } else {
-//           var grestaurant_id = JSON.stringify(results[0].restaurant_id);
-//           console.log("Success", results);
-//           res.cookie("restaurant_id", grestaurant_id, {
-//             maxAge: 900000,
-//             httpOnly: false,
-//             path: "/",
-//           });
-//           // res.json(results[0]);
-//           // req.session.grestaurant_id=results[0].restaurant_id;
-//           res.status(200).json({
-//             responseMessage: "Login Successful",
-//           });
-//         }
-//       }
-//     });
-//   });
-
-// //Adding API for user registration
-// loginroute.post("/usersignup", (req, res) => {
-//   console.log("Hello from Userzsignup");
-//   //hashing user pass
-//   const hashedPassword = bcrypt.hashSync(req.body.userpass);
-//   console.log("hashed pwd", hashedPassword);
-//   var user_name = req.body.user_name;
-//   var emailid = req.body.emailid;
-//   var userpass = hashedPassword;
-//   var zipcode = req.body.zipcode;
-//   console.log(user_name, emailid, userpass, zipcode);
-//   var sql = `INSERT INTO dim_user
-//             (
-//                 user_name, emailid, userpass, zipcode
-//             )
-//             VALUES
-//             (
-//                 ?, ?, ? , ?
-//             )`;
-
-//   connection.query(sql, [user_name, emailid, userpass, zipcode], function (
-//     err,
-//     results,
-//     fields
-//   ) {
-//     if (err) {
-//       console.log("error in adding data");
-//       console.log(err)
-//     } else {
-//       console.log("successfully added");
-//       res.send(" signed up");
-//       // console.log(results.insertId)
-//       // var guserid = results.insertId
-//       // connection.query(`select * from dim_user where user_id = ?`,[guserid], function (error, results, fields) {
-//       //    if (error) throw error;
-//       //     console.log(results);
-//       //})
-//     }
-//   });
-// });
-// loginroute.route("/userlogin").post(function (req, res) {
-//     console.log("Inside user Login Post");
-//     var emailid = req.body.emailid;
-//     var userpass = req.body.userpass;
-//     console.log("User Data: ", emailid, userpass);
-//     var sql = `SELECT * FROM dim_user WHERE emailid = ?`;
-//     connection.query(sql, [emailid], function (err, results) {
-//       console.log("Results", results);
-//       if (err) {
-//         console.log("ivalid credentials");
-//         res.status(400).json({ responseMessage: "user doesn't exist" });
-//       } else {
-//         if (
-//           results.length == 0 ||
-//           !bcrypt.compareSync(req.body.userpass, results[0].userpass)
-//         ) {
-//           res.writeHead(402, {
-//             "Content-type": "text/plain",
-//           });
-//           console.log("Invalid credentials db");
-//           res.end("Invalid credentials");
-//         } else {
-//           var user_id = JSON.stringify(results[0].user_id);
-//           var zipcode = JSON.stringify(results[0].zipcode);
-//           console.log("UserID:", user_id);
-//           console.log("Zipcode:", zipcode);
-//           console.log("Success", results);
-//           res.cookie("cookie1", user_id, {
-//             maxAge: 900000,
-//             httpOnly: false,
-//             path: "/",
-//           });
-//           res.cookie("userzipcode", zipcode, {
-//             maxAge: 900000,
-//             httpOnly: false,
-//             path: "/",
-//           });
-//           // res.json(results[0]);
-//           // req.session.grestaurant_id=results[0].restaurant_id;
-//           res.status(200).json({
-//             responseMessage: "Login Successful",
-//           });
-//         }
-//       }
-//     });
-//   });
 
 //   loginroute.get("/logout", function (req, res) {
 //   console.log("Deleting Cookie");

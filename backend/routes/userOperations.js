@@ -94,7 +94,7 @@ userroute.post("/addtocart", async(req, res) => {
   const { itemname,price,path,restaurant_id,user_id, 
   } = req.body;
 //     console.log(item_id, itemname, restaurant_id, price, user_id, path);
-var cartstatus="New Order"
+var cartstatus="New"
 var itemid=req.body._id
 //  var objData={ itemname:req.body.itemname,itemid:req.body._id,price:req.body.price,path:req.body.path,cartstatus:cartstatus,user_id:req.body.user_id};
 //  console.log(objData)
@@ -298,7 +298,48 @@ userroute.post("/deletefromcart", (req, res) => {
 //       }
 //     });
 //   });
-  
+   userroute.post("/createorder", (req, res) => {
+    const { deliverymode,user_id, 
+    } = req.body;//removed rest id
+    console.log(deliverymode,user_id)
+   let orderDate= new Date().toISOString();
+     var order = new Order({
+        user_id:req.body.user_id,
+        deliverymode:req.body.deliverymode,
+        
+        
+      });//removed rest id
+      order.save((err, data) =>{
+              if (err) {
+               
+
+                console.log("error in adding data");
+                console.log(err)
+              } 
+              else {
+                res.cookie("order_id", data._id, {
+                  maxAge: 900000,
+                  httpOnly: false,
+                  path: "/",
+                });
+                res.status(200).json({
+                  responseMessage: "order placed",
+                });
+                console.log(JSON.stringify(data._id))
+                var order_id = JSON.stringify(data._id)
+      //Cart.update
+              }
+            })
+          
+
+//      res.cookie('order_id', Order._id, { maxAge: 900000, httpOnly: false, path: '/' });
+//      console.log(order_id);
+// res.writeHead(200, {
+// 'Content-Type': 'text/plain'
+// })
+// res.end();
+
+  })
 //   // userroute.post("/createorder", (req, res) => {
 //   //   var fullname = req.body.fullname;
 //   //   var address = req.body.address;

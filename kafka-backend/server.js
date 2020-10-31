@@ -3,7 +3,7 @@ var connection =  new require('./kafka/Connection');
 var Restaurant = require('./services/Restaurant.js');
 const {mongoDB} = require('./config/configValues');
 const mongoose = require('mongoose');
-
+var User = require('./services/User');
 var options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -53,3 +53,4 @@ function handleTopicRequest(topic_name,fname){
 //first argument is topic name
 //second argument is a function that will handle this topic request
 handleTopicRequest("restaurant",Restaurant)
+handleTopicRequest("user",User)

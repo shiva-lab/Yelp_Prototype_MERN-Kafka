@@ -9,11 +9,13 @@ var menuSchema = new Schema({
     path:  {type: String},
     itemcategory:  {type: String},
     quantity:  {type: String},
-    Ingredients: {type: String},  
+    ingredients: {type: String},  
     restaurant_id:{type: String},
  
 
 },
+
+
 {
     versionKey: false
 }

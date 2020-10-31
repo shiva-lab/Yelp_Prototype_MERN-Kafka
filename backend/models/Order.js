@@ -11,6 +11,7 @@ const orderSchema = new Schema({
         
     },
    
+   
     user_id: {
         type: String,
     },
@@ -20,7 +21,9 @@ const orderSchema = new Schema({
         
     },
     
-   
+   orderDate:{
+    type: String,
+   },
     
     ts: {
         type: Date,
@@ -28,9 +31,9 @@ const orderSchema = new Schema({
     },
 
    
-    _menu: [{ type: Schema.ObjectId, ref: "Menu" }],
-    _user: { type: Schema.ObjectId, ref: "User" },
-    _restaurant: { type: Schema.ObjectId, ref: "Restaurant" },
+    // _cart: [{ type: Schema.ObjectId, ref: "Cart" }],
+    // _user: { type: Schema.ObjectId, ref: "User" },
+    // _restaurant: { type: Schema.ObjectId, ref: "Restaurant" },
     // cart:[{
     //     itemname:  {type: String},
     //     itemid:  {type: String},

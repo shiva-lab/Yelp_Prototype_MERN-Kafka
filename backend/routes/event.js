@@ -3,7 +3,7 @@ const express = require("express");
 // //const connection = require("../models/yelpschema");
 const User = require('../models/User');
 
-const Event = require('../models/Event');
+const restEvent = require('../models/restEvent');
 const eventroute = express.Router();
 var multer = require('multer');
 var multerS3 = require('multer-s3');
@@ -67,18 +67,19 @@ var app = express(),
   );
   try {
     // see if user exists
-    let event = await Event.findOne({ eventname });
+    let event = await restEvent.findOne({ eventname });
     if (event) {
         return res.status(400).json({ errors: [{ msg: 'Event Already Exists' }] });
     }
    
 
-    event = new Event({
+     event = new restEvent({
         restaurant_id,
         eventname,
         eventdescription,
-        date,
+        
         time,
+        date,
         address,
          city,
          eventtype,
@@ -92,20 +93,14 @@ var app = express(),
     
     await event.save();
 
-    const payload = {
-      event: { id: event.id },
-    };
+    // const payload = {
+    //   event: { id: event.id },
+    // };
     res.writeHead(200, {
       'Content-Type': 'text/plain'
   })
   res.end();
-    // jwt.sign(payload, secret, {
-    //     expiresIn: 1008000,
-    // }, (err, token) => {
-    //     if (err) throw err;
-    //     res.json({ token });
-    // });
-   
+
 
 } catch (err) {
     console.error(err.message);
@@ -118,7 +113,7 @@ var app = express(),
 
 eventroute.post("/vieweventlisting", (req, res) => {
     console.log(req.body.restaurant_id);
-    Event.find({ restaurant_id: req.body.restaurant_id } , (error, result) => {
+    restEvent.find({ restaurant_id: req.body.restaurant_id } , (error, result) => {
       if (error) {
         res.writeHead(500, {
           "Content-Type": "text/plain",
@@ -154,7 +149,7 @@ eventroute.post("/vieweventlisting", (req, res) => {
 
   eventroute.post("/vieweventdetails", async(req, res, next) => {
     console.log(req.body.event_id)
-    await Event.find({_id:req.body.event_id}, (error, result) => {
+    await restEvent.find({_id:req.body.event_id}, (error, result) => {
       if (error) {
         res.writeHead(500, {
           "Content-Type": "text/plain",
@@ -179,7 +174,7 @@ eventroute.post("/vieweventlisting", (req, res) => {
     console.log(
       "Data in backend",user_id,restaurant_id,_id
     );
-    Event.updateOne(
+    restEvent.updateOne(
       { _id: req.body._id },
       { $push: { registrations: user_id } },
       { upsert: true }
@@ -207,7 +202,7 @@ eventroute.post("/vieweventlisting", (req, res) => {
 
     console.log("Inside viewusersignedupevent",req.body.user_id);
    // Event.find({ user_id: req.body.user_id },{'signedup':[]}, (error, result) => {
-    Event.find({ user_id: req.body.user_id },{'signedup':[]}, (error, result) => {
+    restEvent.find({ user_id: req.body.user_id },{'signedup':[]}, (error, result) => {
       if (error) {
         res.writeHead(500, {
           "Content-Type": "text/plain",
@@ -245,7 +240,7 @@ eventroute.post("/vieweventlisting", (req, res) => {
   // });
   var eventId = req.body.eventId;
   console.log("Event id", eventId);
-  await Event.findById(eventId, function(err, events) {
+  await restEvent.findById(eventId, function(err, events) {
     console.log("registeredEvents Array", events.registrations);
     if (err) return res.status(500).json({ error: err });
     User.find({ _id: { $in: events.registrations } })

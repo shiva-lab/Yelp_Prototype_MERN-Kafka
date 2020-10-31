@@ -18,12 +18,13 @@ function handle_request(msg, callBack) {
       else if (msg.path === "create_restaurant") {
           console.log("Inside create_restaurant path")
         let data = msg.data;
+        let hashp=bcrypt.hashSync(data.restpass)
         var newRestaurant = new Restaurant({
             restaurantname:data.restaurantname ,
     Emailid:data.Emailid,
-    restpass: data.restpass,
+    restpass: hashp,
     location:data.location ,
-    ts: data.ts
+   
 });
         
     }
