@@ -63,33 +63,32 @@ handleChange = ({ target }) => {
   const { name, value } = target;
   this.setState({ [name]: value });
 };
+
+
 submit = (event) => {
   event.preventDefault();
-  const data = { filter: this.state.filter };
-  console.log("Testing");
+  var user_id = localStorage.getItem('user_id')
+  const data = {user_id};
   console.log(data);
-  const temp = this;
-  fetch("/filterordersearch", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then(function (response) {
-      if (response.status >= 400) {
-        throw new Error("Bad response from server");
-      }
+  const self = this;
+  axios.defaults.withCredentials = true;
+    axios.post('/usersifollow',data)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Printing response",response)
+          console.log("Printing User Data",response.data)
+            this.setState({
+              userdata: response.data,
+              filteredUserdata : paginate(response.data,1,10),
+              pages: pages(response.data, 10)
 
-      return response.json();
-    })
-    .then(function (data) {
-      console.log(data);
-      temp.setState({ order: data });
-    })
-    .catch((err) => {
-      console.log("caught it!", err);
+            })
+            console.log(pages);
+        } else {
+            console.log("error");
+        }
     });
+  
 };
 
            
@@ -102,7 +101,7 @@ submit = (event) => {
 
     let links = [];
     if (this.state.pages > 0) {
-        console.log(this.state.pages);
+        //console.log(this.state.pages);
         for (let i = 1; i <= this.state.pages; i++) {
             links.push(<li className="page-item" key={i}><a className="page-link" onClick={() => { this.paginatinon(i) }}>
                 {i}

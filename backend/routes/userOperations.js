@@ -135,7 +135,32 @@ userroute.post("/followuserprofile",checkAuth, async (req, res, next) => {
         });
     //})
   });
-    
+
+  //********************* */
+//  Users I follow
+//********************* */
+
+userroute.post("/usersifollow", async (req, res, next) => {
+   
+  const {user_id } = req.body;
+  console.log("Data in backend",user_id);
+  User.find({ _id: req.body.user_id },{},(error, result) => {
+    if (error) {
+      console.log(error)
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end();
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      console.log("result")
+      console.log(result);
+      res.end(JSON.stringify(result));
+    }
+  });
+});
   
 
 
