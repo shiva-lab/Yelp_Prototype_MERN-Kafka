@@ -71,8 +71,6 @@ var app = express(),
     if (event) {
         return res.status(400).json({ errors: [{ msg: 'Event Already Exists' }] });
     }
-   
-
      event = new restEvent({
         restaurant_id,
         eventname,
@@ -87,10 +85,6 @@ var app = express(),
         path
 
     });
-   
-    
-  
-    
     await event.save();
 
     // const payload = {
@@ -130,8 +124,8 @@ eventroute.post("/vieweventlisting", (req, res) => {
   });
   
 
-  eventroute.post("/viewevent", async(req, res, next) => {
-    await Event.find({}, (error, result) => {
+  eventroute.get("/viewevent", async(req, res, next) => {
+    await restEvent.find({}, (error, result) => {
       if (error) {
         res.writeHead(500, {
           "Content-Type": "text/plain",
@@ -174,17 +168,18 @@ eventroute.post("/vieweventlisting", (req, res) => {
     console.log(
       "Data in backend",user_id,restaurant_id,_id
     );
-    restEvent.updateOne(
-      { _id: req.body._id },
-      { $push: { registrations: user_id } },
-      { upsert: true }
-    )
-      .then(response => {
-        User.updateOne(
-          { _id: user_id },
-          { $push: { registeredEvents: req.body._id } },
-          { upsert: true }
-        )
+    restEvent.update({ _id: req.body._id },  { $push: { RegistredUser: {user_id:req.body.user_id } }}, {  safe: true, upsert: true },(err, data) => console.log(data))
+    // restEvent.update(
+    //   { _id: req.body._id },
+    //   { $push: { RegistredUser: user_id } },
+    //   { upsert: false }
+    // )
+      // .then(response => {
+      //   User.updateOne(
+      //     { _id: user_id },
+      //     { $push: { registeredEvents: req.body._id } },
+      //     { upsert: true }
+      //   )
           .then(response => {
             return res.status(200).json("Successfully Updated");
           })
@@ -192,7 +187,7 @@ eventroute.post("/vieweventlisting", (req, res) => {
             console.log(err);
             return res.status(500).json({ error: err });
           });
-      })
+      //})
     });
       
     
@@ -274,104 +269,7 @@ eventroute.post("/vieweventlisting", (req, res) => {
   // });
 
   
-  
-// eventroute.post("/addevent", upload.single('myfile'),(req, res, next) => {
-//   try {
-  
-//          console.log("hello")
-//        }catch(err) {
-//         res.send(400);
-//      }
-
-//     var eventname  = req.body.eventname;
-//     var eventdescription = req.body.eventdescription;
-//     var date = req.body.date;
-//     var time = req.body.time;
-//     var address = req.body.address;
-//     var city = req.body.city;
-//     var eventtype = req.body.eventtype
-//     var hashtag = req.body.hashtag
-//     var restaurant_id = req.body.restaurant_id;
-//     console.log("Restaurant ID ", restaurant_id);
-//     var path = req.file.location;
-  
-//     console.log(
-//       eventname,
-//   eventdescription,
-//   date,
-//   time,
-//   address,
-//   city,
-//   eventtype,
-//   hashtag,
-//   restaurant_id,
-//   path
-//     );
-  
-//     var sql = `INSERT INTO dim_event 
-//           (
-//             eventname,
-//             eventdescription,
-//             date,
-//             time,
-//             address,
-//             city,
-//             eventtype,
-//             hashtag,
-//             restaurant_id,
-//             path
-//           )
-//           VALUES
-//           (
-//               ?, ?, ?, ?, ?, ?, ?,?,?,?
-//           )`;
-  
-//     connection.query(
-//       sql,
-//       [
-//         eventname,
-//             eventdescription,
-//             date,
-//             time,
-//             address,
-//             city,
-//             eventtype,
-//             hashtag,
-//             restaurant_id,
-//             path
-//       ],
-//       function (err, data) {
-//         if (err) {
-//           console.log("error in adding data");
-//           console.log(err)
-//         } else {
-//           res.status(200).json({
-//             responseMessage: "Event Successfully created",
-//           });
-//           console.log("Successfully Added");
-//         }
-//       }
-//     );
-//   });
-  
-//   eventroute.post("/viewevent", (req, res, next) => {
-//     console.log("Hello from viewevent");
-  
-//     var restaurant_id = req.body.restaurant_id
-//     var sql = `select *, DATE_FORMAT(date, '%D %M %Y') as date from dim_event
-//     `;
-  
-//     connection.query(sql, function (err, results) {
-//       if (err) {
-//         console.log("error in adding data");
-//       } else {
-//         console.log("successfully retrived");
-//         console.log(results);
-//         res.send(JSON.stringify(results));
-//       }
-//     });
-//   });
-  
+    
 //   eventroute.post("/eventsignup", (req, res, next) => {
 //     console.log("Hello from Event Signup");
   

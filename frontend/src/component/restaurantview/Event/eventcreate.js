@@ -32,18 +32,7 @@ class eventcreate extends React.Component {
     let restaurant_id = localStorage.getItem("restaurant_id");
     console.log("RestaurantID - Update", restaurant_id);
 
-    // const payload = {
-    //   restaurant_id,
-    //   eventname: this.state.eventname,
-    //   eventdescription: this.state.eventdescription,
-    //   date: this.state.date,
-    //   time: this.state.time,
-    //   address: this.state.address,
-    //   city: this.state.city,
-    //   eventimage: this.state.eventimage,
-    //   eventtype: this.state.eventtype,
-    //   hashtag: this.state.hashtag
-    // };
+    
 
     const formData = new FormData();
     formData.append('restaurant_id',restaurant_id)

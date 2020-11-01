@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import cookie from "react-cookies";
-
+import axios from "axios";
 import Navbar from "../uNavbar";
 
 // import Modal from 'react-modal';
@@ -33,22 +33,15 @@ class viewevent extends React.Component {
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
-    fetch('/viewevent', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data)
-    }).then((response) => {
-      if (response.status >= 400) {
-        throw new Error("Bad response from server");
-      }
-      return response.json();
-    }).then((data) => {
-      self.setState({ eventdata: data });
-    }).catch((err) => {
-      console.log('caught it!', err);
-    });
+   
+ // axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+  axios.get('/viewevent')
+          .then((response) => {
+          //update the state with the response data
+          this.setState({
+            eventdata : response.data
+          });
+      });
   }
 
 

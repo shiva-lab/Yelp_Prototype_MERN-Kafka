@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Link, Redirect } from 'react-router-dom';
 import { paginate, pages } from '../../../helperFunctions/paginate'
 import axios from 'axios';
-
 import cookie from "react-cookies";
 import Navbar from "../rNavbar";
+
 // import Modal from 'react-modal';
 class viewmenu extends React.Component {
   constructor(props) {
@@ -14,9 +14,6 @@ class viewmenu extends React.Component {
       filteredMenu:[],
     };
   }
-
-
-
 
   componentDidMount() {
     axios.defaults.withCredentials = true;

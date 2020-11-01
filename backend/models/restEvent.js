@@ -38,21 +38,11 @@ const RestEventSchema = new mongoose.Schema({
     path: {
         type: String,
     },
-    RegistredUser: [{
-        user: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'user',
-        },
-        user_name: {
-            type: String,
-        },
-        Emailid: {
-            type: String,
-        },
-        path: {
-            type: String,
-        },
-    }],
+    RegistredUser : [
+        {
+            user_id : {type : String , required : true} 
+        }
+    ]
 });
 
 const RestEvent = mongoose.model('restevent', RestEventSchema);
