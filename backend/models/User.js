@@ -51,8 +51,13 @@ const UserSchema = new mongoose.Schema({
     ustate:{type: String },
     nick_name: {type: String },
     headline: {type: String },
-
     registeredEvents: { type: Array, max: 100 },
+    //followedUser: { type: Array, max: 100 },
+    followedUser : [
+        {
+            user_id : {type : String , required : true} 
+        }
+    ]
 },
 {
     versionKey: false

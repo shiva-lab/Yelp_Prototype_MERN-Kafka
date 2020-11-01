@@ -11,7 +11,6 @@ class uviewprofile extends React.Component {
       profile: [],
     };
   }
-
   componentDidMount() {
     const self = this;
     // const user_id = cookie.load("cookie1");
@@ -92,7 +91,7 @@ class uviewprofile extends React.Component {
 
                         <tr>
                           <th className="profilepagefont">Email ID</th>
-                          <td className="profiletdfont">{userprofile.emailid}</td>
+                          <td className="profiletdfont">{userprofile.Emailid}</td>
                         </tr>
                         <tr>
                           <th className="profilepagefont">City</th>

@@ -55,6 +55,8 @@ import LandingPage from './views/LandingPage';
 import neworderview from './component/restaurantview/Order/neworderview';
 import uviewprofilerest from './component/userview/Profile/uviewprofilerest'
 import Paginate from './component/restaurantview/Paginate'
+import ListAllUsers from './component/userview/Profile/ListAllUsers'
+import ViewSocialProfile from './component/userview/Profile/ViewSocialProfile'
 
 
 
@@ -119,7 +121,9 @@ function App() {
             <Route path="/LandingPage" component={LandingPage} />
             <Route path="/neworderview" component={neworderview} />
             <Route path="/uviewprofilerest" component={uviewprofilerest} />
-
+            <Route path="/listallusers" component={ListAllUsers} />
+            <Route path="/viewsocialprofile" component={ViewSocialProfile} />
+            
 
           </Switch>
 

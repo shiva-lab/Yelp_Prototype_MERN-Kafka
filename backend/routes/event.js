@@ -2,7 +2,6 @@
 const express = require("express");
 // //const connection = require("../models/yelpschema");
 const User = require('../models/User');
-
 const restEvent = require('../models/restEvent');
 const eventroute = express.Router();
 var multer = require('multer');
@@ -75,7 +74,6 @@ var app = express(),
         restaurant_id,
         eventname,
         eventdescription,
-        
         time,
         date,
         address,

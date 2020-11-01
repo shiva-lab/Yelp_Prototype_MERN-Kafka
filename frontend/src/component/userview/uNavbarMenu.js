@@ -37,6 +37,11 @@ export const MenuItems = [
     url: '/usignedupevent',
     cName: 'nav-links'
   },
+  {
+    title: 'Users',
+    url: '/listallusers',
+    cName: 'nav-links'
+  },
 
   {
     title: 'Logout',

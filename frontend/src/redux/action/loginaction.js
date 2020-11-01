@@ -46,7 +46,7 @@ export const restLogin = loginData => (dispatch) => {
       // Save to localStorage
       const { token } = res.data;
       // Set token to ls
-      localStorage.setItem('jwtToken', token);
+      localStorage.setItem('token', token);
       // Set token to Auth header
       setAuthToken(token);
       // Decode token to get user data
@@ -77,7 +77,7 @@ export const userLogin = loginData => (dispatch) => {
       // Save to localStorage
       const { token } = res.data;
       // Set token to ls
-      localStorage.setItem('jwtToken', token);
+      localStorage.setItem('token', token);
       // Set token to Auth header
       setAuthToken(token);
       // Decode token to get user data

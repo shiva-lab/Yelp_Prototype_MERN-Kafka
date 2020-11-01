@@ -8,6 +8,10 @@ const Menu = require("../models/Menu");
 const Cart = require("../models/Cart");
 var multer = require('multer');
 var multerS3 = require('multer-s3');
+
+const passport = require('passport');
+let checkAuth = passport.authenticate('jwt', { session: false });
+
 aws = require('aws-sdk'),
 aws.config.update({
   secretAccessKey: '0am/9n/qQMhH4NnBJBasYvoM8enIMta/FirpNhAf',
@@ -53,7 +57,7 @@ var app = express(),
 //     });
 //   });
   
-   userroute.post("/uviewmenu", (req, res) => {
+  userroute.post("/uviewmenu", (req, res) => {
   console.log(req.body.restaurant_id);
   console.log(req.body.restaurant_id);
   Menu.find({ restaurant_id: req.body.restaurant_id }, (error, result) => {
@@ -89,6 +93,66 @@ var app = express(),
   //   }
   // });
 });
+
+//********************* */
+// List of all Users
+//********************* */
+
+
+userroute.get("/viewuserlist", async(req, res, next) => {
+  await User.find({}, (error, result) => {
+    if (error) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end();
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      console.log(result);
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+
+//********************* */
+// Follow Users
+//********************* */
+
+userroute.post("/followuserprofile",checkAuth, async (req, res, next) => {
+   
+  const {user_id,_id } = req.body;
+  console.log("Data in backend",user_id,_id);
+  User.update({ _id: req.body.user_id },  { $push: { followedUser: {user_id:req.body._id } }}, {  safe: true, upsert: true },(err, data) => console.log(data))
+        .then(response => {
+          return res.status(200).json("Successfully Followed");
+        })
+        .catch(err => {
+          console.log(err);
+          return res.status(500).json({ error: err });
+        });
+    //})
+  });
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 userroute.post("/addtocart", async(req, res) => {
   const { itemname,price,path,restaurant_id,user_id, 
