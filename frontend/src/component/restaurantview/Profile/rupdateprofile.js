@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 //import { updateRestProfile } from "../../redux/action/actionprofile";
 import { updateRestProfile } from "../../../redux/action/actionprofile";
-
+import swal from 'sweetalert2';
 import store from "../../../redux/store";
 
 import { Provider } from "react-redux";

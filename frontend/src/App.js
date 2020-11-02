@@ -39,7 +39,7 @@ import uorderdetails from './component/userview/Order/uorderdetails';
 import editmenu from './component/restaurantview/Menu/editmenu';
 import Rrejectedorder from './component/restaurantview/Order/rrejectedorder';
 import eventcreate from './component/restaurantview/Event/eventcreate';
-import viewevent from './component/userview/Event/viewevent';
+import ViewEvent from './component/userview/Event/viewevent';
 import vieweventsignup from './component/restaurantview/Event/vieweventsignup';
 import vieweventlisting from './component/restaurantview/Event/vieweventlisting';
 import usignedupevent from './component/userview/Event/usignedupevent';
@@ -104,7 +104,7 @@ function App() {
             <Route path="/uorderdetails" component={uorderdetails} />
             <Route path="/editmenu" component={editmenu} />
             <Route path="/eventcreate" component={eventcreate} />
-            <Route path="/viewevent" component={viewevent} />
+            <Route path="/viewevent" component={ViewEvent} />
             <Route path="/vieweventsignup" component={vieweventsignup} />
             <Route path="/vieweventlisting" component={vieweventlisting} />
             <Route path="/usignedupevent" component={usignedupevent} />
