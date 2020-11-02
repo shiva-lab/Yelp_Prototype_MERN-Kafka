@@ -48,23 +48,6 @@ class allRestaurant extends React.Component {
 }
 
 
-  // handleClick(restaurant_id_menu) {
-  //     return function() {
-  //       console.log(restaurant_id_menu)
-  //       localStorage.setItem('restaurant_id_menu', restaurant_id_menu);
-  //       return <Redirect to='/uviewmenu' />
-  //     }
-  //     }
-
-  // handleClick(_id) {
-    
-  //   return function () {
-  //     console.log("Restaurant ID:",_id);
-  //     localStorage.setItem('restaurant_id_allrest',_id);
-  //     return <Redirect to="/rviewprofile" />;
-  //   };
-  // }
-
   paginatinon = (e) => {
     this.setState({
       filteredRestaurant: paginate(this.state.resturantlist,e, 7)

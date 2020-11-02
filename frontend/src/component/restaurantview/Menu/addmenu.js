@@ -75,16 +75,6 @@ class addmenu extends React.Component {
     if (this.handleValidation()) {
     let restaurant_id = localStorage.getItem("restaurant_id");
     console.log("RestaurantID - Update", restaurant_id);
-
-    // const payload = {
-    //   itemname: this.state.itemname,
-    //   itemdescription: this.state.itemdescription,
-    //   price: this.state.price,
-    //   foodimage: this.state.foodimage,
-    //   itemcategory: this.state.itemcategory,
-    //   ingredients: this.state.ingredients,
-    //   restaurant_id
-    // };
     const formData = new FormData();
     formData.append('myfile',this.state.file);
     formData.append('itemdescription', this.state.itemdescription)
@@ -129,17 +119,7 @@ class addmenu extends React.Component {
           });
   };
   }
-  // resetUserInputs = () => {
-  //   this.setState({
-  //     itemname: "",
-  //     itemdescription: "",
-  //     price: "",
-  //     foodimage: "",
-  //     itemcategory: "",
-  //     ingredients:"",
-  //   });
-  // };
-
+  
   onChange(e) {
     this.setState({file:e.target.files[0]});
 }
@@ -221,17 +201,7 @@ class addmenu extends React.Component {
                     <br />
                     <br />
 
-                    {/* <input
-                      style={{ borderRadius: "3px" }}
-                      type="text"
-                      id="foodimage"
-                      name="foodimage"
-                      placeholder="Food Image URL"
-                      value={this.state.foodimage}
-                      onChange={this.handleChange}
-                    />
-                    <br />
-                    <br /> */}
+                   
 
                     <select
                       value={this.state.value}
