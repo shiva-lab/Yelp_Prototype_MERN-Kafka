@@ -55,7 +55,7 @@ class ListAllUsers extends React.Component {
 
   paginatinon = (e) => {
     this.setState({
-        filteredMenu: paginate(this.state.userdata,e, 10)
+      filteredUserdata: paginate(this.state.userdata,e, 10)
     })
 }
 
@@ -76,14 +76,14 @@ submit = (event) => {
       .then((response) => {
         if (response.status === 200) {
           console.log("Printing response",response)
-          console.log("Printing User Data",response.data)
+          console.log("Printing User Data",response.data[0].followedUser)
             this.setState({
-              userdata: response.data,
-              filteredUserdata : paginate(response.data,1,10),
-              pages: pages(response.data, 10)
+              userdata: response.data[0].followedUser,
+              filteredUserdata : paginate(response.data[0].followedUser,1,10),
+              pages: pages(response.data[0].followedUser, 10)
 
             })
-            console.log(pages);
+            console.log("Pages",pages);
         } else {
             console.log("error");
         }
@@ -101,7 +101,7 @@ submit = (event) => {
 
     let links = [];
     if (this.state.pages > 0) {
-        //console.log(this.state.pages);
+        console.log(this.state.pages);
         for (let i = 1; i <= this.state.pages; i++) {
             links.push(<li className="page-item" key={i}><a className="page-link" onClick={() => { this.paginatinon(i) }}>
                 {i}

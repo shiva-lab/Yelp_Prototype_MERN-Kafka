@@ -35,8 +35,9 @@ class ViewEvent extends React.Component {
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
-
-    // axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.defaults.withCredentials = true;
+    //make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios.get("/viewevent", data).then((response) => {
       if (response.status === 200) {
         console.log("Printing response", response);

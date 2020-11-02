@@ -39,11 +39,11 @@ class ViewSocialProfile extends React.Component {
       });
   }
 
-  FollowUserHandler(_id) {
+  FollowUserHandler(_id,fname,lname,city,Emailid,headline) {
     return function () {
       const user_id = localStorage.getItem('user_id');
-      console.log(_id,user_id);
-      const newdata = {_id, user_id};
+      console.log(_id,user_id,);
+      const newdata = {_id, user_id,fname,lname,city,Emailid,headline};
       console.log(newdata);
       axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
       axios.post('/followuserprofile',newdata)
@@ -218,7 +218,7 @@ class ViewSocialProfile extends React.Component {
                           <td>
                           <Link>
                             <button
-                             onClick={this.FollowUserHandler(userprofile._id)}
+                             onClick={this.FollowUserHandler(userprofile._id,userprofile.fname,userprofile.lname,userprofile.city,userprofile.Emailid, userprofile.headline)}
                     
                             >
                               Follow

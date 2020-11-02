@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import cookie from "react-cookies";
-
+import axios from "axios"
 import Navbar from "../uNavbar";
 
 // import Modal from 'react-modal';

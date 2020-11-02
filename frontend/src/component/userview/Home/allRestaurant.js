@@ -27,7 +27,7 @@ class allRestaurant extends React.Component {
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
     // make a post request with the user data
-    //axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios.get("/homeviewrestaurant", data)
         .then(response => {
             if (response.status === 200) {

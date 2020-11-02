@@ -3,6 +3,7 @@ import cookie from "react-cookies";
 import { Card } from "react-bootstrap";
 import { Redirect } from 'react-router';
 import Navbar from "../uNavbar";
+import axios from "axios"
 
 // import Modal from 'react-modal';
 class usignedupevent extends React.Component {
@@ -17,23 +18,18 @@ class usignedupevent extends React.Component {
     const self = this;
     const user_id = cookie.load("cookie1");
     const data = { user_id };
-    fetch("/viewusersignedupevent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    axios.defaults.withCredentials = true;
+    //make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.post("/viewusersignedupevent",data)
       .then((response) => {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
         }
-
         return response.json();
       })
       .then((data) => {
         self.setState({ eventdata: data });
-        
       })
       .catch((err) => {
         console.log("caught it!", err);

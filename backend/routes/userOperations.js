@@ -2,8 +2,6 @@
 // const connection = require("../models/yelpschema");
 const userroute = express.Router();
 const User = require('../models/User');
-const Order = require('../models/Order');
-const Restaurant = require("../models/Restaurant");
 const Menu = require("../models/Menu");
 const Cart = require("../models/Cart");
 var multer = require('multer');
@@ -123,9 +121,9 @@ userroute.get("/viewuserlist", async(req, res, next) => {
 
 userroute.post("/followuserprofile",checkAuth, async (req, res, next) => {
    
-  const {user_id,_id } = req.body;
-  console.log("Data in backend",user_id,_id);
-  User.update({ _id: req.body.user_id },  { $push: { followedUser: {user_id:req.body._id } }}, {  safe: true, upsert: true },(err, data) => console.log(data))
+  const {user_id,_id,fname,lname,city,Emailid,headline} = req.body;
+  console.log("Data in backend",user_id,_id,user_id,fname,lname,city,Emailid,headline);
+  User.update({ _id: req.body.user_id },  { $push: { followedUser: {user_id:req.body._id,fname:req.body.fname,lname:req.body.lname,city:req.body.city,Emailid:req.body.Emailid,headline:req.body.headline} }}, {  safe: true, upsert: true },(err, data) => console.log(data))
         .then(response => {
           return res.status(200).json("Successfully Followed");
         })
@@ -142,7 +140,7 @@ userroute.post("/followuserprofile",checkAuth, async (req, res, next) => {
 
 userroute.post("/usersifollow", async (req, res, next) => {
    
-  const {user_id } = req.body;
+  const {user_id} = req.body;
   console.log("Data in backend",user_id);
   User.find({ _id: req.body.user_id },{},(error, result) => {
     if (error) {

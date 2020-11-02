@@ -6,7 +6,6 @@ const restEvent = require('../models/restEvent');
 const eventroute = express.Router();
 var multer = require('multer');
 var multerS3 = require('multer-s3');
-const { findById } = require("../models/Event");
 aws = require('aws-sdk'),
 
 
