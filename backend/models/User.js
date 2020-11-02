@@ -55,7 +55,7 @@ const UserSchema = new mongoose.Schema({
     //followedUser: { type: Array, max: 100 },
     followedUser : [
         {
-            user_id : {type : String , required : true},
+            _id : {type : String , required : true},
             fname: {type: String},
             lname: {type: String},
             Emailid: {type: String,required: true,unique: true},

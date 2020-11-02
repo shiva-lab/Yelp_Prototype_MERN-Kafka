@@ -35,7 +35,9 @@ class ListAllUsers extends React.Component {
   componentDidMount() {
     axios.defaults.withCredentials = true;
     const self = this;
-    axios.get('/viewuserlist')
+    const user_id = localStorage.getItem('user_id');
+    const data = { user_id };
+    axios.post('/viewuserlist',data)
       .then((response) => {
         if (response.status === 200) {
           console.log("Printing response",response)

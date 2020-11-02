@@ -97,8 +97,10 @@ var app = express(),
 //********************* */
 
 
-userroute.get("/viewuserlist", async(req, res, next) => {
-  await User.find({}, (error, result) => {
+userroute.post("/viewuserlist", async(req, res, next) => {
+  const {user_id} = req.body;
+  console.log("UserID: ", user_id)
+  await User.find({_id: {$ne: req.body.user_id}}, (error, result) => {
     if (error) {
       res.writeHead(500, {
         "Content-Type": "text/plain",
@@ -123,7 +125,7 @@ userroute.post("/followuserprofile",checkAuth, async (req, res, next) => {
    
   const {user_id,_id,fname,lname,city,Emailid,headline} = req.body;
   console.log("Data in backend",user_id,_id,user_id,fname,lname,city,Emailid,headline);
-  User.update({ _id: req.body.user_id },  { $push: { followedUser: {user_id:req.body._id,fname:req.body.fname,lname:req.body.lname,city:req.body.city,Emailid:req.body.Emailid,headline:req.body.headline} }}, {  safe: true, upsert: true },(err, data) => console.log(data))
+  User.update({ _id: req.body.user_id },  { $push: { followedUser: {_id:req.body._id,fname:req.body.fname,lname:req.body.lname,city:req.body.city,Emailid:req.body.Emailid,headline:req.body.headline} }}, {  safe: true, upsert: true },(err, data) => console.log(data))
         .then(response => {
           return res.status(200).json("Successfully Followed");
         })
@@ -142,7 +144,7 @@ userroute.post("/usersifollow", async (req, res, next) => {
    
   const {user_id} = req.body;
   console.log("Data in backend",user_id);
-  User.find({ _id: req.body.user_id },{},(error, result) => {
+  User.find({ _id:req.body.user_id },{},(error, result) => {
     if (error) {
       console.log(error)
       res.writeHead(500, {
