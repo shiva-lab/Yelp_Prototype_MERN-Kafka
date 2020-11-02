@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { restLogin } from "../../../redux/action/loginaction";
 import Footer from "../../Footer";
 import Header from "../../Header";
+import swal from 'sweetalert2';
 
 
 class RestaurantLogin extends React.Component {

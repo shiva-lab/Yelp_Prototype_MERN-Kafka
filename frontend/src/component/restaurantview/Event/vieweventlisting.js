@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
-
+import { paginate, pages } from '../../../helperFunctions/paginate';
+import axios from "axios";
 import Navbar from "../rNavbar";
 
 // import Modal from 'react-modal';
@@ -9,33 +10,40 @@ class vieweventlisting extends React.Component {
     super();
     this.state = {
       eventview: [],
+      filteredEvent:[],
     };
   }
 
   componentDidMount() {
+    axios.defaults.withCredentials = true;
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
-    fetch("/vieweventlisting", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (response.status >= 400) {
-          throw new Error("Bad response from server");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        self.setState({ eventview: data });
-      })
-      .catch((err) => {
-        console.log("caught it!", err);
-      });
-  }
+    // make a post request with the user data
+    //axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.post("/vieweventlisting", data)
+        .then(response => {
+            if (response.status === 200) {
+              console.log("Printing response",response)
+              console.log("Printing Event",response.data)
+                this.setState({
+                  eventview: response.data,
+                  filteredEvent : paginate(response.data,1,10),
+                  pages: pages(response.data, 10)
+
+                })
+                console.log(pages);
+            } else {
+                console.log("error");
+            }
+        });
+      }
+
+      paginatinon = (e) => {
+        this.setState({
+          filteredEvent: paginate(this.state.eventview,e, 10)
+        })
+    }
 
   handleClickevent(_id) {
     return function () {
@@ -48,6 +56,78 @@ class vieweventlisting extends React.Component {
 
 
   render() {
+
+    let links = [];
+    if (this.state.pages > 0) {
+        console.log(this.state.pages);
+        for (let i = 1; i <= this.state.pages; i++) {
+            links.push(<li className="page-item" key={i}><a className="page-link" onClick={() => { this.paginatinon(i) }}>
+                {i}
+            </a></li>
+            )
+        }
+    }
+
+    let event = this.state.filteredEvent.map(event => {
+      return (
+        
+          <tr>
+            <td>
+              {event.eventname}
+              {' '}
+            </td>
+            <td>
+            <td>
+                        <img
+                          src={event.path}
+                          width={150}
+                          height={120}
+                          mode="fit"
+                        />
+                      </td>
+            </td>
+            <td>
+              {event.eventdescription}
+              {' '}
+            </td>
+            <td>
+              {event.date}
+              {' '}
+            </td>
+            <td>
+              {event.time}
+              {' '}
+            </td>
+            <td>
+              {event.address}
+              {' '}
+            </td>
+
+            <Link to="/vieweventsignup">
+              <td>
+                <button onClick={this.handleClickevent(event._id)}>
+                  Signup Details
+                </button>
+              </td>
+            </Link>
+
+          </tr>
+
+
+        )
+      })
+
+
+
+
+
+
+
+
+
+
+
+
     return (
       <div>
         <Navbar />
@@ -68,49 +148,10 @@ class vieweventlisting extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.eventview.map(event => (
-                  <tr>
-                    <td>
-                      {event.eventname}
-                      {' '}
-                    </td>
-                    <td>
-                    <td>
-                                <img
-                                  src={event.path}
-                                  width={150}
-                                  height={120}
-                                  mode="fit"
-                                />
-                              </td>
-                    </td>
-                    <td>
-                      {event.eventdescription}
-                      {' '}
-                    </td>
-                    <td>
-                      {event.date}
-                      {' '}
-                    </td>
-                    <td>
-                      {event.time}
-                      {' '}
-                    </td>
-                    <td>
-                      {event.address}
-                      {' '}
-                    </td>
-
-                    <Link to="/vieweventsignup">
-                      <td>
-                        <button onClick={this.handleClickevent(event._id)}>
-                          Signup Details
-                        </button>
-                      </td>
-                    </Link>
-
-                  </tr>
-                ))}
+              {event}
+                            <ul className="pagination">
+                            {links}
+                            </ul>
               </tbody>
             </table>
           </div>

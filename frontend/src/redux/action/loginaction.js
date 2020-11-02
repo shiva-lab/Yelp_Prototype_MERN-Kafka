@@ -1,6 +1,7 @@
 import axios from "axios";
 import setAuthToken from '../../utils/setAuthToken'
 import jwt_decode from 'jwt-decode';
+import swal from 'sweetalert2';
 
 import {
   USER_LOGIN, USER_LOGOUT, RESTAURANT_LOGIN, RESTAURANT_LOGOUT,SET_CURRENT_USER 
@@ -86,7 +87,12 @@ export const userLogin = loginData => (dispatch) => {
       dispatch(setCurrentUser(decoded));
     }).catch((error) => {
       if (error.response && error.response.data) {
-        alert("Invalid Crendentials! Please try again");
+       // alert("Invalid Crendentials! Please try again");
+        swal.fire({
+          title: 'Failed!',
+          text: 'Invalid Crendentials! Please try again',
+          icon: 'error'
+        })
         return dispatch({
           type: USER_LOGIN,
           payload: error.response.data

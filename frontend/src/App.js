@@ -54,7 +54,6 @@ import LandingPage from './views/LandingPage';
 
 import neworderview from './component/restaurantview/Order/neworderview';
 import uviewprofilerest from './component/userview/Profile/uviewprofilerest'
-import Paginate from './component/restaurantview/Paginate'
 import ListAllUsers from './component/userview/Profile/ListAllUsers'
 import ViewSocialProfile from './component/userview/Profile/ViewSocialProfile'
 
