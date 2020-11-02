@@ -5,7 +5,7 @@ import axios from "axios"
 import Navbar from "../uNavbar";
 
 // import Modal from 'react-modal';
-class searchevent extends React.Component {
+class SearchEvent extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -163,4 +163,4 @@ class searchevent extends React.Component {
     );
   }
 }
-export default searchevent;
+export default SearchEvent;

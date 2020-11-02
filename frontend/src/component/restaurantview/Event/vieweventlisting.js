@@ -5,7 +5,7 @@ import axios from "axios";
 import Navbar from "../rNavbar";
 
 // import Modal from 'react-modal';
-class vieweventlisting extends React.Component {
+class ViewEventListing extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -160,4 +160,4 @@ class vieweventlisting extends React.Component {
     );
   }
 }
-export default vieweventlisting;
+export default ViewEventListing;

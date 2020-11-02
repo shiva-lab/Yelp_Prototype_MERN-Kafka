@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 // import Modal from 'react-modal';
-class Rcurrentorder extends React.Component {
+class RCurrentOrder extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -110,4 +110,4 @@ class Rcurrentorder extends React.Component {
     );
   }
 }
-export default Rcurrentorder;
+export default RCurrentOrder;

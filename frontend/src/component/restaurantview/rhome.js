@@ -5,7 +5,7 @@ import Navbar from "./rNavbar";
 import MapContainer from "../userview/mapContainer";
 
 // import Modal from 'react-modal';
-class rhome extends React.Component {
+class RHome extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -249,4 +249,4 @@ class rhome extends React.Component {
     );
   }
 }
-export default rhome;
+export default RHome;

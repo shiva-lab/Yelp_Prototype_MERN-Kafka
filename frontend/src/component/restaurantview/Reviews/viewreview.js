@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import Navbar from "../rNavbar";
 
 // import Modal from 'react-modal';
-class viewreview extends React.Component {
+class ViewReview extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -78,4 +78,4 @@ class viewreview extends React.Component {
     );
   }
 }
-export default viewreview;
+export default ViewReview;

@@ -1,44 +1,50 @@
 import React, { Component } from "react";
 import Navbar from "../rNavbar";
 import { Link, Redirect } from 'react-router-dom';
+import { paginate, pages } from '../../../helperFunctions/paginate'
+import axios from 'axios';  
 
 // import Modal from 'react-modal';
-class vieweventsignup extends React.Component {
+class ViewEventSignup extends React.Component {
   constructor(props) {
     super();
     this.state = {
       eventview: [],
+      filteredUserList: []
     };
   }
 
   componentDidMount() {
+    axios.defaults.withCredentials = true;
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const event_id = localStorage.getItem("event_id_eventsignup");
     const data = { restaurant_id, event_id };
-    fetch("/vieweventsignup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (response.status >= 400) {
-          throw new Error("Bad response from server");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data[0].eventview)
-        self.setState({ eventview: data[0].eventview });
-       // self.setState({ eventview: data[0]});
-        
-      })
-      .catch((err) => {
-        console.log("caught it!", err);
-      });
+    // make a post request with the user data
+    //axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.post("/vieweventsignup", data)
+    .then(response => {
+      if (response.status === 200) {
+        console.log("Printing response",response)
+        console.log("Printing Menu",response.data)
+          this.setState({
+            eventview: response.data,
+            filteredUserList : paginate(response.data,1,10),
+            pages: pages(response.data, 10)
+
+          })
+          console.log(pages);
+      } else {
+          console.log("error");
+      }
+  });
   }
+
+  paginatinon = (e) => {
+    this.setState({
+      filteredUserList: paginate(this.state.eventview,e, 10)
+    })
+}
 
   handleClick(user_id) {
     return function () {
@@ -90,4 +96,4 @@ class vieweventsignup extends React.Component {
     );
   }
 }
-export default vieweventsignup;
+export default ViewEventSignup;

@@ -4,7 +4,7 @@ import cookie from "react-cookies";
 import Navbar from "../../restaurantview/rNavbar";
 
 // import Modal from 'react-modal';
-class uviewprofilerest extends React.Component {
+class UViewProfileRest extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -187,4 +187,4 @@ class uviewprofilerest extends React.Component {
     );
   }
 }
-export default uviewprofilerest;
+export default UViewProfileRest;

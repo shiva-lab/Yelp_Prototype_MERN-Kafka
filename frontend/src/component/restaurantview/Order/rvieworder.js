@@ -8,7 +8,7 @@ import Rorderdone from "./rorderdone";
 import Rrejectedorder from "./rrejectedorder";
 
 // import Modal from 'react-modal';
-class rvieworder extends React.Component {
+class RViewOrder extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -166,4 +166,4 @@ class rvieworder extends React.Component {
     );
   }
 }
-export default rvieworder;
+export default RViewOrder;

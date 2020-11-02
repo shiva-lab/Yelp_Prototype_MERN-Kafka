@@ -6,7 +6,7 @@ import Navbar from "../uNavbar";
 
 
 // import Modal from 'react-modal';
-class uviewrestaurant extends React.Component {
+class UViewRestaurant extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -136,4 +136,4 @@ class uviewrestaurant extends React.Component {
     );
   }
 }
-export default uviewrestaurant;
+export default UViewRestaurant;

@@ -6,7 +6,7 @@ import {paginate, pages} from '../../../helperFunctions/paginate'
 import axios from "axios"
 
 // import Modal from 'react-modal';
-class uviewmenu extends React.Component {
+class UViewMenu extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -205,4 +205,4 @@ class uviewmenu extends React.Component {
   }
 }
 
-export default uviewmenu;
+export default UViewMenu;

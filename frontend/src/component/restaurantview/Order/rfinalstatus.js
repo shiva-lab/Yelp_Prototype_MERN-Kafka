@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 // import Modal from 'react-modal';
-class Rfinalstatus extends React.Component {
+class RFinalStatus extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -105,4 +105,4 @@ class Rfinalstatus extends React.Component {
     );
   }
 }
-export default Rfinalstatus;
+export default RFinalStatus;

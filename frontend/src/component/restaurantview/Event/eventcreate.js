@@ -4,7 +4,7 @@ import Navbar from "../rNavbar";
 import cookie from "react-cookies";
 import { Redirect } from "react-router";
 
-class eventcreate extends React.Component {
+class EventCreate extends React.Component {
   // Creating State
   constructor(props) {
     super(props);
@@ -222,4 +222,4 @@ class eventcreate extends React.Component {
     );
   }
 }
-export default eventcreate;
+export default EventCreate;

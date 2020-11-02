@@ -6,7 +6,7 @@ import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 
 // import Modal from 'react-modal';
-class neworderview extends React.Component {
+class NewOrderView extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -221,4 +221,4 @@ class neworderview extends React.Component {
     );
   }
 }
-export default neworderview;
+export default NewOrderView;

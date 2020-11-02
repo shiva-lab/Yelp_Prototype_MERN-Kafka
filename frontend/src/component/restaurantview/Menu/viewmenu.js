@@ -6,7 +6,7 @@ import cookie from "react-cookies";
 import Navbar from "../rNavbar";
 
 // import Modal from 'react-modal';
-class viewmenu extends React.Component {
+class ViewMenu extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -172,4 +172,4 @@ class viewmenu extends React.Component {
     );
   }
 }
-export default viewmenu;
+export default ViewMenu;

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 // import Modal from 'react-modal';
-class Rorderdone extends React.Component {
+class ROrderDone extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -90,4 +90,4 @@ class Rorderdone extends React.Component {
     );
   }
 }
-export default Rorderdone;
+export default ROrderDone;

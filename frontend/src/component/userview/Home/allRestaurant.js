@@ -8,7 +8,7 @@ import { paginate, pages } from '../../../helperFunctions/paginate'
 import axios from "axios"
 
 // import Modal from 'react-modal';
-class allRestaurant extends React.Component {
+class AllRestaurant extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -231,4 +231,4 @@ class allRestaurant extends React.Component {
     );
   }
 }
-export default allRestaurant;
+export default AllRestaurant;

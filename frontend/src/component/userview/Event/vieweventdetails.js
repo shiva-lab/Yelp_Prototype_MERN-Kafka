@@ -6,7 +6,7 @@ import Navbar from "../uNavbar";
 //import MapContainer from '../mapContainer';
 
 // import Modal from 'react-modal';
-class viewevetdetails extends React.Component {
+class ViewEventDetails extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -148,4 +148,4 @@ class viewevetdetails extends React.Component {
 
   }
 }
-export default viewevetdetails;
+export default ViewEventDetails;

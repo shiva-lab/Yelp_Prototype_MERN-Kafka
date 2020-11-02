@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 // import Modal from 'react-modal';
-class Rrejectedorder extends React.Component {
+class RRejectedOrder extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -90,4 +90,4 @@ class Rrejectedorder extends React.Component {
     );
   }
 }
-export default Rrejectedorder;
+export default RRejectedOrder;

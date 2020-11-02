@@ -7,7 +7,7 @@ import MapContainer from "../mapContainer";
 import Navbar from "../uNavbar";
 
 //import Modal from 'react-modal';
-class searchrestaurant extends React.Component {
+class SearchRestaurant extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -188,4 +188,4 @@ componentDidMount() {
   }
 }
 
-export default searchrestaurant;
+export default SearchRestaurant;

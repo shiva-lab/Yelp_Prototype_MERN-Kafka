@@ -1,71 +1,64 @@
-import React from 'react';
-import './App.css';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import Home from './views/Home';
+import React from "react";
+import "./App.css";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Provider } from "react-redux";
+import Home from "./views/Home";
 //import RestaurantLogin from './views/RestaurantLogin';
 //import RestaurantRegister from './views/RestaurantRegister';
-import RestaurantLogin from './component/restaurantview/Login/RestaurantLogin';
-import RestaurantRegister from './component/restaurantview/Login/RestaurantRegister';
-import UserLogin from './component/userview/Login/UserLogin';
-import UserSignup from './component/userview/Login/UserSignup';
-import rhome from './component/restaurantview/rhome';
-import rviewprofile from './component/restaurantview/Profile/rviewprofile';
-import rupdateprofile from './component/restaurantview/Profile/rupdateprofile';
-import addmenu from './component/restaurantview/Menu/addmenu';
-import viewmenu from './component/restaurantview/Menu/viewmenu';
-import viewreview from './component/restaurantview/Reviews/viewreview';
-import uviewprofile from './component/userview/Profile/uviewprofile';
-import uupdateprofile from './component/userview/Profile/uupdateprofile';
-import rNavbar from './component/restaurantview/rNavbar';
-import rlogout from './component/restaurantview/rlogout';
-import addreview from './component/userview/Review/uaddreview';
-import uviewrestaurant from './component/userview/Order/uviewrestaurant';
-import uNavbar from './component/userview/uNavbar';
-import Footer from './component/Footer';
-import Header from './component/Header';
-import store from './redux/store';
-import uviewmenu from './component/userview/Order/uviewmenu';
-import uplaceorder from './component/userview/Order/uplaceorder';
-import Placeorderform from './component/userview/Order/placeorderform';
-import rvieworder from './component/restaurantview/Order/rvieworder';
-import Rcurrentorder from './component/restaurantview/Order/rcurrentorder';
-import Rcompleteorder from './component/restaurantview/Order/rcompleteorder';
-import Rfinalstatus from './component/restaurantview/Order/rfinalstatus';
-import Rorderdone from './component/restaurantview/Order/rorderdone';
-import MapContainer from './component/userview/mapContainer';
-import uordercheckstatus from './component/userview/Order/uordercheckstatus';
-import uorderdetails from './component/userview/Order/uorderdetails';
-import editmenu from './component/restaurantview/Menu/editmenu';
-import Rrejectedorder from './component/restaurantview/Order/rrejectedorder';
-import eventcreate from './component/restaurantview/Event/eventcreate';
-import ViewEvent from './component/userview/Event/viewevent';
-import vieweventsignup from './component/restaurantview/Event/vieweventsignup';
-import vieweventlisting from './component/restaurantview/Event/vieweventlisting';
-import usignedupevent from './component/userview/Event/usignedupevent';
-import searchrestaurant from './component/userview/Home/searchrestaurant';
-import allRestaurant from './component/userview/Home/allRestaurant';
-import ImageUpload from './views/ImageUpload';
-import StarRating from './component/userview/Review/StarRating';
-import searchevent from './component/userview/Event/searchevent';
+import RestaurantLogin from "./component/restaurantview/Login/RestaurantLogin";
+import RestaurantRegister from "./component/restaurantview/Login/RestaurantRegister";
+import UserLogin from "./component/userview/Login/UserLogin";
+import UserSignup from "./component/userview/Login/UserSignup";
+import RHome from "./component/restaurantview/rhome";
+import RViewProfile from "./component/restaurantview/Profile/rviewprofile";
+import rupdateprofile from "./component/restaurantview/Profile/rupdateprofile";
+import AddMenu from "./component/restaurantview/Menu/addmenu";
+import ViewMenu from "./component/restaurantview/Menu/viewmenu";
+import ViewReview from "./component/restaurantview/Reviews/viewreview";
+import UViewProfile from "./component/userview/Profile/uviewprofile";
+import UUpdateProfile from "./component/userview/Profile/uupdateprofile";
+import rNavbar from "./component/restaurantview/rNavbar";
+import rlogout from "./component/restaurantview/rlogout";
+import AddReview from "./component/userview/Review/uaddreview";
+import UViewRestaurant from "./component/userview/Order/uviewrestaurant";
+import uNavbar from "./component/userview/uNavbar";
+import Footer from "./component/Footer";
+import Header from "./component/Header";
+import store from "./redux/store";
+import UViewMenu from "./component/userview/Order/uviewmenu";
+import UPlaceOrder from "./component/userview/Order/uplaceorder";
+import PlaceOrderForm from "./component/userview/Order/placeorderform";
+import RViewOrder from "./component/restaurantview/Order/rvieworder";
+import RCurrentOrder from "./component/restaurantview/Order/rcurrentorder";
+import RCompleteOrder from "./component/restaurantview/Order/rcompleteorder";
+import RFinalStatus from "./component/restaurantview/Order/rfinalstatus";
+import ROrderDone from "./component/restaurantview/Order/rorderdone";
+import MapContainer from "./component/userview/mapContainer";
+import UOrderCheckStatus from "./component/userview/Order/uordercheckstatus";
+import UOrderDetails from "./component/userview/Order/uorderdetails";
+import EditMenu from "./component/restaurantview/Menu/editmenu";
+import RrejectedOrder from "./component/restaurantview/Order/rrejectedorder";
+import EventCreate from "./component/restaurantview/Event/eventcreate";
+import ViewEvent from "./component/userview/Event/viewevent";
+import ViewEventSignup from "./component/restaurantview/Event/vieweventsignup";
+import ViewEventListing from "./component/restaurantview/Event/vieweventlisting";
+import USignedupEvent from "./component/userview/Event/usignedupevent";
+import SearchRestaurant from "./component/userview/Home/searchrestaurant";
+import AllRestaurant from "./component/userview/Home/allRestaurant";
+import ImageUpload from "./views/ImageUpload";
+import StarRating from "./component/userview/Review/StarRating";
+import SearchEvent from "./component/userview/Event/searchevent";
 //import eventcreate from './component/restaurantview/eventcreate';
-import vieweventdetails from './component/userview/Event/vieweventdetails';
-import LandingPage from './views/LandingPage';
-
-import neworderview from './component/restaurantview/Order/neworderview';
-import uviewprofilerest from './component/userview/Profile/uviewprofilerest'
-import ListAllUsers from './component/userview/Profile/ListAllUsers'
-import ViewSocialProfile from './component/userview/Profile/ViewSocialProfile'
-
-
-
-
-
+import ViewEventDetails from "./component/userview/Event/vieweventdetails";
+import LandingPage from "./views/LandingPage";
+import NewOrderView from "./component/restaurantview/Order/neworderview";
+import UViewProfileRest from "./component/userview/Profile/uviewprofilerest";
+import ListAllUsers from "./component/userview/Profile/ListAllUsers";
+import ViewSocialProfile from "./component/userview/Profile/ViewSocialProfile";
 
 function App() {
   return (
     <Provider store={store}>
-
       <div>
         <Router>
           <Switch>
@@ -74,64 +67,55 @@ function App() {
             <Route path="/RestaurantRegister" component={RestaurantRegister} />
             <Route path="/UserLogin" component={UserLogin} />
             <Route path="/UserSignup" component={UserSignup} />
-            <Route path="/rviewprofile" component={rviewprofile} />
+            <Route path="/rviewprofile" component={RViewProfile} />
             <Route path="/rupdateprofile" component={rupdateprofile} />
-            <Route path="/addmenu" component={addmenu} />
-            <Route path="/viewmenu" component={viewmenu} />
-            <Route path="/uviewprofile" component={uviewprofile} />
+            <Route path="/addmenu" component={AddMenu} />
+            <Route path="/viewmenu" component={ViewMenu} />
+            <Route path="/uviewprofile" component={UViewProfile} />
             <Route path="/rNavbar" component={rNavbar} />
             <Route path="/rlogout" component={rlogout} />
             <Route path="/Footer" component={Footer} />
             <Route path="/Header" component={Header} />
-            <Route path="/rhome" component={rhome} />
-            <Route path="/addreview" component={addreview} />
-            <Route path="/viewreview" component={viewreview} />
-            <Route path="/uupdateprofile" component={uupdateprofile} />
+            <Route path="/rhome" component={RHome} />
+            <Route path="/addreview" component={AddReview} />
+            <Route path="/viewreview" component={ViewReview} />
+            <Route path="/uupdateprofile" component={UUpdateProfile} />
             <Route path="/uNavbar" component={uNavbar} />
-            <Route path="/uviewrestaurant" component={uviewrestaurant} />
-            <Route path="/uviewmenu" component={uviewmenu} />
-            <Route path="/uplaceorder" component={uplaceorder} />
-            <Route path="/Placeorderform" component={Placeorderform} />
-            <Route path="/rvieworder" component={rvieworder} />
-            <Route path="/rcurrentorder" component={Rcurrentorder} />
-            <Route path="/rcompleteorder" component={Rcompleteorder} />
-            <Route path="/rfinalstatus" component={Rfinalstatus} />
-            <Route path="/rorderdone" component={Rorderdone} />
-            <Route path="/rrejectedorder" component={Rrejectedorder} />
+            <Route path="/uviewrestaurant" component={UViewRestaurant} />
+            <Route path="/uviewmenu" component={UViewMenu} />
+            <Route path="/uplaceorder" component={UPlaceOrder} />
+            <Route path="/Placeorderform" component={PlaceOrderForm} />
+            <Route path="/rvieworder" component={RViewOrder} />
+            <Route path="/rcurrentorder" component={RCurrentOrder} />
+            <Route path="/rcompleteorder" component={RCompleteOrder} />
+            <Route path="/rfinalstatus" component={RFinalStatus} />
+            <Route path="/rorderdone" component={ROrderDone} />
+            <Route path="/rrejectedorder" component={RrejectedOrder} />
             <Route path="/mapContainer" component={MapContainer} />
-            <Route path="/uordercheckstatus" component={uordercheckstatus} />
-            <Route path="/uorderdetails" component={uorderdetails} />
-            <Route path="/editmenu" component={editmenu} />
-            <Route path="/eventcreate" component={eventcreate} />
+            <Route path="/uordercheckstatus" component={UOrderCheckStatus} />
+            <Route path="/uorderdetails" component={UOrderDetails} />
+            <Route path="/editmenu" component={EditMenu} />
+            <Route path="/eventcreate" component={EventCreate} />
             <Route path="/viewevent" component={ViewEvent} />
-            <Route path="/vieweventsignup" component={vieweventsignup} />
-            <Route path="/vieweventlisting" component={vieweventlisting} />
-            <Route path="/usignedupevent" component={usignedupevent} />
+            <Route path="/vieweventsignup" component={ViewEventSignup} />
+            <Route path="/vieweventlisting" component={ViewEventListing} />
+            <Route path="/usignedupevent" component={USignedupEvent} />
             <Route path="/ImageUpload" component={ImageUpload} />
-
-
             <Route path="/StarRating" component={StarRating} />
-
-            <Route path="/allRestaurant" component={allRestaurant} />
+            <Route path="/allRestaurant" component={AllRestaurant} />
             <Route path="/mapSection" component={Map} />
-            <Route path="/searchrestaurant" component={searchrestaurant} />
-            <Route path="/searchevent" component={searchevent} />
-            <Route path="/vieweventdetails" component={vieweventdetails} />
+            <Route path="/searchrestaurant" component={SearchRestaurant} />
+            <Route path="/searchevent" component={SearchEvent} />
+            <Route path="/vieweventdetails" component={ViewEventDetails} />
             <Route path="/LandingPage" component={LandingPage} />
-            <Route path="/neworderview" component={neworderview} />
-            <Route path="/uviewprofilerest" component={uviewprofilerest} />
+            <Route path="/neworderview" component={NewOrderView} />
+            <Route path="/uviewprofilerest" component={UViewProfileRest} />
             <Route path="/listallusers" component={ListAllUsers} />
             <Route path="/viewsocialprofile" component={ViewSocialProfile} />
-            
-
           </Switch>
-
         </Router>
-
-
       </div>
     </Provider>
-
   );
 }
 

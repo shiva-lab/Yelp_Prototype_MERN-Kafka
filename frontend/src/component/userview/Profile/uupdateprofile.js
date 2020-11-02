@@ -4,7 +4,7 @@ import Navbar from "../uNavbar";
 import cookie from "react-cookies";
 import {Redirect} from 'react-router';
 
-class uupdateprofile extends React.Component {
+class UUpdateProfile extends React.Component {
   constructor(props) {
     super(props);
   this.state = {
@@ -356,4 +356,4 @@ class uupdateprofile extends React.Component {
     );
   }
 }
-export default uupdateprofile;
+export default UUpdateProfile;

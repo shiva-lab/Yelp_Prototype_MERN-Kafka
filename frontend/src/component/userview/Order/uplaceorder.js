@@ -8,7 +8,7 @@ import Placeorderform from "./placeorderform";
 import Navbar from "../uNavbar";
 
 // import Modal from 'react-modal';
-class uplaceorder extends React.Component {
+class UPlaceOrder extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -197,4 +197,4 @@ class uplaceorder extends React.Component {
   }
 }
 
-export default uplaceorder;
+export default UPlaceOrder;

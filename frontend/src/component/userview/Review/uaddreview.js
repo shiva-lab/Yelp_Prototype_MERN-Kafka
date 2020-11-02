@@ -4,7 +4,7 @@ import cookie from "react-cookies";
 import Navbar from "../uNavbar";
 import StartRating from "./StarRating"
 
-class addreview extends React.Component {
+class AddReview extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -129,4 +129,4 @@ class addreview extends React.Component {
     );
   }
 }
-export default addreview;
+export default AddReview;

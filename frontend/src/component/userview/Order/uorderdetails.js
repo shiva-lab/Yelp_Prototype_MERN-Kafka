@@ -4,7 +4,7 @@ import Navbar from "../uNavbar";
 
 
 // import Modal from 'react-modal';
-class uorderdetails extends React.Component {
+class UOrderDetails extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -90,4 +90,4 @@ class uorderdetails extends React.Component {
   }
 }
 
-export default uorderdetails;
+export default UOrderDetails;

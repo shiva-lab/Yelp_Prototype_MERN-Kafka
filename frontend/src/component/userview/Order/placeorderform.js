@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import cookie from "react-cookies";
 import axios from "axios";
 
-class Placeorderform extends React.Component {
+class PlaceOrderForm extends React.Component {
   state = {
     fullname: "",
     address: "",
@@ -189,4 +189,4 @@ class Placeorderform extends React.Component {
     );
   }
 }
-export default Placeorderform;
+export default PlaceOrderForm;

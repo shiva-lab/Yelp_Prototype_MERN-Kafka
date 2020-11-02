@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 // import Modal from 'react-modal';
-class Rcompleteorder extends React.Component {
+class RCompleteOrder extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -105,4 +105,4 @@ class Rcompleteorder extends React.Component {
     );
   }
 }
-export default Rcompleteorder;
+export default RCompleteOrder;

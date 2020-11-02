@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 import Navbar from "../uNavbar";
 
 // import Modal from 'react-modal';
-class uorderstatuscheck extends React.Component {
+class UOrderStatusCheck extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -208,4 +208,4 @@ class uorderstatuscheck extends React.Component {
     );
   }
 }
-export default uorderstatuscheck;
+export default UOrderStatusCheck;

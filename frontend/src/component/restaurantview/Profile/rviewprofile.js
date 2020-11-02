@@ -6,7 +6,7 @@ import MapContainer from "../../userview/mapContainer";
 
 import Navbar from "../../userview/uNavbar";
 
-class rviewprofile extends React.Component {
+class RViewProfile extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -267,4 +267,4 @@ class rviewprofile extends React.Component {
     );
   }
 }
-export default rviewprofile;
+export default RViewProfile;
