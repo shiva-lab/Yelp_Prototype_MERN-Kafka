@@ -46,6 +46,12 @@ export const MenuItems = [
   },
 
   {
+    title: 'Messages',
+    url: ' ',
+    cName: 'nav-links'
+  },
+
+  {
     title: 'Logout',
     url: '/rlogout',
     cName: 'nav-links',

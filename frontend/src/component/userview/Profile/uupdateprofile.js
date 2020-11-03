@@ -3,8 +3,13 @@ import axios from "axios";
 import Navbar from "../uNavbar";
 import cookie from "react-cookies";
 import {Redirect} from 'react-router';
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { updateUserProfile } from "../../../redux/action/actionprofile";
+import store from "../../../redux/store";
 
-class UUpdateProfile extends React.Component {
+import { Provider } from "react-redux";
+class uupdateprofile extends React.Component {
   constructor(props) {
     super(props);
   this.state = {
@@ -68,49 +73,29 @@ class UUpdateProfile extends React.Component {
           'content-type': 'multipart/form-data'
       }
     };
-
-    axios.post("/uupdateprofile",formData,config)
-    .then(response => {
-      console.log("inside success")
-      console.log("Status Code : ", response.status);
-      if (response.status === 200) {
-          console.log("success", response)
-          alert("User's Profile Updated Successfully !!")
-          //window.location.reload();
-          // console.log(response)
-      }
-  })
-  .catch(err => {
-      console.log("In error");
-      console.log(err);
-      alert("Update failed! Please try again", err)
-  })
+    this.props.updateUserProfile(formData);
+  //   axios.post("/uupdateprofile",formData,config)
+  //   .then(response => {
+  //     console.log("inside success")
+  //     console.log("Status Code : ", response.status);
+  //     if (response.status === 200) {
+  //         console.log("success", response)
+  //         alert("User's Profile Updated Successfully !!")
+  //         //window.location.reload();
+  //         // console.log(response)
+  //     }
+  // })
+  // .catch(err => {
+  //     console.log("In error");
+  //     console.log(err);
+  //     alert("Update failed! Please try again", err)
+  // })
   };
   
   onChange(e) {
     this.setState({file:e.target.files[0]});
 }
 
-  // resetUserInputs = () => {
-  //   this.setState({
-  //     bio: "",
-  //     fname: "",
-  //     lname: "",
-  //     mobile: "",
-  //     city: "",
-  //     address: "",
-  //     favorites: "",
-  //     profileimage: "",
-      
-  //     thingsilove:"",
-  //     find_me_in:"",
-  //     myblog:"",
-  //     state:"",
-  //     nick_name:"",
-  //     headline:"",
-  //     emailid:""
-  //   });
-  // };
 
   render() {
     console.log("State: ", this.state);
@@ -124,6 +109,7 @@ class UUpdateProfile extends React.Component {
             <div>
             {redirectVar}
             <div>
+            <Provider store={store}>
       <div>
         <Navbar />
 
@@ -351,9 +337,22 @@ class UUpdateProfile extends React.Component {
           </div>
         </div>
       </div>
+      </Provider>
       </div>
       </div>
     );
   }
 }
-export default UUpdateProfile;
+
+
+uupdateprofile.propTypes = {
+  updateUserProfile: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  user: state.profile.user,
+});
+
+export default connect(mapStateToProps, { updateUserProfile })(uupdateprofile);
+//export default uupdateprofile;

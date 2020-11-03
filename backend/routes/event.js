@@ -6,7 +6,10 @@ const restEvent = require('../models/restEvent');
 const eventroute = express.Router();
 var multer = require('multer');
 var multerS3 = require('multer-s3');
+const passport = require("passport");
+let checkAuth = passport.authenticate('jwt', { session: false });
 aws = require('aws-sdk'),
+
 
 
 aws.config.update({

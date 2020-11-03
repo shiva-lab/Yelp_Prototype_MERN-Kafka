@@ -5,6 +5,10 @@ import cookie from "react-cookies";
 import { Redirect } from "react-router";
 import swal from 'sweetalert2';
 
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { addMenu } from "../../../redux/action/menuAction";
+import store from "../../../redux/store";
 
 class AddMenu extends React.Component {
   // Creating State
@@ -74,6 +78,7 @@ class AddMenu extends React.Component {
     event.preventDefault();
     if (this.handleValidation()) {
     let restaurant_id = localStorage.getItem("restaurant_id");
+    var user_name = cookie.load("username")
     console.log("RestaurantID - Update", restaurant_id);
     const formData = new FormData();
     formData.append('myfile',this.state.file);
@@ -83,42 +88,42 @@ class AddMenu extends React.Component {
     formData.append('itemcategory',this.state.itemcategory)
     formData.append('ingredients',this.state.ingredients)
     formData.append('restaurant_id',restaurant_id)
+    formData.append('user_name',user_name)
     const config = {
+      
       headers: {
           'content-type': 'multipart/form-data'
       }
     };
-    axios.defaults.withCredentials = true;
-    // make a post request with the user data
-    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
-    axios.post("/addmenu",formData,config)
+    this.props.addMenu(formData,config);
+    // axios.post("/addmenu",formData,config)
     
-    .then(response => {
-              console.log("Status Code : ", response.status);
-              if (response.status === 200) {
-                  console.log("shiva inside login")
-                  swal.fire({
-                    title: 'Success!',
-                    text: 'Item Added Successfully',
-                    icon: 'success'
-                  })
-                  //alert('Good Job!','You Clicked the Button!','Success')
-              }
-          })
-          .catch(error => {
-              this.setState({
-                  ...this.state,
-                  message: "!!!!can not add item!!!!"
-              });
-              //alert("can not add data")
-              swal.fire({
-                title: 'Failed!',
-                text: 'Cannot Add Data',
-                icon: 'error'
-              })
-              console.log("Error is:", error);
+    // .then(response => {
+    //           console.log("Status Code : ", response.status);
+    //           if (response.status === 200) {
+    //               console.log("shiva inside login")
+    //               swal.fire({
+    //                 title: 'Success!',
+    //                 text: 'Item Added Successfully',
+    //                 icon: 'success'
+    //               })
+    //               //alert('Good Job!','You Clicked the Button!','Success')
+    //           }
+    //       })
+    //       .catch(error => {
+    //           this.setState({
+    //               ...this.state,
+    //               message: "!!!!can not add item!!!!"
+    //           });
+    //           //alert("can not add data")
+    //           swal.fire({
+    //             title: 'Failed!',
+    //             text: 'Cannot Add Data',
+    //             icon: 'error'
+    //           })
+    //           console.log("Error is:", error);
               
-          });
+    //       });
   };
   }
   
@@ -246,4 +251,17 @@ class AddMenu extends React.Component {
     );
   }
 }
-export default AddMenu;
+
+
+AddMenu.propTypes = {
+  addMenu: PropTypes.func.isRequired,
+  menuitem: PropTypes.object.isRequired,
+ 
+};
+
+const mapStateToProps = (state) => ({
+  menuitem: state.menu.menuitem,
+});
+
+export default connect(mapStateToProps, { addMenu })(AddMenu);
+

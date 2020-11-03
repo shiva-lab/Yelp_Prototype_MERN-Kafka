@@ -6,6 +6,7 @@ import Rcompleteorder from "./rcompleteorder";
 import Rfinalstatus from "./rfinalstatus";
 import Rorderdone from "./rorderdone";
 import Rrejectedorder from "./rrejectedorder";
+import axios from "axios";
 
 // import Modal from 'react-modal';
 class RViewOrder extends React.Component {
@@ -20,13 +21,17 @@ class RViewOrder extends React.Component {
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
-    fetch("/rvieworder", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    axios.defaults.withCredentials = true;
+    // make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.post("/rvieworder",data)
+    // fetch("/rvieworder", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(data),
+    // })
       .then((response) => {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
@@ -45,14 +50,18 @@ class RViewOrder extends React.Component {
     return function () {
       const newdata = { order_id };
       console.log(newdata);
-
-      fetch("/acceptorder", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newdata),
-      }).then(res => res.json());
+      axios.defaults.withCredentials = true;
+    // make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+      axios.post("/acceptorder",newdata)
+      // fetch("/acceptorder", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(newdata),
+      // })
+      .then(res => res.json());
     };
   }
 
@@ -60,14 +69,19 @@ class RViewOrder extends React.Component {
     return function () {
       const newdata = { order_id };
       console.log("Reject", newdata);
+      axios.defaults.withCredentials = true;
+    // make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+      axios.post("/rejectorder",newdata)
 
-      fetch("/rejectorder", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newdata),
-      }).then(res => res.json());
+      // fetch("/rejectorder", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(newdata),
+      // })
+      .then(res => res.json());
     };
   }
 

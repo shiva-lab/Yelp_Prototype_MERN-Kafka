@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import axios from "axios";
 import Navbar from "../rNavbar";
 import cookie from "react-cookies";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { editMenu } from "../../../redux/action/menuAction";
+import store from "../../../redux/store";
 
 class EditMenu extends React.Component{
   constructor(props) {
@@ -44,27 +48,25 @@ class EditMenu extends React.Component{
               'content-type': 'multipart/form-data'
           }
         };
-        axios.defaults.withCredentials = true;
-    // make a post request with the user data
-    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+        this.props.editMenu(formData,config);
     
-        axios.post("/editmenu",formData,config)
+        // axios.post("/editmenu",formData,config)
     
-        .then(response => {
-            if (response.status === 200) {
-            alert("Item Successfully Updated")
-            console.log(response);
-            }
-          })
-          // .then(() => {
-          //   console.log("Data has been sent to the server");
-          //   this.resetUserInputs();
-          // })
+        // .then(response => {
+        //     if (response.status === 200) {
+        //     alert("Item Successfully Updated")
+        //     console.log(response);
+        //     }
+        //   })
+        //   // .then(() => {
+        //   //   console.log("Data has been sent to the server");
+        //   //   this.resetUserInputs();
+        //   // })
         
-          .catch(() => {
-            console.log("Internal server error");
+        //   .catch(() => {
+        //     console.log("Internal server error");
            
-          });
+        //   });
       };
     
       // resetUserInputs = () => {
@@ -183,4 +185,17 @@ class EditMenu extends React.Component{
         );
       }
 }
-export default EditMenu
+
+
+EditMenu.propTypes = {
+  editMenu: PropTypes.func.isRequired,
+  menuitem: PropTypes.object.isRequired,
+ 
+};
+
+const mapStateToProps = (state) => ({
+  menuitem: state.menu.menuitem,
+});
+
+export default connect(mapStateToProps, { editMenu })(EditMenu);
+//export default editmenu

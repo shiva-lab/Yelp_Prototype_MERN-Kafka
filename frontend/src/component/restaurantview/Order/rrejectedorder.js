@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Component } from "react";
 
 // import Modal from 'react-modal';
@@ -13,13 +14,17 @@ class RRejectedOrder extends React.Component {
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
-    fetch("/rejectedorder", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    axios.defaults.withCredentials = true;
+    // make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.post("/rejectedorder",data)
+    // fetch("/rejectedorder", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(data),
+    // })
       .then((response) => {
         if (response.status >= 400) {
           throw new Error("Bad response from server");

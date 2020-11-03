@@ -13,11 +13,11 @@ module.exports = passport => {
     new JwtStrategy(opts, (jwt_payload, done) => {
         console.log(jwt_payload)
       restaurant.findById(jwt_payload.id)
-        .then(restaurantdata => {
-          if (restaurantdata) {
+        .then(data => {
+          if (data) {
               console.log("found restaurantdata")
-              console.log(restaurantdata)
-            return done(null, restaurantdata);
+              console.log(data)
+            return done(null, data);
           }
           return done(null, false);
         })
@@ -31,11 +31,11 @@ module.exports = passport => {
       new JwtStrategy(opts, (jwt_payload, done) => {
           console.log(jwt_payload)
         user.findById(jwt_payload.id)
-          .then(userdata => {
-            if (userdata) {
+          .then(data => {
+            if (data) {
                 console.log("User Found")
-                console.log(userdata)
-              return done(null, userdata);
+                console.log(data)
+              return done(null, data);
             }
             return done(null, false);
           })

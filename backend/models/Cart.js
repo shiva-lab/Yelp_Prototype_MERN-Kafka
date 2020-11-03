@@ -10,8 +10,19 @@ const cartSchema = new Schema({
     cartstatus:  {type: String},
     user_id:{type: String},  
     path:  {type: String},
+    
+    OrderPlaced : [
+        {
+            order_id : {type: mongoose.Schema.Types.ObjectId,
+                   unique:true} ,
+           
+            deliverymode : {type : String , required : true} ,
+            orderstatus : {type : String , required : true} ,
+            ts: {    type: Date, default: Date.now,
+            },
 
-  
+        }
+    ]
  
 },
 {

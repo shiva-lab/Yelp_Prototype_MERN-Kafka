@@ -127,8 +127,8 @@ class MessagesPage extends Component {
 }
 const mapStateToProps = state => {
   return {
-      messages: state.studentMessageReducer.messages,
-      selectedMessage : state.studentMessageReducer.selectedMessage
+      messages: state.userMessageReducer.messages,
+      selectedMessage : state.userMessageReducer.selectedMessage
   };
 };
 

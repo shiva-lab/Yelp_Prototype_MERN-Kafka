@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_PROFILE, UPDATE_PROFILE } from "./type";
+import { GET_PROFILE, UPDATE_PROFILE,UPDATE_USER_PROFILE } from "./type";
 
 
 // export const getRestProfile = (restdata) => dispatch => {
@@ -20,8 +20,8 @@ import { GET_PROFILE, UPDATE_PROFILE } from "./type";
 //         });
 // }
 
-export const updateRestProfile = restdata => (dispatch) => {
-  axios.post('/restaurantupdate', restdata)
+export const updateRestProfile = (restdata,config) => (dispatch) => {
+  axios.post('/restaurantupdate', restdata,config)
     .then((response) => {
       console.log("response is ", response);
       alert('Profile updated ');
@@ -40,3 +40,26 @@ export const updateRestProfile = restdata => (dispatch) => {
       }
     });
 };
+
+
+export const updateUserProfile = userdata => (dispatch) => {
+  axios.post("/uupdateprofile", userdata)
+    .then((response) => {
+      console.log("response is ", response);
+      alert('Profile updated ');
+      dispatch({
+
+        type: UPDATE_USER_PROFILE,
+        payload: response.data
+      });
+    })
+    .catch((error) => {
+      if (error.response && error.response.data) {
+        return dispatch({
+          type: UPDATE_USER_PROFILE,
+          payload: error.response.data
+        });
+      }
+    });
+};
+

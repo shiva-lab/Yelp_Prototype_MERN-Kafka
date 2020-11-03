@@ -74,6 +74,7 @@ class UserLogin extends React.Component {
       redirectVar = <Redirect to="/allRestaurant" />;
       
       localStorage.setItem("email", this.state.Emailid);
+    
       console.log("Saving email to localstorage");
     }
     return (

@@ -55,6 +55,9 @@ class UViewProfileRest extends React.Component {
                 <div className="main-div-menu">
                   <div className="panel" />
                   <div>
+                    <button class="ybtn ybtn--primary ybtn--small business-search-form_button">Message</button>
+                  </div>
+                  <div>
                     <h1 className="heading-menu"> Profile</h1>
                     <div className="container" />
                     <table>
@@ -92,7 +95,7 @@ class UViewProfileRest extends React.Component {
 
                         <tr>
                           <th className="profilepagefont">Email ID</th>
-                          <td className="profiletdfont">{userprofile.emailid}</td>
+                          <td className="profiletdfont">{userprofile.Emailid}</td>
                         </tr>
                         <tr>
                           <th className="profilepagefont">City</th>
@@ -123,7 +126,7 @@ class UViewProfileRest extends React.Component {
                         <tr>
                           <th className="profilepagefont">Nick Name</th>
                           <td className="profiletdfont">
-                            {userprofile.nickname}
+                            {userprofile.nick_name}
                             {' '}
                           </td>
                         </tr>
@@ -137,7 +140,7 @@ class UViewProfileRest extends React.Component {
 
                         <tr>
                           <th className="profilepagefont">Website/MyBlog</th>
-                          <td className="profiletdfont">{userprofile.website}</td>
+                          <td className="profiletdfont">{userprofile.myblog}</td>
                         </tr>
                         <tr>
                           <th className="profilepagefont">Contact Number</th>
@@ -149,14 +152,14 @@ class UViewProfileRest extends React.Component {
                         <tr>
                           <th className="profilepagefont">Yelping Since</th>
                           <td className="profiletdfont">
-                            {userprofile.ts}
+                            {userprofile.yelpingsince}
                             {' '}
                           </td>
                         </tr>
                         <tr>
                           <th className="profilepagefont">Things I love</th>
                           <td className="profiletdfont">
-                            {userprofile.thingsilove}
+                            {userprofile.things_ilove}
                             {' '}
                           </td>
                         </tr>
@@ -170,7 +173,7 @@ class UViewProfileRest extends React.Component {
                         <tr>
                           <th className="profilepagefont">State</th>
                           <td className="profiletdfont">
-                            {userprofile.state}
+                            {userprofile.ustate}
                             {' '}
                           </td>
                         </tr>

@@ -4,7 +4,9 @@ import { paginate, pages } from '../../../helperFunctions/paginate'
 import axios from 'axios';
 import cookie from "react-cookies";
 import Navbar from "../rNavbar";
-
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { viewMenu } from "../../../redux/action/menuAction";
 // import Modal from 'react-modal';
 class ViewMenu extends React.Component {
   constructor(props) {
@@ -20,7 +22,9 @@ class ViewMenu extends React.Component {
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
+    //this.props.viewMenu(data);
     // make a post request with the user data
+    axios.defaults.withCredentials = true;
     axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios.post("/viewmenu", data)
         .then(response => {
@@ -57,13 +61,11 @@ class ViewMenu extends React.Component {
       console.log(item_id);
       const newdata = { item_id };
       console.log(newdata);
-      fetch("/deletefrommenu", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newdata),
-      }).then(res => res.json());
+      // make a post request with the user data
+    axios.defaults.withCredentials = true;
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+      axios.post("/deletefrommenu", newdata)
+      .then(res => res.json());
     };
   }
 
@@ -114,12 +116,12 @@ class ViewMenu extends React.Component {
           <td>{food.itemcategory}</td>
           <td>
             <Link to="/editmenu">
-              <button onClick={this.handleClick(food.item_id)}>Edit</button>
+              <button onClick={this.handleClick(food._id)}>Edit</button>
             </Link>
           </td>
           <td>
             <Link>
-              <button onClick={this.handleClickdelete(food.item_id)}>Delete</button>
+              <button onClick={this.handleClickdelete(food._id)}>Delete</button>
             </Link>
           </td>
         </tr>
@@ -172,4 +174,17 @@ class ViewMenu extends React.Component {
     );
   }
 }
+// viewmenu.propTypes = {
+//   viewMenu: PropTypes.func.isRequired,
+//   menuitem: PropTypes.object.isRequired,
+ 
+// };
+
+// const mapStateToProps = (state) => ({
+//   menuitem: state.menu.menuitem,
+// });
+
+// export default connect(mapStateToProps, { viewMenu })(viewmenu);
+
+
 export default ViewMenu;

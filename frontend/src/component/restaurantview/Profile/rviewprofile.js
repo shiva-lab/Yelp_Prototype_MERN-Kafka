@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import cookie from "react-cookies";
+import axios from "axios"
 
 import MapContainer from "../../userview/mapContainer";
 
@@ -18,6 +19,10 @@ class RViewProfile extends React.Component {
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id_allrest");
     const data = { restaurant_id };
+    //axios.defaults.withCredentials = true;
+    // make a post request with the user data
+    //axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    //axios.post("/viewhome",data)
     fetch("/viewhome", {
       method: "POST",
       headers: {

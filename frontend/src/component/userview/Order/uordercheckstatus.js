@@ -1,6 +1,8 @@
+import Axios from "axios";
 import React, { Component } from "react";
 import cookie from "react-cookies";
 import { Link, Redirect } from 'react-router-dom';
+import axios from "axios"
 
 import Navbar from "../uNavbar";
 
@@ -21,21 +23,11 @@ class UOrderStatusCheck extends React.Component {
     const order_id = cookie.load('order_id');
     const user_id = cookie.load('cookie1');
     const data = { order_id, user_id };
-    fetch("/userorderstatus", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    axios.post("/userorderstatus",data)
+      
       .then((response) => {
-        if (response.status >= 400) {
-          throw new Error("Bad response from server");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        self.setState({ order: data });
+        console.log("Data", response.data)
+        self.setState({ order: response.data });
       })
       .catch((err) => {
         console.log("caught it!", err);
@@ -47,10 +39,10 @@ class UOrderStatusCheck extends React.Component {
     this.setState({ [name]: value });
   };
 
-  handleClick(order_id) {
+  handleClick(_id) {
     return function () {
-      console.log(order_id);
-      localStorage.setItem('order_id_details', order_id);
+      console.log(_id);
+      localStorage.setItem('order_id_details', _id);
       return <Redirect to="/uorderdetails" />;
     };
   }
@@ -91,7 +83,7 @@ class UOrderStatusCheck extends React.Component {
       })
       .then(function (data) {
         console.log(data);
-        temp.setState({ order: data });
+        temp.setState({ order: data[0].OrderPlaced });
       })
       .catch((err) => {
         console.log("caught it!", err);
@@ -147,10 +139,7 @@ class UOrderStatusCheck extends React.Component {
                           <tr className="tbl-header">
                             <th>Date/Time</th>
                             <th>Order ID</th>
-                            <th>Full Name</th>
-                            <th>Address</th>
-                            <th>City</th>
-                            <th>Zipcode</th>
+                       
                             <th>Delivery Mode</th>
                             <th>Current Status</th>
                             <th>View Details</th>
@@ -162,23 +151,14 @@ class UOrderStatusCheck extends React.Component {
                           {this.state.order.map(order => (
                             <tr>
                               <td>{order.ts}</td>
-                              <td>{order.order_id}</td>
-                              <td>
-                                {order.fullname}
-                                {' '}
-                              </td>
-                              <td>
-                                {order.address}
-                                {' '}
-                              </td>
-                              <td>{order.city}</td>
-                              <td>{order.zipcode}</td>
+                              <td>{order._id}</td>
+                           
                               <td>{order.deliverymode}</td>
-                              <td>{order.status}</td>
+                              <td>{order.orderstatus}</td>
                               <td>
                                 <Link to="/uorderdetails">
                                   <button
-                                    onClick={this.handleClick(order.order_id)}
+                                    onClick={this.handleClick(order._id)}
                                   >
                                     View Details
                                   </button>
@@ -187,7 +167,7 @@ class UOrderStatusCheck extends React.Component {
                               <td>
                                 <Link to="/addreview">
                                   <button
-                                    onClick={this.handleReviewClick(order.order_id, order.restaurant_id, order.user_id)}
+                                    onClick={this.handleReviewClick(order._id, order.restaurant_id, order.user_id)}
                                   >
                                     Rate Order
                                   </button>

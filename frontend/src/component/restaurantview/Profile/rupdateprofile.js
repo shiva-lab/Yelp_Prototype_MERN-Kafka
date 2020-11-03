@@ -48,21 +48,7 @@ class rupdateprofile extends React.Component {
     event.preventDefault();
     let restaurant_id = localStorage.getItem("restaurant_id");
     console.log("RestaurantID - Update", restaurant_id);
-    // const payload = {
-    //   description: this.state.description,
-    //   contactinfo: this.state.contactinfo,
-    //   cuisine: this.state.cuisine,
-    //   timings: this.state.timings,
-    //   zipcode: this.state.zipcode,
-    //   website: this.state.website,
-    //   address: this.state.address,
-    //   restaurantimage: this.state.restaurantimage,
-    //   lat: this.state.lat,
-    //   lng: this.state.lng,
-    //   modeofdelivery: this.state.modeofdelivery,
-    //   delivery_method: this.state.delivery_method,
-    //   restaurant_id,
-    // };
+  
 
     const formData = new FormData();
     for(var x = 0; x<this.state.selectedFile.length; x++) {
@@ -87,7 +73,7 @@ class rupdateprofile extends React.Component {
           'content-type': 'multipart/form-data'
       }
     };
-    this.props.updateRestProfile(formData);
+    this.props.updateRestProfile(formData,config);
 
     //   axios.post("/restaurantupdate",formData,config)
     //   .then(response => {
@@ -339,7 +325,7 @@ rupdateprofile.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  user: state.register.user,
+  user: state.profile.user,
 });
 
 export default connect(mapStateToProps, { updateRestProfile })(rupdateprofile);

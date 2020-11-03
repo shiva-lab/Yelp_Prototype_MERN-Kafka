@@ -145,7 +145,7 @@ class RestaurantRegister extends React.Component {
     
      async submit (event) {
         console.log("inside rest submit")
-        //event.preventDefault();
+      
     //prevent page from refresh
     event.preventDefault();
     if (this.handleValidation()) {

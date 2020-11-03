@@ -30,7 +30,9 @@ class UOrderDetails extends React.Component {
         return response.json();
       })
       .then((data) => {
-        self.setState({ items: data });
+        console.log("heeeeyyyy..Im here");
+        console.log(data[0].cart);
+        self.setState({ items: data[0].cart });
       })
       .catch((err) => {
         console.log("caught it!", err);

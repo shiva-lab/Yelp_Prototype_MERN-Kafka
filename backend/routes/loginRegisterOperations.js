@@ -9,6 +9,7 @@ const Restaurant = require("../models/Restaurant");
 const User = require("../models/User");
 const passport = require("passport");
 var kafka = require("../kafka/client");
+let checkAuth = passport.authenticate('jwt', { session: false });
 
 // @route  POST /api/restusers
 // @Desc   Resgister User
@@ -52,60 +53,160 @@ loginroute.post(
 
 
 
+// loginroute.post("/restaurantlogin", (req, res) => {
 
+//     kafka.make_request('restaurantlogin', req.body, function(err,results){
+//         if (err){
+//             console.log("Inside err");
+//             res.writeHead(500, {
+//                 'Content-Type': 'text/plain'
+//             })
+//             res.end("Error");
+//         } else if (results.code == 200){
 
+//             const payload = { id: restuser._id, restaurantname: restuser.restaurantname,Emailid: restuser.Emailid,
+//               }; // Create JWT Payload
+//               console.log("Creating Token");
+//               jwt.sign( payload,keys.secretOrKey,
+//                 { expiresIn: 1008000 },
+//                 (err, token) => {
+//                   res.json({
+//                     success: true,
+//                     token: "Bearer " + token,
+//                   });
+//                 }
+//               );
+//             res.writeHead(results.code, {
+//                 'Content-Type': 'text/plain'
+//             })
+//             var result_with_token = results;
+//             result_with_token.value = "JWT " + token;
+//             res.end(JSON.stringify(result_with_token));
+//         } else {
+//             res.writeHead(results.code, {
+//                 'Content-Type': 'text/plain'
+//             });
+//             res.end("Invalid credentials");
+//         }   
+//     });
+// });
 
+//////////////////////////////////////////////////////////////
+//Restaurant Login Section
+/////////////////////////////////////////////////////////////
 
-//************ */
-//Without Kafka
-//*********** */
+loginroute.post( "/restaurantlogin", async (req, res) => {
+      //Getting Restaurant Email and Password from the Body
+      const { Emailid, restpass } = req.body;
+      console.log(req.body);
+
+      try {
+        // see if user exists
+        const restuser = await Restaurant.findOne({ Emailid: req.body.Emailid });
+        if (!restuser) {
+          return res
+            .status(404)
+            .json({ errors: [{ msg: "Restaurant Not Found" }] });
+        }
+        //Check Password
+        const isMatch = await bcrypt.compareSync(
+          req.body.restpass,
+          restuser.restpass
+        );
+        if (!isMatch) {
+          return res.status(404).json({ errors: [{ msg: "Invalid Password" }] });
+        } else {
+          //User Matched
+          console.log("User Matched - Creating Payload");
+          const payload = {
+            id: restuser._id,
+            restaurantname: restuser.restaurantname,
+            location: restuser.location,
+            Emailid: restuser.Emailid,
+          }; // Create JWT Payload
+          console.log(payload)
+          console.log("Creating Token");
+          jwt.sign(
+            payload,
+            keys.secretOrKey,
+            { expiresIn: 3600 },
+            (err, token) => {
+              res.json({
+                success: true,
+                token: "Bearer " + token,
+              });
+            }
+          );
+          res.cookie("restaurant_id", restuser._id.toString(), {
+            maxAge: 900000,
+            httpOnly: false,
+            path: "/",
+          });
+        }
+      } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
+      }
+    }
+  );
+  
+  
+// //////////////////////////////////////////////////////////////
+// //Restaurant Login Section
+// /////////////////////////////////////////////////////////////
+
 // loginroute.post(
-//   "/restaurantregister",
+//   "/restaurantlogin",
 //   [
-//     check("restaurantname", "Name is required").not().isEmpty(),
 //     check("Emailid", "Please enter valid email").isEmail(),
-//     check(
-//       "restpass",
-//       "Please enter password with 4 or more characters"
-//     ).isLength({ min: 4 }),
-//     check("location", "location is required").not().isEmpty(),
+//     check("restpass", "Password is required").exists(),
 //   ],
-
 //   async (req, res) => {
-//     console.log("Hello");
-//     // const errors = validationResult(req);
-//     // if (!errors.isEmpty()) {
-//     //     return res.status(400).json({ errors: errors.array() });
-//     // }
-
-//     const { restaurantname, Emailid, restpass, location } = req.body;
-//     console.log("Data in backend", restaurantname, Emailid, restpass, location);
+//     //Getting Restaurant Email and Password from the Body
+//     const { Emailid, restpass } = req.body;
+//     console.log(Emailid, restpass);
 //     try {
 //       // see if user exists
-//       let restaurant = await Restaurant.findOne({ Emailid });
-//       if (restaurant) {
+//       const restuser = await Restaurant.findOne({ Emailid: req.body.Emailid });
+//       if (!restuser) {
 //         return res
-//           .status(400)
-//           .json({ errors: [{ msg: "Restaurant Already Exists" }] });
+//           .status(404)
+//           .json({ errors: [{ msg: "Restaurant Not Found" }] });
 //       }
-
-//       restaurant = new Restaurant({
-//         restaurantname,
-//         Emailid,
-//         restpass,
-//         location,
-//       });
-
-//       restaurant.restpass = bcrypt.hashSync(restpass);
-//       await restaurant.save().catch((err) => console.log(err));
-
-//       const payload = {
-//         restaurant: { id: restaurant.id },
-//       };
-//       res.writeHead(200, {
-//         "Content-Type": "text/plain",
-//       });
-//       res.end();
+//       //Check Password
+//       const isMatch = await bcrypt.compareSync(
+//         req.body.restpass,
+//         restuser.restpass
+//       );
+//       if (!isMatch) {
+//         return res.status(404).json({ errors: [{ msg: "Invalid Password" }] });
+//       } else {
+//         //User Matched
+//         console.log("User Matched - Creating Payload");
+//         const payload = {
+//           id: restuser._id,
+//           restaurantname: restuser.restaurantname,
+//           location: restuser.location,
+//           Emailid: restuser.Emailid,
+//         }; // Create JWT Payload
+//         console.log("Creating Token");
+//         jwt.sign(
+//           payload,
+//           keys.secretOrKey,
+//           { expiresIn: 3600 },
+//           (err, token) => {
+//             res.json({
+//               success: true,
+//               token: "Bearer " + token,
+//             });
+//           }
+//         );
+//         res.cookie("restaurant_id", restuser._id.toString(), {
+//           maxAge: 900000,
+//           httpOnly: false,
+//           path: "/",
+//         });
+//       }
 //     } catch (err) {
 //       console.error(err.message);
 //       res.status(500).send("Server Error");
@@ -113,103 +214,9 @@ loginroute.post(
 //   }
 // );
 
-// loginroute.post('/restaurantlogin',(req, res) => {
-//   Restaurant.findOne({ Emailid: req.body.Emailid, restpass: req.body.restpass }, (error, restuser) => {
 
-//     const {
-//       Emailid,
-//       restpass,
-//   } = req.body;
-//   console.log("Data in forlogin",
-//     Emailid,
-//     restpass)
 
-//       if (error) {
-//           res.writeHead(500, {
-//               'Content-Type': 'text/plain'
-//           })
-//           res.end("Error Occured");
-//       }
-//       if (restuser) {
-//           res.cookie('restaurant_id', restuser.Emailid, { maxAge: 900000, httpOnly: false, path: '/' });
 
-//           res.writeHead(200, {
-//               'Content-Type': 'text/plain'
-//           })
-//           res.end();
-//       }
-//       else {
-//           res.writeHead(401, {
-//               'Content-Type': 'text/plain'
-//           })
-//           res.end("Invalid Credentials");
-//       }
-//   });
-// });
-
-//////////////////////////////////////////////////////////////
-//Restaurant Login Section
-/////////////////////////////////////////////////////////////
-
-loginroute.post(
-  "/restaurantlogin",
-  [
-    check("Emailid", "Please enter valid email").isEmail(),
-    check("restpass", "Password is required").exists(),
-  ],
-  async (req, res) => {
-    //Getting Restaurant Email and Password from the Body
-    const { Emailid, restpass } = req.body;
-    console.log(Emailid, restpass);
-    try {
-      // see if user exists
-      const restuser = await Restaurant.findOne({ Emailid: req.body.Emailid });
-      if (!restuser) {
-        return res
-          .status(404)
-          .json({ errors: [{ msg: "Restaurant Not Found" }] });
-      }
-      //Check Password
-      const isMatch = await bcrypt.compareSync(
-        req.body.restpass,
-        restuser.restpass
-      );
-      if (!isMatch) {
-        return res.status(404).json({ errors: [{ msg: "Invalid Password" }] });
-      } else {
-        //User Matched
-        console.log("User Matched - Creating Payload");
-        const payload = {
-          id: restuser._id,
-          restaurantname: restuser.restaurantname,
-          location: restuser.location,
-          Emailid: restuser.Emailid,
-        }; // Create JWT Payload
-        console.log(payload)
-        console.log("Creating Token");
-        jwt.sign(
-          payload,
-          keys.secretOrKey,
-          { expiresIn: 8000 },
-          (err, token) => {
-            res.json({
-              success: true,
-              token: "Bearer " + token,
-            });
-          }
-        );
-        res.cookie("restaurant_id", restuser._id.toString(), {
-          maxAge: 900000,
-          httpOnly: false,
-          path: "/",
-        });
-      }
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server Error");
-    }
-  }
-);
 
 //////////////////////////////////////////////////////////////
 //User Login Section
@@ -248,6 +255,7 @@ loginroute.post(
           Emailid: user.Emailid,
         }; // Create JWT Payload
         console.log("Creating Token");
+        console.log(payload)
         jwt.sign(
           payload,
           keys.secretOrKey,
@@ -264,7 +272,7 @@ loginroute.post(
           httpOnly: false,
           path: "/",
         });
-        res.cookie("userzipcode", user.zipcode, {
+        res.cookie("username", user.user_name, {
           maxAge: 900000,
           httpOnly: false,
           path: "/",
@@ -408,8 +416,11 @@ module.exports = loginroute;
 //   "/current",
 //   passport.authenticate("jwt", { session: false }),
 //   (req, res) => {
-//     res.json(req.restaurantdata.restaurantname);
+//     console.log(req.data)
+//     res.json(req.data);
 //   }
 // );
+
+
 
 module.exports = loginroute;

@@ -23,13 +23,11 @@ class NewOrderView extends React.Component {
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
-    fetch("/rvieworder", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    axios.defaults.withCredentials = true;
+    // make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    
+    axios.post("/rvieworder",data)
       .then((response) => {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
@@ -37,6 +35,11 @@ class NewOrderView extends React.Component {
         return response.json();
       })
       .then((data) => {
+        
+        console.log(data)
+
+        console.log("hhiiiii");
+        console.log(data[0].cart[0].itemname)
         self.setState({ order: data });
       })
       .catch((err) => {
@@ -55,13 +58,11 @@ class NewOrderView extends React.Component {
     console.log("Testing");
     console.log(data);
     const temp = this;
-    fetch("/filterordersearch", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    axios.defaults.withCredentials = true;
+    // make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+  
+    axios.post("/filterordersearch",data)
       .then(function (response) {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
@@ -71,6 +72,7 @@ class NewOrderView extends React.Component {
       })
       .then(function (data) {
         console.log(data);
+       
         temp.setState({ order: data });
       })
       .catch((err) => {
@@ -80,21 +82,18 @@ class NewOrderView extends React.Component {
 
   
  
-  handleUpdate(order_id) {
+  handleUpdate(_id) {
     return function () {
-    console.log(order_id)
+    console.log(_id)
     var updatestatus = localStorage.getItem('orderupdatestatus')
-    const newdata = {order_id,updatestatus};
+    const newdata = {_id,updatestatus};
     console.log(newdata);
+    axios.defaults.withCredentials = true;
+    // make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     
-
-      fetch("/neworderstatuschange", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newdata),
-      }).then(res => res.json());{
+axios.post("/neworderstatuschange",newdata)
+      .then(res => res.json());{
         alert("status changed for order")
       }
     };
@@ -152,10 +151,7 @@ class NewOrderView extends React.Component {
                           <tr className="tbl-header">
                             <th>Date/Time</th>
                             <th>Order ID</th>
-                            <th>Full Name</th>
-                            <th>Address</th>
-                            <th>City</th>
-                            <th>Zipcode</th>
+                            <th>UserName</th>
                             <th>Item Name</th>
                             <th>Delivery Mode</th>
                             <th>Current Status</th>
@@ -170,15 +166,13 @@ class NewOrderView extends React.Component {
                           {this.state.order.map((order) => (
                             <tr>
                               <td>{order.ts}</td>
-                              <td>{order.order_id}</td>
+                              <td>{order._id}</td>
                               <Link to="/uviewprofilerest" onClick={this.handleClick(order.user_id)}>
-                              <td>{order.fullname} </td> </Link>
-                              <td>{order.address} </td>
-                              <td>{order.city}</td>
-                              <td>{order.zipcode}</td>
-                              <td>{order.itemname}</td>
+                              <td>{order.user_name} </td> </Link>
+                      
+                              <td>{order.cart[0].itemname}</td>
                               <td>{order.deliverymode}</td>
-                              <td>{order.status}</td>
+                              <td>{order.orderstatus}</td>
                               
                               <td>
                                 <select
@@ -199,7 +193,7 @@ class NewOrderView extends React.Component {
                               </td>
                               <td>
                               <button
-                              onClick={this.handleUpdate(order.order_id)}
+                              onClick={this.handleUpdate(order._id)}
                             >
                               Change Status
                             </button>

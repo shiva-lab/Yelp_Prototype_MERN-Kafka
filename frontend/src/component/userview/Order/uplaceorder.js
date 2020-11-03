@@ -6,6 +6,7 @@ import cookie from "react-cookies";
 import { Redirect } from 'react-router';
 import Placeorderform from "./placeorderform";
 import Navbar from "../uNavbar";
+import axios from "axios";
 
 // import Modal from 'react-modal';
 class UPlaceOrder extends React.Component {
@@ -23,6 +24,8 @@ class UPlaceOrder extends React.Component {
     const user_id = cookie.load('cookie1');
     // let restaurant_id = localStorage.getItem("restaurant_id");
     const data = { user_id };
+
+    //axios.post("/uviewcart",data)
     fetch("/uviewcart", {
       method: "POST",
       headers: {
@@ -31,17 +34,21 @@ class UPlaceOrder extends React.Component {
       body: JSON.stringify(data)
     })
       .then((response) => {
+        console.log(response)
         if (response.status >= 400) {
           throw new Error("Bad response from server");
         }
         return response.json();
       })
       .then((data) => {
-        self.setState({ items: data });
+        console.log(data[0]._id)
+        self.setState({ items: data[0].cart });
+        localStorage.setItem("order_id",data[0]._id)
       })
       .catch((err) => {
         console.log("caught it!", err);
       });
+
   }
 
   handleClick(itemid, itemname, restaurant_id, price, path, cart_id) {

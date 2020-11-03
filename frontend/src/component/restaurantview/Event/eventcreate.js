@@ -50,6 +50,9 @@ class EventCreate extends React.Component {
           'content-type': 'multipart/form-data'
       }
     };
+    // make a post request with the user data
+    axios.defaults.withCredentials = true;
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios.post("/addevent",formData,config)
       .then(response => {
             if (response.status === 200) {

@@ -45,14 +45,16 @@ const UserSchema = new mongoose.Schema({
     favorites: {type: String },
     username: {type: String },
     zipcode: {type: String },
-    things_i_love:{type: String },
+    things_ilove:{type: String },
     find_me_in: {type: String },
     myblog: {type: String },
     ustate:{type: String },
     nick_name: {type: String },
     headline: {type: String },
     registeredEvents: { type: Array, max: 100 },
+    yelpingsince:{type:Date,default: Date.now},
     //followedUser: { type: Array, max: 100 },
+    
     followedUser : [
         {
             _id : {type : String , required : true},

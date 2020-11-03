@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Component } from "react";
 
 // import Modal from 'react-modal';
@@ -13,13 +14,14 @@ class RCurrentOrder extends React.Component {
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
-    fetch("/rcurrentorder", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    // fetch("/rcurrentorder", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(data),
+    // })
+    axios.post("/rcurrentorder",data)
       .then((response) => {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
@@ -39,13 +41,15 @@ class RCurrentOrder extends React.Component {
       const newdata = { order_id };
       console.log(newdata);
 
-      fetch("/orderinprogress", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newdata),
-      }).then(res => res.json());
+      // fetch("/orderinprogress", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(newdata),
+      // })
+      axios.post("/orderinprogress",newdata)
+      .then(res => res.json());
     };
   }
 

@@ -89,7 +89,7 @@ class MessagesPage extends Component {
     }
 
         return (
-            <div className="handshake-body">
+            <div className="body">
                 <div className=" col-sm-10 col-sm-offset-1 card-columns margin20">
                     <div className="col-sm-12 card">
                         <div className="message-heading margin20 container-fluid">
@@ -128,8 +128,8 @@ class MessagesPage extends Component {
 }
 const mapStateToProps = state => {
   return {
-      messages: state.companyMessageReducer.messages,
-      selectedMessage : state.companyMessageReducer.selectedMessage
+      messages: state.RestaurantMessageReducer.messages,
+      selectedMessage : state.RestaurantMessageReducer.selectedMessage
   };
 };
 

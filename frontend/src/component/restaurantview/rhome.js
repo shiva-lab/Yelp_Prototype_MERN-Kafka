@@ -3,6 +3,7 @@ import cookie from "react-cookies";
 import { Redirect } from "react-router";
 import Navbar from "./rNavbar";
 import MapContainer from "../userview/mapContainer";
+import axios from "axios";
 
 // import Modal from 'react-modal';
 class RHome extends React.Component {
@@ -17,6 +18,7 @@ class RHome extends React.Component {
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
+    //axios.post("/viewhome",data)
     fetch("/viewhome", {
       method: "POST",
       headers: {

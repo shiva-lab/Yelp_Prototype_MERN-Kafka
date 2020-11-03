@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Component } from "react";
 
 // import Modal from 'react-modal';
@@ -13,13 +14,11 @@ class RCompleteOrder extends React.Component {
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
-    fetch("/foodreadystatus", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    axios.defaults.withCredentials = true;
+    // make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+   
+    axios.post("/foodreadystatus",data)
       .then((response) => {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
@@ -40,13 +39,18 @@ class RCompleteOrder extends React.Component {
       const newdata = { order_id };
       console.log(newdata);
 
-      fetch("/pickupdelivery", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newdata),
-      }).then(res => res.json());
+      // fetch("/pickupdelivery", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(newdata),
+      axios.defaults.withCredentials = true;
+    // make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+      // })
+      axios.post("/pickupdelivery",newdata)
+      .then(res => res.json());
     };
   }
 

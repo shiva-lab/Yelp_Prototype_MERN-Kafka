@@ -1,10 +1,35 @@
-// const express = require("express");
-// //const connection = require("../models/yelpschema");
-// const Restaurant = require('../models/Restaurant');
-// const User = require('../models/User');
-// const orderroute = express.Router();
+const express = require("express");
+//const connection = require("../models/yelpschema");
+const Restaurant = require('../models/Restaurant');
+const User = require('../models/User');
+//const Cart = require('../models/Cart');
+const orderroute = express.Router();
+//const User = require('../models/User');
+const Order = require('../models/Order');
+//const Restaurant = require("../models/Restaurant");
+const Menu = require("../models/Menu");
+//const Cart = require("../models/Cart");
+const passport = require("passport");
+let checkAuth = passport.authenticate('jwt', { session: false });
 
-// orderroute.post("/rvieworder", (req, res) => {
+ orderroute.post("/rvieworder", (req, res) => {
+   Order.find({restaurant_id:req.body.restaurant_id,orderstatus:{ $ne: " " }}, (error, result) => {
+    if (error) {
+      console.log(error)
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end();
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      console.log("result")
+      console.log(result);
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 //   var restaurant_id = req.body.restaurant_id;
 //   var status = "new order";
 //   //var restaurant_id = req.body.restaurant_id;
@@ -327,7 +352,74 @@
 // });
 
 
+orderroute.post("/userorderstatus", (req, res) => {
+    Order.find({ user_id: req.body.user_id,orderstatus:{ $ne: " " }} , (error, result) => {
+      if (error) {
+        console.log(error)
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end();
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        console.log("result")
+        console.log(result);
+        res.end(JSON.stringify(result));
+      }
+    });
+  });
+  
 
+  orderroute.post("/uorderdetails", (req, res) => {
+    console.log(req.body.order_id);
+    
+    Order.find({ "_id": req.body.order_id},{'cart':[]}, (error, result) => {
+   
+      if (error) {
+        console.log(error)
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end();
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        console.log("result")
+        console.log(result);
+        res.end(JSON.stringify(result));
+      }
+    });
+  });
+ orderroute.post("/neworderstatuschange", (req, res) => {
+   console.log(req.body)
+   try{
+   Order.findByIdAndUpdate({_id:req.body._id},{orderstatus:req.body.updatestatus},{new:true},(error, result) => {
+    if (error) {
+      console.log(error)
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end();
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      console.log("result")
+      console.log(result);
+      res.end(JSON.stringify(result));
+    }
+  });
+}
+catch (err) {
+  console.error(err.message);
+  res.status(500).send("Server Error");
+}
+
+});
+    
 // orderroute.post("/neworderstatuschange", (req, res) => {
 //   var order_id = req.body.order_id;
 //   var status = req.body.updatestatus;
@@ -371,4 +463,4 @@
 //     }
 //   });
 // });
-// module.exports = orderroute;
+ module.exports = orderroute;

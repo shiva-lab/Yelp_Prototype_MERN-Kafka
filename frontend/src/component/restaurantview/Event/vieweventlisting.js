@@ -15,7 +15,7 @@ class ViewEventListing extends React.Component {
   }
 
   componentDidMount() {
-    axios.defaults.withCredentials = true;
+   
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };

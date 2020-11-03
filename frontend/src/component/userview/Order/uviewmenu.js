@@ -70,14 +70,17 @@ class UViewMenu extends React.Component {
   handleClick(_id, itemname, restaurant_id, price, path) {
     return function () {
       const user_id = cookie.load('cookie1');
-      console.log(_id, itemname, restaurant_id, price, path);
+      const user_name = cookie.load('username');
+      console.log(_id, itemname, restaurant_id, price, path,user_name);
       const newdata = {
         _id,
         itemname,
         restaurant_id,
         price,
         user_id,
-        path
+        path,
+        user_name
+
       };
       console.log(newdata);
       fetch("/addtocart", {

@@ -1,4 +1,4 @@
-import { GET_PROFILE, UPDATE_PROFILE } from '../action/type';
+import { GET_PROFILE, UPDATE_PROFILE, UPDATE_USER_PROFILE} from '../action/type';
 
 const initialState = {
   user: {}
@@ -16,6 +16,11 @@ export default function (state = initialState, action) {
         ...state,
         user: action.payload
       };
+      case UPDATE_USER_PROFILE:
+        return {
+          ...state,
+          user: action.payload
+        };
     default:
       return state;
   }

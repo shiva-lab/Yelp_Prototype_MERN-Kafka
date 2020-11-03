@@ -11,7 +11,7 @@ const loginroutes=require('./routes/loginRegisterOperations');
 const eventroute = require('./routes/event');
  const userroute=require('./routes/userOperations');
  const passport = require('passport')
-// const orderoute=require('./routes/order');
+ const orderoute=require('./routes/order');
 
 var bodyParser = require('body-parser');
 //const eventroute = require('./routes/event');
@@ -63,7 +63,7 @@ app.use(morgan('tiny'));
 app.use('/',routes);
 app.use('/',loginroutes);
 app.use('/',userroute);
-// app.use('/',orderoute);
+app.use('/',orderoute);
  app.use('/',eventroute);
 
 app.listen(port, () =>{
