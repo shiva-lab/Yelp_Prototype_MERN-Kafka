@@ -8,4 +8,6 @@ export const GET_PROFILE = 'GET_PROFILE';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 export const GET_ERRORS = 'GET_ERRORS';
+export const SET_MESSAGE ="SET_MESSAGE";
+export const SEND_MESSAGE ="SEND_MESSAGE";
 // export const SEARCH_RESTAURANT = 'SEARCH_RESTAURANT';

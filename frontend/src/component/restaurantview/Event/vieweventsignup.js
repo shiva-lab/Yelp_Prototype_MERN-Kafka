@@ -21,7 +21,7 @@ class ViewEventSignup extends React.Component {
     const event_id = localStorage.getItem("event_id_eventsignup");
     const data = { restaurant_id, event_id };
     // make a post request with the user data
-    //axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios.post("/vieweventsignup", data)
     .then(response => {
       if (response.status === 200) {

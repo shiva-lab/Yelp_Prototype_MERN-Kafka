@@ -55,6 +55,8 @@ import NewOrderView from "./component/restaurantview/Order/neworderview";
 import UViewProfileRest from "./component/userview/Profile/uviewprofilerest";
 import ListAllUsers from "./component/userview/Profile/ListAllUsers";
 import ViewSocialProfile from "./component/userview/Profile/ViewSocialProfile";
+import IndividualMessagePage from "./component/userview/Messages/IndividualMessage";
+import MessagePage from "./component/userview/Messages/Messages";
 
 function App() {
   return (
@@ -112,6 +114,8 @@ function App() {
             <Route path="/uviewprofilerest" component={UViewProfileRest} />
             <Route path="/listallusers" component={ListAllUsers} />
             <Route path="/viewsocialprofile" component={ViewSocialProfile} />
+            <Route path="/individualmessages" component={IndividualMessagePage} />
+            <Route path="/messages" component={MessagePage} />
           </Switch>
         </Router>
       </div>

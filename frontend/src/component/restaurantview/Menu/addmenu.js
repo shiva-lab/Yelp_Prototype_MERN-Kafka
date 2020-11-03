@@ -6,7 +6,7 @@ import { Redirect } from "react-router";
 import swal from 'sweetalert2';
 
 
-class addmenu extends React.Component {
+class AddMenu extends React.Component {
   // Creating State
   constructor(props) {
     super(props);
@@ -88,7 +88,9 @@ class addmenu extends React.Component {
           'content-type': 'multipart/form-data'
       }
     };
-
+    axios.defaults.withCredentials = true;
+    // make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios.post("/addmenu",formData,config)
     
     .then(response => {
@@ -244,4 +246,4 @@ class addmenu extends React.Component {
     );
   }
 }
-export default addmenu;
+export default AddMenu;

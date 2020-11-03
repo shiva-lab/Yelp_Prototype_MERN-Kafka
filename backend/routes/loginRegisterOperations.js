@@ -185,11 +185,12 @@ loginroute.post(
           location: restuser.location,
           Emailid: restuser.Emailid,
         }; // Create JWT Payload
+        console.log(payload)
         console.log("Creating Token");
         jwt.sign(
           payload,
           keys.secretOrKey,
-          { expiresIn: 3600 },
+          { expiresIn: 8000 },
           (err, token) => {
             res.json({
               success: true,
@@ -242,8 +243,8 @@ loginroute.post(
         console.log("User Matched - Creating Payload");
         const payload = {
           id: user._id,
-          username: user.username,
-          location: user.location,
+          username: user.user_name,
+          zipcode: user.zipcode,
           Emailid: user.Emailid,
         }; // Create JWT Payload
         console.log("Creating Token");
@@ -403,12 +404,12 @@ module.exports = loginroute;
 // @route  POST /api/restusers
 // @Desc   Return Current User
 // @access Private
-loginroute.get(
-  "/current",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    res.json(req.restaurantdata);
-  }
-);
+// loginroute.get(
+//   "/current",
+//   passport.authenticate("jwt", { session: false }),
+//   (req, res) => {
+//     res.json(req.restaurantdata.restaurantname);
+//   }
+// );
 
 module.exports = loginroute;

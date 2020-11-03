@@ -3,7 +3,7 @@ import axios from "axios";
 import Navbar from "../rNavbar";
 import cookie from "react-cookies";
 
-class editmenu extends React.Component{
+class EditMenu extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
@@ -44,6 +44,9 @@ class editmenu extends React.Component{
               'content-type': 'multipart/form-data'
           }
         };
+        axios.defaults.withCredentials = true;
+    // make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     
         axios.post("/editmenu",formData,config)
     
@@ -180,4 +183,4 @@ class editmenu extends React.Component{
         );
       }
 }
-export default editmenu
+export default EditMenu

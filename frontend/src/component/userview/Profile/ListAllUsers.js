@@ -74,6 +74,8 @@ submit = (event) => {
   console.log(data);
   const self = this;
   axios.defaults.withCredentials = true;
+    // make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios.post('/usersifollow',data)
       .then((response) => {
         if (response.status === 200) {
