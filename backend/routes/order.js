@@ -7,7 +7,6 @@ const orderroute = express.Router();
 //const User = require('../models/User');
 const Order = require('../models/Order');
 //const Restaurant = require("../models/Restaurant");
-const Menu = require("../models/Menu");
 //const Cart = require("../models/Cart");
 const passport = require("passport");
 let checkAuth = passport.authenticate('jwt', { session: false });

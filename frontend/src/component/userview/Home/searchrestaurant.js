@@ -30,14 +30,14 @@ componentDidMount() {
    // let search2 = localStorage.getItem("search2");
    // const data = { search1, search2 };
    const data = { search1 };
-   axios.post("/restaurantsearch",data)
-    // fetch("/restaurantsearch", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(data),
-    // })
+   //axios.post("/restaurantsearch",data)
+    fetch("/restaurantsearch", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
       .then(function (response) {
         if (response.status >= 400) {
           throw new Error("Bad response from server");

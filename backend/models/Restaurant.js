@@ -28,17 +28,17 @@ const RestaurantSchema = new mongoose.Schema({
     path2: {type: String},
     path3: {type: String},
     
-  //   menu:[{
+    menu:[{
     
-  //     itemname:  {type: String},
-  //     price:  {type: String},
-  //     item_description: {type: String},
-  //     path:  {type: String},
-  //     itemcategory:  {type: String},
-  //     quantity:  {type: String},
-  //     Ingredients: {type: String},  
+      itemname:  {type: String},
+      price:  {type: String},
+      item_description: {type: String},
+      path:  {type: String},
+      itemcategory:  {type: String},
+      quantity:  {type: String},
+      Ingredients: {type: String},  
    
-  // }],
+  }],
 },
 {
     versionKey: false

@@ -95,35 +95,35 @@ class AddMenu extends React.Component {
           'content-type': 'multipart/form-data'
       }
     };
-    this.props.addMenu(formData,config);
-    // axios.post("/addmenu",formData,config)
+    //this.props.addMenu(formData,config);
+    axios.post("/addmenu",formData,config)
     
-    // .then(response => {
-    //           console.log("Status Code : ", response.status);
-    //           if (response.status === 200) {
-    //               console.log("shiva inside login")
-    //               swal.fire({
-    //                 title: 'Success!',
-    //                 text: 'Item Added Successfully',
-    //                 icon: 'success'
-    //               })
-    //               //alert('Good Job!','You Clicked the Button!','Success')
-    //           }
-    //       })
-    //       .catch(error => {
-    //           this.setState({
-    //               ...this.state,
-    //               message: "!!!!can not add item!!!!"
-    //           });
-    //           //alert("can not add data")
-    //           swal.fire({
-    //             title: 'Failed!',
-    //             text: 'Cannot Add Data',
-    //             icon: 'error'
-    //           })
-    //           console.log("Error is:", error);
+    .then(response => {
+              console.log("Status Code : ", response.status);
+              if (response.status === 200) {
+                  console.log("shiva inside login")
+                  swal.fire({
+                    title: 'Success!',
+                    text: 'Item Added Successfully',
+                    icon: 'success'
+                  })
+                  //alert('Good Job!','You Clicked the Button!','Success')
+              }
+          })
+          .catch(error => {
+              this.setState({
+                  ...this.state,
+                  message: "!!!!can not add item!!!!"
+              });
+              //alert("can not add data")
+              swal.fire({
+                title: 'Failed!',
+                text: 'Cannot Add Data',
+                icon: 'error'
+              })
+              console.log("Error is:", error);
               
-    //       });
+          });
   };
   }
   
@@ -253,15 +253,16 @@ class AddMenu extends React.Component {
 }
 
 
-AddMenu.propTypes = {
-  addMenu: PropTypes.func.isRequired,
-  menuitem: PropTypes.object.isRequired,
+// AddMenu.propTypes = {
+//   addMenu: PropTypes.func.isRequired,
+//   menuitem: PropTypes.object.isRequired,
  
-};
+// };
 
-const mapStateToProps = (state) => ({
-  menuitem: state.menu.menuitem,
-});
+// const mapStateToProps = (state) => ({
+//   menuitem: state.menu.menuitem,
+// });
 
-export default connect(mapStateToProps, { addMenu })(AddMenu);
+// export default connect(mapStateToProps, { addMenu })(AddMenu);
 
+export default AddMenu;

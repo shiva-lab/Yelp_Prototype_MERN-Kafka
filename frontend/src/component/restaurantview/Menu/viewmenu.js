@@ -29,11 +29,11 @@ class ViewMenu extends React.Component {
     axios.post("/viewmenu", data)
         .then(response => {
             if (response.status === 200) {
-              console.log("Printing response",response)
-              console.log("Printing Menu",response.data)
+             // console.log("Printing response",response)
+              console.log("Printing Menu",response.data[0].menu)
                 this.setState({
                   menu: response.data,
-                  filteredMenu : paginate(response.data,1,10),
+                  filteredMenu : paginate(response.data[0].menu,1,10),
                   pages: pages(response.data, 10)
 
                 })
@@ -55,16 +55,24 @@ class ViewMenu extends React.Component {
   }
 
 
-  handleClickdelete(item_id) {
+  handleClickdelete(_id) {
     return function () {
       const self = this;
-      console.log(item_id);
-      const newdata = { item_id };
+      console.log(_id);
+      const restaurant_id = localStorage.getItem("restaurant_id");
+      const newdata = { _id,restaurant_id };
       console.log(newdata);
       // make a post request with the user data
-    axios.defaults.withCredentials = true;
-    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
-      axios.post("/deletefrommenu", newdata)
+    // axios.defaults.withCredentials = true;
+    // axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    //   axios.post("/deletefrommenu", newdata)
+    fetch("/deletefrommenu", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newdata),
+    })
       .then(res => res.json());
     };
   }
@@ -109,7 +117,7 @@ class ViewMenu extends React.Component {
             {' '}
           </td>
           <td>
-            {food.ingredients}
+            {food.Ingredients}
             {' '}
           </td>
           <td>{food.price}</td>

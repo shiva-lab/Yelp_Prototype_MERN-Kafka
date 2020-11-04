@@ -2,7 +2,6 @@
 // const connection = require("../models/yelpschema");
 const userroute = express.Router();
 const User = require('../models/User');
-const Menu = require("../models/Menu");
 const Cart = require("../models/Cart");
 var multer = require('multer');
 var multerS3 = require('multer-s3');
@@ -283,12 +282,7 @@ userroute.post("/deletefromcart", (req, res) => {
       })
       res.end();
   }
-  // if (result.n == 0) {
-  //     res.writeHead(400, {
-  //         'Content-Type': 'text/plain'
-  //     })
-  //     res.end("item ID does not exists");
-  // }
+ 
   else {
       res.writeHead(200, {
           'Content-Type': 'text/plain'

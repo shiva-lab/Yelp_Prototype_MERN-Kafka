@@ -3,9 +3,8 @@ const router = express.Router();
 //const connection = require("../models/yelpschema");
 var multer = require("multer");
 const Restaurant = require("../models/Restaurant");
-const Menu = require("../models/Menu");
 
-let checkAuth = passport.authenticate('jwt', { session: false });
+//let checkAuth = passport.authenticate('jwt', { session: false });
 
 var multerS3 = require("multer-s3");
 (aws = require("aws-sdk")),
@@ -70,9 +69,9 @@ router.get("/homeviewrestaurant", (req, res) => {
 
 router.post("/restaurantsearch", (req, res) => {
  console.log("Data Recieved from FrontEnd: ",req.body.search1);
- const filter=req.body.search1
+ const filter = req.body.search1
    Restaurant.find(
-    { $or: [{delivery_method: "san jose" }, {location : "san jose"}] },
+    { $or: [{cuisine: req.body.search1 }, {location : req.body.search1},{deliverymethod : req.body.search1},{"menu.itemname" : req.body.search1}] },
     function(error, result) {
      if (error) {
        console.log(error)
@@ -194,51 +193,6 @@ router.post(
 );
 
 // Addmenu
-// router.post("/addmenu", upload.single("myfile"), async (req, res, next) => {
-//   try {
-//     console.log("Uploading Menu Item Image...");
-//   } catch (err) {
-//     res.send(400);
-//   }
-//   var path = req.file.location;
-//   console.log("Add Menu Item API Checkpoint");
-//   console.log("Image Path on AWS: ", path);
-//   const {
-//     itemname,
-//     price,
-//     itemdescription,
-//     itemcategory,
-//     ingredients,
-//     restaurant_id,
-//   } = req.body;
-// var objData={ itemname:req.body.itemname,price:req.body.price,description:req.body.description,path:path,itemcategory:req.body.itemcategory, ingredients:req.body.ingredients};
-//   console.log(  "Data in backend", itemname, price,     itemdescription,    itemcategory,
-//     ingredients,
-//     path,
-//     restaurant_id
-//   );
-//   try {
-//     Restaurant.findByIdAndUpdate(
-//       { _id: req.body.restaurant_id },
-//       { $push: { menu: objData  } },
-//       (error, results) => {
-//         if (error) {
-//           console.log("error");
-//         } else {
-//           res.writeHead(200, {
-//             "Content-Type": "text/plain",
-//           });
-//           res.end();
-//         } 
-//         })
-//       }
-//    catch (err) {
-//     console.error(err.message);
-//     res.status(500).send("Server Error");
-//   }
-// });
-
-// Addmenu
 router.post("/addmenu", upload.single("myfile"), async (req, res, next) => {
   try {
     console.log("Uploading Menu Item Image...");
@@ -246,43 +200,86 @@ router.post("/addmenu", upload.single("myfile"), async (req, res, next) => {
     res.send(400);
   }
   var path = req.file.location;
-  var quantity = "1";
   console.log("Add Menu Item API Checkpoint");
   console.log("Image Path on AWS: ", path);
-  console.log("Quantity",quantity)
-  const {  itemname,price,itemdescription,itemcategory,ingredients,restaurant_id,
+  const {
+    itemname,
+    price,
+    itemdescription,
+    itemcategory,
+    ingredients,
+    restaurant_id,
   } = req.body;
-// var objData={ itemname:req.body.itemname,price:req.body.price,description:req.body.description,path:path,itemcategory:req.body.itemcategory, ingredients:req.body.ingredients};
-  console.log(
-    "Data in backend", itemname,  price,itemdescription,quantity,itemcategory,ingredients, path, restaurant_id
+var objData={ itemname:req.body.itemname,price:req.body.price,description:req.body.description,path:path,itemcategory:req.body.itemcategory, Ingredients:req.body.ingredients};
+  console.log(  "Data in backend", itemname, price, itemdescription,itemcategory,ingredients,path,restaurant_id
   );
-    menu = new Menu({
-      itemname,price,itemdescription,itemcategory,quantity,ingredients,path,restaurant_id
-  });
+  try {
+    Restaurant.findByIdAndUpdate(
+      { _id: req.body.restaurant_id },
+      { $push: { menu: objData  } },
+      (error, results) => {
+        if (error) {
+          console.log("error");
+        }  else {
+                    res.writeHead(200, {
+                        'Content-Type': 'text/plain'
+                    })
+                    //res.end(JSON.stringify(results));
+                    res.end()
+                }
+        })
+      }
+   catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// // Addmenu
+// router.post("/addmenu", upload.single("myfile"), async (req, res, next) => {
+//   try {
+//     console.log("Uploading Menu Item Image...");
+//   } catch (err) {
+//     res.send(400);
+//   }
+//   var path = req.file.location;
+//   var quantity = "1";
+//   console.log("Add Menu Item API Checkpoint");
+//   console.log("Image Path on AWS: ", path);
+//   console.log("Quantity",quantity)
+//   const {  itemname,price,itemdescription,itemcategory,ingredients,restaurant_id,
+//   } = req.body;
+// // var objData={ itemname:req.body.itemname,price:req.body.price,description:req.body.description,path:path,itemcategory:req.body.itemcategory, ingredients:req.body.ingredients};
+//   console.log(
+//     "Data in backend", itemname,  price,itemdescription,quantity,itemcategory,ingredients, path, restaurant_id
+//   );
+//     menu = new Menu({
+//       itemname,price,itemdescription,itemcategory,quantity,ingredients,path,restaurant_id
+//   });
   
  
-    await menu.save((error, data) => {
-      if (error) {
-          res.writeHead(500, {
-              'Content-Type': 'text/plain'
-          })
-          res.end();
-      }
-      else {
-          res.writeHead(200, {
-              'Content-Type': 'text/plain'
-          })
-          res.end(JSON.stringify(data));;
-      }
-  })
+//     await menu.save((error, data) => {
+//       if (error) {
+//           res.writeHead(500, {
+//               'Content-Type': 'text/plain'
+//           })
+//           res.end();
+//       }
+//       else {
+//           res.writeHead(200, {
+//               'Content-Type': 'text/plain'
+//           })
+//           res.end(JSON.stringify(data));;
+//       }
+//   })
 
-},
-);
+// },
+// );
 
 
 router.post("/viewmenu", (req, res) => {
   console.log(req.body.restaurant_id);
-  Menu.find({ restaurant_id: req.body.restaurant_id }, (error, result) => {
+  Restaurant.find({ _id: req.body.restaurant_id },{} ,(error, result) => {
     if (error) {
       console.log(error)
       res.writeHead(500, {
@@ -319,6 +316,7 @@ router.post("/viewmenu", (req, res) => {
       restaurant_id,
       item_id
     } = req.body;
+var quantity="1"
     console.log(
       "Data in backend",
       itemname,
@@ -327,23 +325,18 @@ router.post("/viewmenu", (req, res) => {
       itemcategory,
       ingredients,
       path,
+      quantity,
       restaurant_id,
       item_id
       
     );
 
-    await  Menu.findByIdAndUpdate(
-        { _id: req.body.item_id, },
-        {
-          itemname,
-          price,
-          itemdescription,
-          itemcategory,
-          ingredients, 
-        path
-         
-        },
-        {new: true}, (error, results) => {
+
+
+    await  Restaurant.updateOne(
+        { _id: req.body.restaurant_id, "menu._id":req.body.item_id},
+          { $set: { "menu.$.itemname" : itemname,"menu.$.price":price, "menu.$.itemdescription":itemdescription,"menu.$.itemcategory":itemcategory,"menu.$.quantity":quantity,"menu.$.Ingredients":ingredients,"menu.$.path":path} }
+       , (error, results) => {
           if (error) {
             console.log(error);
           } else {
@@ -357,20 +350,23 @@ router.post("/viewmenu", (req, res) => {
   );
   
   router.post("/deletefrommenu", (req, res) => {
-    console.log(req.body._id);
-    Menu.deleteOne({ _id: req.body._id }, (error, result) => {
-      try{
+    console.log(req.body._id,req.body.restaurant_id);
+    
+    Restaurant.updateOne({ _id:req.body.restaurant_id} ,{"$pull":{"menu":{"_id": req.body._id }}},{ safe: true, multi:true }, (error, result) => {
+      if (error) {
+        res.writeHead(500, {
+            'Content-Type': 'text/plain'
+        })
+        res.end();
+    }
+   
+    else {
         res.writeHead(200, {
-          'Content-Type': 'text/plain'
-      })
-      res.end();
-       
-      
-      } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
-      }
-    });
+            'Content-Type': 'text/plain'
+        })
+        res.end();
+    }
+            });
   });
 
 

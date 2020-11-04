@@ -20,14 +20,14 @@ export const addMenu = (formData, config) => (dispatch) => {
                 dispatch({
           
                   type: ADD_MENU,
-                  payload: response.data
+                  payload: response.data[0].menu
                 });
               })
               .catch((error) => {
-                if (error.response && error.response.data) {
+                if (error.response.data[0].menu && error.response.data[0].menu) {
                   return dispatch({
                     type: ADD_MENU,
-                    payload: error.response.data
+                    payload: error.response.data[0].menu
                   });
                 }
               });
