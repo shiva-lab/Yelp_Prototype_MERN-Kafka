@@ -41,7 +41,9 @@ class UPlaceOrder extends React.Component {
         return response.json();
       })
       .then((data) => {
-        console.log(data[0]._id)
+        console.log("data - ID",data[0]._id)
+        console.log("data",data)
+
         self.setState({ items: data[0].cart });
         localStorage.setItem("order_id",data[0]._id)
       })

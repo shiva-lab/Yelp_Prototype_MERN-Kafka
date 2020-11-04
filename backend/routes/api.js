@@ -538,4 +538,82 @@ var quantity="1"
 // //   });
 // // });
 
+router.post("/addreview", upload.single("myfile"), async (req, res, next) => {
+  try {
+    console.log("Uploading Review Item Image...");
+  } catch (err) {
+    res.send(400);
+  }
+  var path = req.file.location;
+  console.log("Add Review Item API Checkpoint");
+  console.log("Image Path on AWS: ", path);
+  const {
+    review,
+    rating,
+    order_id,
+    restaurant_id,
+    user_id,
+    email
+  } = req.body;
+
+var objData={ review_desc:req.body.review,
+  rating:req.body.rating,
+  order_id:req.body.order_id,
+  email:req.body.email,
+  path:path,
+  restaurant_id:req.body.restaurant_id,
+  user_id:req.body.user_id,
+  
+};
+  console.log(  "Data in backend",review,
+  rating,
+  order_id,
+  restaurant_id,
+  user_id,
+  path,
+  email
+  );
+  console.log("End")
+  try {
+    Restaurant.findByIdAndUpdate(
+      { _id: req.body.restaurant_id },
+      { $push: { review: objData  } },
+      (error, results) => {
+        if (error) {
+          console.log("error");
+        } else {
+          res.writeHead(200, {
+            "Content-Type": "text/plain",
+          });
+          res.end();
+        }
+        })
+      }
+   catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+
+router.post("/viewreview", (req, res) => {
+  console.log(req.body.restaurant_id);
+  Restaurant.find({ _id: req.body.restaurant_id },{} ,(error, result) => {
+    if (error) {
+      console.log(error)
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end();
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      console.log("result")
+      console.log(result);
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
 module.exports = router;

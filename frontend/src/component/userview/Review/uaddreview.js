@@ -26,6 +26,7 @@ class AddReview extends React.Component {
     let restaurant_id = localStorage.getItem("restaurant_id_review");
     let user_id = localStorage.getItem("user_id_review");
     let rating = localStorage.getItem("ratingselectedstars");
+    let email = localStorage.getItem("email");
 
     const formData = new FormData();
     formData.append('myfile',this.state.file);
@@ -34,6 +35,7 @@ class AddReview extends React.Component {
     formData.append('order_id',order_id)
     formData.append('restaurant_id',restaurant_id)
     formData.append('user_id',user_id)
+    formData.append('email',email)
     const config = {
       headers: {
           'content-type': 'multipart/form-data'

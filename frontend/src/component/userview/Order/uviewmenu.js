@@ -24,11 +24,11 @@ class UViewMenu extends React.Component {
     .then((response) => {
       if (response.status === 200) {
         console.log("Printing response",response)
-        console.log("Printing User Data",response.data)
+        console.log("Printing User Data",response.data[0].menu)
           this.setState({
-            menu: response.data,
-            filteredMenu : paginate(response.data,1,10),
-            pages: pages(response.data, 10)
+            menu: response.data[0].menu,
+            filteredMenu : paginate(response.data[0].menu,1,10),
+            pages: pages(response.data[0].menu, 10)
 
           })
           console.log(pages);
@@ -67,10 +67,11 @@ class UViewMenu extends React.Component {
   // }
 
 
-  handleClick(_id, itemname, restaurant_id, price, path) {
+  handleClick(_id, itemname, price, path) {
     return function () {
       const user_id = cookie.load('cookie1');
       const user_name = cookie.load('username');
+      const restaurant_id = localStorage.getItem("restaurant_id_allrest");
       console.log(_id, itemname, restaurant_id, price, path,user_name);
       const newdata = {
         _id,
@@ -148,7 +149,7 @@ class UViewMenu extends React.Component {
                               <td>{item.itemcategory}</td>
                               <td>
                                 <button
-                             onClick={this.handleClick(item._id, item.itemname, item.restaurant_id, item.price, item.path)}
+                             onClick={this.handleClick(item._id, item.itemname, item.price, item.path)}
                                 >
                                   Add to cart
                                 </button>

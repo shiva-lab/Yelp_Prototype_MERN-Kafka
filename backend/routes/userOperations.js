@@ -59,7 +59,7 @@ var app = express(),
   userroute.post("/uviewmenu", (req, res) => {
   console.log(req.body.restaurant_id);
   console.log(req.body.restaurant_id);
-  Menu.find({ restaurant_id: req.body.restaurant_id }, (error, result) => {
+  Restaurant.find({ _id: req.body.restaurant_id },{'menu':[]}, (error, result) => {
     if (error) {
       console.log(error)
       res.writeHead(500, {
@@ -171,27 +171,28 @@ userroute.post("/addtocart", async(req, res) => {
   const { itemname,price,path,restaurant_id,user_id,_id,user_name} = req.body;
 
   var cartstatus="New"
+  var orderstatus=" "
   console.log(itemname, restaurant_id, price, user_id, path, cartstatus,user_name);
 
 //var itemid=req.body._id
   // var objData={ itemname:req.body.itemname,itemid:req.body._id,price:req.body.price,path:req.body.path,cartstatus:cartstatus,user_id:req.body.user_id,restaurant_id:req.body.restaurant_id};
 //  console.log(objData)
 
-  // Order.insertOne(
-  //   { user_id: req.body.user_id },
-  //   { $push: { cart:{itemname:req.body.itemname ,itemid:req.body._id,price:req.body.price,path:req.body.path,cartstatus:cartstatus,user_id:req.body.user_id,restaurant_id:req.body.restaurant_id  } }},
+  Order.findOneAndUpdate(
+    { user_id:req.body.user_id},
+    {  restaurant_id: req.body.restaurant_id,user_name:req.body.user_name,orderstatus:orderstatus, $push: { cart:{itemname:req.body.itemname ,itemid:req.body._id,price:req.body.price,path:req.body.path,cartstatus:cartstatus,user_id:req.body.user_id,restaurant_id:req.body.restaurant_id ,  user_name:req.body.user_name} }},{upsert:true},(error, data) => {
    
-order = new Order({
-  user_id:req.body.user_id,
-  restaurant_id:req.body.restaurant_id,
-  user_name:req.body.user_name,
-cart: [{
-  itemname:req.body.itemname,itemid:req.body._id,price:req.body.price,path:req.body.path,cartstatus:cartstatus,user_id:req.body.user_id,restaurant_id:req.body.restaurant_id,
+// order = new Order({
+//   user_id:req.body.user_id,
+//   restaurant_id:req.body.restaurant_id,
+//   user_name:req.body.user_name,
+// cart: [{
+//   itemname:req.body.itemname,itemid:req.body._id,price:req.body.price,path:req.body.path,cartstatus:cartstatus,user_id:req.body.user_id,restaurant_id:req.body.restaurant_id,
 
-}]
- });
- //await order.save();
- await order.save((error, data) => {
+// }]
+//  });
+//  //await order.save();
+//  await order.save((error, data) => {
   if (error) {
     res.writeHead(500, {
         'Content-Type': 'text/plain'
@@ -213,41 +214,6 @@ else {
 
 
 
-
-// try {
- 
-// order = new Oder({
-//   user_id
-//   restaurant_id,
-// cart: [{
-
-//   itemname:req.body.itemname,itemid:req.body._id,price:req.body.price,path:req.body.path,cartstatus:cartstatus,user_id:req.body.user_id,restaurant_id:req.body.restaurant_id
-
-// }]
-
-
-// });
-
-// await order.save();
-
-// // const payload = {
-// // event: { id: event.id },
-// // };
-
-// res.writeHead(200, {
-// 'Content-Type': 'text/plain'
-// })
-// res.end();
-
-
-// } catch (err) {
-// console.error(err.message);
-// res.status(500).send('Server Error');
-// }
-
-// // console.log(req.body);
-// },
-// );
 
 
 userroute.post("/uviewcart", (req, res) => {

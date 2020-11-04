@@ -46,7 +46,8 @@ const orderSchema = new Schema({
         path:  {type: String},
         cartstatus:  {type: String , default:" "},
         user_id:{type: String}, 
-        restaurant_id: {type: String}
+        restaurant_id: {type: String},
+        user_name: {type: String}
     }],  
 },
 {

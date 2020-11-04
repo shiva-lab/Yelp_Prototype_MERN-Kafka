@@ -5,7 +5,7 @@ const RestaurantSchema = new mongoose.Schema({
     //     type: mongoose.Schema.Types.ObjectId,
     //   unique:true},
     restaurantname: {type: String},
-    
+   
     Emailid: {type: String,unique: true},
     restpass: {type: String},
     location: {type: String},
@@ -27,9 +27,9 @@ const RestaurantSchema = new mongoose.Schema({
     path1: {type: String},
     path2: {type: String},
     path3: {type: String},
-    
+   
     menu:[{
-    
+   
       itemname:  {type: String},
       price:  {type: String},
       item_description: {type: String},
@@ -39,6 +39,17 @@ const RestaurantSchema = new mongoose.Schema({
       Ingredients: {type: String},  
    
   }],
+  review:[{
+   
+    review_desc:  {type: String},
+    rating:  {type: String},
+    restaurant_id: {type: String},
+    path:  {type: String},
+    order_id:  {type: String},
+    user_id:  {type: String},
+    email:  {type: String},
+ 
+}],
 },
 {
     versionKey: false
