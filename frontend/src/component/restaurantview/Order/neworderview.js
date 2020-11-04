@@ -23,11 +23,18 @@ class NewOrderView extends React.Component {
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
-    axios.defaults.withCredentials = true;
+    //axios.defaults.withCredentials = true;
     // make a post request with the user data
-    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    //axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     
-    axios.post("/rvieworder",data)
+  // axios.post("/rvieworder",data)
+     fetch("/rvieworder", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
       .then((response) => {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
@@ -92,7 +99,14 @@ class NewOrderView extends React.Component {
     // make a post request with the user data
     axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     
-axios.post("/neworderstatuschange",newdata)
+//axios.post("/neworderstatuschange",newdata)
+fetch("/neworderstatuschange", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(newdata),
+})
       .then(res => res.json());{
         alert("status changed for order")
       }

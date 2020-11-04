@@ -391,7 +391,7 @@ loginroute.get("/logout", function (req, res) {
   res.clearCookie("restaurant_id");
   //res.clearCookie("restaurant_id_menu");
   res.clearCookie("cookie1");
-  res.clearCookie("userzipcode");
+  res.clearCookie("username");
   //res.clearCookie("cartprice");
   res.json(true);
 });

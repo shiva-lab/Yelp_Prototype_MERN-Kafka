@@ -1,5 +1,7 @@
 import axios from "axios";
 import { GET_PROFILE, UPDATE_PROFILE,UPDATE_USER_PROFILE } from "./type";
+import swal from 'sweetalert2';
+
 
 
 // export const getRestProfile = (restdata) => dispatch => {
@@ -24,7 +26,13 @@ export const updateRestProfile = (restdata,config) => (dispatch) => {
   axios.post('/restaurantupdate', restdata,config)
     .then((response) => {
       console.log("response is ", response);
-      alert('Profile updated ');
+      //alert('Profile updated ');
+      swal.fire({
+        title: 'Success!',
+        text: 'Profile Updated',
+        icon: 'Success'
+      })
+
       dispatch({
 
         type: UPDATE_PROFILE,

@@ -5,6 +5,7 @@ import { Redirect } from "react-router-dom";
 import cookie from "react-cookies";
 import MapContainer from "../mapContainer";
 import Navbar from "../uNavbar";
+import axios from "axios";
 
 //import Modal from 'react-modal';
 class SearchRestaurant extends React.Component {
@@ -27,24 +28,24 @@ componentDidMount() {
 
     let search1 = localStorage.getItem("search1");
    // let search2 = localStorage.getItem("search2");
-
    // const data = { search1, search2 };
    const data = { search1 };
-    fetch("/restaurantsearch", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+   axios.post("/restaurantsearch",data)
+    // fetch("/restaurantsearch", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(data),
+    // })
       .then(function (response) {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
         }
-
         return response.json();
       })
       .then(function (data) {
+        console.log("Search Result",data)
         self.setState({
           resturantlist: data, latlng: data.map((d) => ({ latitude: d.lat, longitude: d.lng })),
         });

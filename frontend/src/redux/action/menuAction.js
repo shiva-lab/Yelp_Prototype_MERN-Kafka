@@ -1,5 +1,7 @@
 import axios from "axios";
+import swal from 'sweetalert2';
 import { ADD_MENU,EDIT_MENU,VIEW_MENU } from "./type";
+
 
 export const addMenu = (formData, config) => (dispatch) => {
     
@@ -9,7 +11,12 @@ export const addMenu = (formData, config) => (dispatch) => {
             axios.post("/addmenu",formData,config)
               .then((response) => {
                 console.log("response is ", response);
-                alert("Item Successfully added");
+                //alert("Item Successfully added");
+                swal.fire({
+                  title: 'Success!',
+                  text: 'Item Successfully added',
+                  icon: 'Success'
+                })
                 dispatch({
           
                   type: ADD_MENU,

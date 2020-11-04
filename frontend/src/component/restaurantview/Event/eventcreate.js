@@ -3,6 +3,7 @@ import axios from "axios";
 import Navbar from "../rNavbar";
 import cookie from "react-cookies";
 import { Redirect } from "react-router";
+import swal from 'sweetalert2';
 
 class EventCreate extends React.Component {
   // Creating State
@@ -56,7 +57,12 @@ class EventCreate extends React.Component {
     axios.post("/addevent",formData,config)
       .then(response => {
             if (response.status === 200) {
-            alert("Event created Successfully ")
+            //alert("Event created Successfully ")
+            swal.fire({
+              title: 'Success!',
+              text: 'Event Created Successfully',
+              icon: 'Success'
+            })
             console.log(response);
             }
           })

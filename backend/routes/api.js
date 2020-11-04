@@ -4,12 +4,8 @@ const router = express.Router();
 var multer = require("multer");
 const Restaurant = require("../models/Restaurant");
 const Menu = require("../models/Menu");
-const jwt = require("jsonwebtoken");
-const passport = require("passport");
-let checkAuth = passport.authenticate('jwt', { session: false });
 
-const { check, validationResult } = require("express-validator");
-const { secret } = require("../Utils/config");
+let checkAuth = passport.authenticate('jwt', { session: false });
 
 var multerS3 = require("multer-s3");
 (aws = require("aws-sdk")),
@@ -71,6 +67,29 @@ router.get("/homeviewrestaurant", (req, res) => {
   });
 });
 
+
+router.post("/restaurantsearch", (req, res) => {
+ console.log("Data Recieved from FrontEnd: ",req.body.search1);
+ const filter=req.body.search1
+   Restaurant.find(
+    { $or: [{delivery_method: "san jose" }, {location : "san jose"}] },
+    function(error, result) {
+     if (error) {
+       console.log(error)
+       res.writeHead(500, {
+         "Content-Type": "text/plain",
+       });
+       res.end();
+     } else {
+       res.writeHead(200, {
+         "Content-Type": "application/json",
+       });
+       console.log(result);
+       res.end(JSON.stringify(result));
+     }
+   });
+ });
+ 
 
 // router.get("/homeviewrestaurant", (req, res, next) => {
 //   console.log("Hello from home Restaurant View");

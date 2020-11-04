@@ -10,25 +10,21 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case USER_LOGIN:
-      return {
-        ...state,
+      return Object.assign({}, state,  {
         user: action.payload
-      };
+      });
     case USER_LOGOUT:
-      return {
-        ...state,
+      return Object.assign({}, state,  {
         user: {}
-      };
+      });
     case RESTAURANT_LOGIN:
-      return {
-        ...state,
+      return Object.assign({}, state,  {
         user: action.payload
-      };
+      });
     case RESTAURANT_LOGOUT:
-      return {
-        ...state,
+      return Object.assign({}, state,  {
         user: {}
-      };
+      });
 
     default:
       return state;

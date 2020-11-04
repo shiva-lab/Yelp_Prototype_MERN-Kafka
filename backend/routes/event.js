@@ -233,7 +233,7 @@ eventroute.post("/vieweventlisting", (req, res) => {
   //     }
   //   });
   // });
-  var eventId = req.body.eventId;
+  var eventId = req.body.event_id;
   console.log("Event id", eventId);
   await restEvent.findById(eventId, function(err, events) {
     console.log("registeredEvents Array", events.registrations);

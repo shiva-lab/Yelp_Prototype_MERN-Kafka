@@ -1,5 +1,6 @@
 import axios from "axios";
 import { USER_REGISTER, RESTAURANT_REGISTER } from "./type";
+import swal from 'sweetalert2'
 
 
 export const userRegister = userData => (dispatch) => {
@@ -9,7 +10,12 @@ export const userRegister = userData => (dispatch) => {
     .then((response) => {
       
       console.log("response is ", response);
-      alert("Successfully Signed up,Please Sign in");
+      //alert("Successfully Signed up,Please Sign in");
+      swal.fire({
+        title: 'Success!',
+        text: 'Successfully Signed up, Please Sign in to your account.',
+        icon: 'success'
+      })
       dispatch({
 
         type: USER_REGISTER,

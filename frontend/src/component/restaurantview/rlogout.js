@@ -14,16 +14,7 @@ class rlogout extends React.Component {
 
         // this.props.restLogout();
         // console.log(this.props);
-        // fetch('/logout', {
-        //     method: 'GET'
-        // }).then(function (response) {
-        //     if (response.status >= 400) {
-        //         throw new Error("Bad response from server");
-        //     }
-        //     return response.json();
-        // }).catch(err => {
-        //     console.log('caught it!', err);
-        // })
+        
     }
 
     restLogout = async() => {
@@ -41,8 +32,8 @@ class rlogout extends React.Component {
 
 
     render() {
-        localStorage.removeItem('email');
-        localStorage.removeItem('restaurant_id');
+        localStorage.removeItem('search1');
+        localStorage.removeItem('search2');
         var redirectVar = <Redirect to="/" />
         return (
             <div>
@@ -75,6 +66,7 @@ const mapStateToProps = state => {
 // //export default rlogout
 
 const mapDispatchToProps = (dispatch) => {
+    localStorage.clear();
     return { restLogout: (user) => dispatch(restLogout(user)) };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(rlogout)

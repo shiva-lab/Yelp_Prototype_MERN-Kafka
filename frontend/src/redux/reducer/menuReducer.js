@@ -12,25 +12,23 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case ADD_MENU:
-      return {
-        ...state,
-        menuitem:  [].concat(action.payload)
-      };
+      
+        return Object.assign({}, state,  {
+        menuitem:action.payload
+      });
       case EDIT_MENU:
-        return {
-          ...state,
-          menuitem:  [].concat(action.payload),
+        return Object.assign({}, state,  {
+          menuitem:[].concat(action.payload),
 
           
-        };
+        });
     case VIEW_MENU:
-      return {
-        ...state,
+        return Object.assign({}, state,  {
         menuitem:  [].concat(action.payload),
         filteredMenu : paginate(action.payload.data,1,10),
             pages: pages(action.payload.data, 10)
         
-      };
+      });
 
     default:
       return state;
