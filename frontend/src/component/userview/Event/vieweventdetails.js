@@ -45,10 +45,15 @@ class ViewEventDetails extends React.Component {
     return function () {
       const user_id = cookie.load('cookie1');
       console.log(_id, restaurant_id, user_id);
+      const username = cookie.load('username');
+      const Emailid=localStorage.getItem('email');
       const newdata = {
         user_id,
         restaurant_id,
-        _id
+        _id,
+        username,
+        Emailid
+
       };
       console.log(newdata);
       fetch("/eventsignup", {
@@ -122,13 +127,25 @@ class ViewEventDetails extends React.Component {
                       <h3>Sign Up Count</h3>
                       <Card.Text>{eve.signupcount}</Card.Text>
                       <div>
-              <Link>
-                            <button
+
+                      <Link to="/viewevent">
+                    <button
+                      class="ybtn ybtn--primary ybtn--small business-search-form_button"
+                      value="submit" 
+                    >
+                      {" "}
+                    Back
+                    
+                    </button>
+                  </Link>
+                  &nbsp;&nbsp;&nbsp;
+                  <Link> <button
                               onClick={this.handleClick(eve._id, eve.restaurant_id)}
                             >
                               Sign Up
                             </button>
                           </Link>
+            
                     </div>
                     </Card.Body>
 

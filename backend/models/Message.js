@@ -1,16 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
 var messageSchema = new Schema({
         user1: {
             id: { type: String, required: true },
             name: { type: String, required: true },
-            path: String
+            profile_img_url: String
         },
         user2: {
             id: { type: String, required: true },
             name: { type: String, required: true },
-            path: String
+            profile_img_url: String
         },
         chats: [
             {
@@ -27,4 +26,4 @@ var messageSchema = new Schema({
     });
 
 
-module.exports = mongoose.model('message', messageSchema);
+    module.exports = mongoose.model('message', messageSchema);

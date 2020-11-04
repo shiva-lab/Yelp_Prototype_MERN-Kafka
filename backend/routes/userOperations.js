@@ -611,25 +611,7 @@ userroute.post("/uviewprofile", (req, res) => {
           } = req.body;
         
           console.log(
-            "Data in backend",
-            bio,
-            headline,
-            fname,
-            lname,
-            city,
-            ustate,
-            country,
-            nick_name,
-            mobile,
-            emailid,
-            address,
-            favorites,
-            myblog,
-            things_ilove,
-            find_me_in,
-            path,
-            user_id,
-            dob
+            "Data in backend",bio,headline,fname,lname,city,ustate,country,nick_name,mobile,emailid,address,favorites,myblog,things_ilove,find_me_in,path,user_id,dob
           );
         
           User.findByIdAndUpdate(
@@ -652,8 +634,7 @@ userroute.post("/uviewprofile", (req, res) => {
             find_me_in,
             path,
             dob
-            },
-            {new: true},(error, results) => {
+            },(error, results) => {
               if (error) {
                 console.log("error");
               } else {

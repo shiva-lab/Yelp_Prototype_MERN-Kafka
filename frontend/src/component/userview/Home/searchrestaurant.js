@@ -150,10 +150,10 @@ componentDidMount() {
                   <tbody>
                     {this.state.resturantlist.map((food) => (
                       <tr>
-                        <td>{food.restaurant_name} </td>
+                        <td>{food.restaurantname} </td>
                         <td>
                           <img
-                            src={food.restaurantimage}
+                            src={food.path}
                             width={150}
                             height={120}
                             mode="fit"
@@ -167,7 +167,7 @@ componentDidMount() {
                         <td>
                           <Link to="/rviewprofile">
                             <button
-                              onClick={this.handleClick(food.restaurant_id)}
+                              onClick={this.handleClick(food._id)}
                             >
                               View Restaurant
                             </button>

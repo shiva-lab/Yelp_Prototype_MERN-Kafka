@@ -26,11 +26,11 @@ class ViewEventSignup extends React.Component {
     .then(response => {
       if (response.status === 200) {
         console.log("Printing response",response)
-        console.log("Printing Menu",response.data)
+        console.log("Printing User",response.data.RegistredUser)
           this.setState({
-            eventview: response.data,
-            filteredUserList : paginate(response.data,1,10),
-            pages: pages(response.data, 10)
+            eventview: response.data.RegistredUser,
+            filteredUserList : paginate(response.data.RegistredUser,1,10),
+            pages: pages(response.data.RegistredUser, 10)
 
           })
           console.log(pages);
@@ -55,39 +55,68 @@ class ViewEventSignup extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <Navbar />
-        <div className="container">
-          <h1 className="heading-menu"> List of users signedup for the event</h1>
-          <div className="panel panel-default p50 uth-panel">
-            <table className="table table-hover">
-              <thead>
-                <tr className="tbl-header">
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>User Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.eventview.map(event => (
-                  <tr>
+    let links = [];
+    if (this.state.pages > 0) {
+        console.log(this.state.pages);
+        for (let i = 1; i <= this.state.pages; i++) {
+            links.push(<li className="page-item" key={i}><a className="page-link" onClick={() => { this.paginatinon(i) }}>
+                {i}
+            </a></li>
+            )
+        }
+    }
+
+    let event = this.state.filteredUserList.map(event => {
+      return (
+        <tr>
                     <td>
-                      {event.fname}
+                      {event.user_id}
                       {' '}
                     </td>
                     <td>
-                      {event.lname}
+                      {event.Emailid}
                       {' '}
                     </td>
                     <Link to="/uviewprofilerest" onClick={this.handleClick(event.user_id)}>
                     <td>
-                      {event.user_name}
+                      {event.username}
                       {' '}
                     </td>
                     </Link>
-                  </tr>
-                ))}
+                    <td>
+                      {event.date}
+                      {' '}
+                    </td>
+                    </tr>      
+    )
+  })
+
+
+
+
+
+    return (
+      <div>
+        <Navbar />
+        <div className="container">
+          <h1 className="heading-menu"> List of users Signedup for the event</h1>
+          <div className="panel panel-default p50 uth-panel">
+            <table className="table table-hover">
+              <thead>
+                <tr className="tbl-header">
+                  <th>User ID</th>
+                  <th>User Email</th>
+                  <th>User Name</th>
+                  <th>Registered On</th>
+               
+                </tr>
+              </thead>
+              <tbody>
+              {event}
+                            <ul className="pagination">
+                            {links}
+                            </ul>
+                
               </tbody>
             </table>
           </div>

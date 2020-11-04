@@ -128,7 +128,7 @@ class RViewProfile extends React.Component {
 
                                 <tr>
                                   <th className="profilepagefont">
-                                  <h1><b><upper>{food.restaurant_name}</upper> </b></h1>
+                                  <h1><b><upper>{food.restaurantname}</upper> </b></h1>
                                   </th>
                                 </tr>
                                 <tr>
@@ -245,7 +245,7 @@ class RViewProfile extends React.Component {
                                     Email Address
                                   </th>
                                   <td className="profiletdfont">
-                                    {food.emailid}{" "}
+                                    {food.Emailid}{" "}
                                   </td>
                                 </tr>
                               </thead>

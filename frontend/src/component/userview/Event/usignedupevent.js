@@ -22,19 +22,26 @@ class usignedupevent extends React.Component {
     //make a post request with the user data
     axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios.post("/viewusersignedupevent",data)
-      .then((response) => {
-        if (response.status >= 400) {
-          throw new Error("Bad response from server");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        self.setState({ eventdata: data });
-      })
-      .catch((err) => {
-        console.log("caught it!", err);
-      });
+    .then((response) => {
+      if (response.status === 200) {
+        console.log("Printing response", response);
+        console.log("Printing Menu", response.data);
+        this.setState({
+          eventdata: response.data
+        });
+      } else {
+        console.log("error");
+      }
+    });
   }
+
+
+
+
+
+
+
+
 
   render() {
     let redirectVar = null;

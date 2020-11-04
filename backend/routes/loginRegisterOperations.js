@@ -392,7 +392,6 @@ loginroute.get("/logout", function (req, res) {
   //res.clearCookie("restaurant_id_menu");
   res.clearCookie("cookie1");
   res.clearCookie("username");
-  //res.clearCookie("cartprice");
   res.json(true);
 });
 module.exports = loginroute;

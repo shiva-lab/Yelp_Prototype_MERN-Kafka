@@ -35,11 +35,11 @@ class SearchEvent extends React.Component {
       console.log('caught it!', err);
     });
   }
-  viewdetailsHandler(event_id)  {
+  viewdetailsHandler(_id)  {
     return function () {
       
-      console.log("event ID:", event_id);
-      localStorage.setItem('event_id_selected',event_id);
+      console.log("event ID:", _id);
+      localStorage.setItem('event_id_selected',_id);
       return <Redirect to="/vieweventdetails" />;
     };
   };
@@ -133,7 +133,7 @@ class SearchEvent extends React.Component {
                         <td>
                           <Link>
                             <button
-                              onClick={this.handleClick(event.event_id, event.restaurant_id)}
+                              onClick={this.handleClick(event._id, event.restaurant_id)}
                             >
                               Sign Up
                             </button>
@@ -144,7 +144,7 @@ class SearchEvent extends React.Component {
 
                           <Link to='/vieweventdetails'>
                             <button
-                              onClick={this.viewdetailsHandler(event.event_id)}
+                              onClick={this.viewdetailsHandler(event._id)}
                             >
                               View Details
                             </button>

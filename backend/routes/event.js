@@ -161,14 +161,14 @@ eventroute.post("/vieweventlisting", (req, res) => {
 
   eventroute.post("/eventsignup", async (req, res, next) => {
    
-    const {user_id,restaurant_id,_id } = req.body;
+    const {user_id,restaurant_id,_id ,username,Emailid} = req.body;
   //var objData={ user_id:req.body.user_id,restaurant_id:req.body.restaurant_id};
   //var objData=User.find({_id:req.body.user_id},'fname lname user_name user_id');
   
     console.log(
-      "Data in backend",user_id,restaurant_id,_id
+      "Data in backend",user_id,restaurant_id,_id,username,Emailid
     );
-    restEvent.update({ _id: req.body._id },  { $push: { RegistredUser: {user_id:req.body.user_id } }}, {  safe: true, upsert: true },(err, data) => console.log(data))
+    restEvent.update({ _id: req.body._id },  { $push: { RegistredUser: {user_id:req.body.user_id,username:req.body,username,Emailid:req.body.Emailid} }}, {  safe: true, upsert: true },(err, data) => console.log(data))
     // restEvent.update(
     //   { _id: req.body._id },
     //   { $push: { RegistredUser: user_id } },
@@ -197,7 +197,7 @@ eventroute.post("/vieweventlisting", (req, res) => {
 
     console.log("Inside viewusersignedupevent",req.body.user_id);
    // Event.find({ user_id: req.body.user_id },{'signedup':[]}, (error, result) => {
-    restEvent.find({ user_id: req.body.user_id },{'signedup':[]}, (error, result) => {
+    restEvent.find({ 'RegistredUser.user_id': req.body.user_id },{}, (error, result) => {
       if (error) {
         res.writeHead(500, {
           "Content-Type": "text/plain",
@@ -235,20 +235,36 @@ eventroute.post("/vieweventlisting", (req, res) => {
   // });
   var eventId = req.body.event_id;
   console.log("Event id", eventId);
-  await restEvent.findById(eventId, function(err, events) {
-    console.log("registeredEvents Array", events.registrations);
-    if (err) return res.status(500).json({ error: err });
-    User.find({ _id: { $in: events.registrations } })
-      .exec()
-      .then(result => {
-        console.log("Reg events are:::", result);
-        res.status(200).json(result);
-      })
-      .catch(err => {
-        res.status(500).json({ error: err });
-      });
+  await restEvent.findById({_id:req.body.event_id}, function(error, result) {
+    console.log("registeredEvents Array", result.RegistredUser);
+        if (error) {
+        console.log(error)
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end();
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        console.log("result")
+        console.log(result);
+        res.end(JSON.stringify(result));
+      }
+    });
   });
-});
+//     if (err) return res.status(500).json({ error: err });
+//     User.find({ _id: { $in: events.RegistredUser.user_id } })
+//       .exec()
+//       .then(result => {
+//         console.log("Reg events are:::", result);
+//         res.status(200).json(result);
+//       })
+//       .catch(err => {
+//         res.status(500).json({ error: err });
+//       });
+//   });
+// });
 
    // Event.find({ user_id: req.body.user_id },{'signedup':[]}, (error, result) => {
   //  Event.find({ _id: req.body.event_id },{'signedup':[]}, (error, result) => {
@@ -382,6 +398,27 @@ eventroute.post("/vieweventlisting", (req, res) => {
 //     });
 //   });
 
+eventroute.post("/searchevent", (req, res) => {
+  console.log("Data Recieved from FrontEnd: ",req.body.eventname);
+  
+    restEvent.find(
+     { eventname:req.body.eventname },
+     function(error, result) {
+      if (error) {
+        console.log(error)
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end();
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        console.log(result);
+        res.end(JSON.stringify(result));
+      }
+    });
+  });
 //   eventroute.post("/searchevent", (req, res, next) => {
 //     console.log("Hello from searchevent");
   

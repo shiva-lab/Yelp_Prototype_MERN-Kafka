@@ -58,10 +58,14 @@ class ViewEvent extends React.Component {
     return function () {
       const user_id = cookie.load("cookie1");
       console.log(_id, restaurant_id, user_id);
+      const username = cookie.load('username');
+      const Emailid=localStorage.getItem('email');
       const newdata = {
         user_id,
         restaurant_id,
         _id,
+        username,
+        Emailid
       };
       console.log(newdata);
       fetch("/eventsignup", {
