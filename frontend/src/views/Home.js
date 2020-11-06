@@ -3,6 +3,7 @@ import Footer from '../component/Footer';
 import { Link } from 'react-router-dom';
 import { Redirect } from "react-router-dom";
 import axios from "axios"
+import cookies from "react-cookies"
 class Home extends React.Component{
    constructor(props) {
       //Call the constructor of Super class i.e The Component
@@ -16,6 +17,18 @@ class Home extends React.Component{
       this.search2Handler = this.search2Handler.bind(this);
       //this.submitCustomerLogin = this.submitCustomerLogin.bind(this);
       //this.handleSearchClick = this.handleSearchClick.bind(this);
+    }
+    componentDidMount(){
+      localStorage.removeItem('user_id');
+      localStorage.removeItem('restaurant_id');
+      localStorage.removeItem('token');
+      localStorage.removeItem('email');
+      window.addEventListener("beforeunload", (e) => {
+         e.preventDefault();
+         cookies.remove("cookie1");
+         cookies.remove("username");
+       });
+      
     }
 
     search1Handler = (e) => {

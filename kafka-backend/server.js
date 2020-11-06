@@ -1,9 +1,10 @@
-var connection =  new require('./kafka/Connection');
-//topics files
-var Restaurant = require('./services/Restaurant.js');
-const {mongoDB} = require('./config/configValues');
+const connectionStrings = require('./config/configValues.js')
+const ConnectionProvider = require( './kafka/connection.js')
+const Message = require('./services/Message.js')
+const User = require('./services/User.js')
+const Restaurant = require('./services/Restaurant.js')
 const mongoose = require('mongoose');
-var User = require('./services/User');
+
 var options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -11,7 +12,7 @@ var options = {
     bufferMaxEntries: 0
 };
 
-mongoose.connect(mongoDB, options, (err, res) => {
+mongoose.connect(connectionStrings.mongoDB, options, (err, res) => {
     if (err) {
         console.log(err);
         console.log(`Kafka MongoDB Connection Failed`);
@@ -21,17 +22,15 @@ mongoose.connect(mongoDB, options, (err, res) => {
 });
 
 function handleTopicRequest(topic_name,fname){
-    //var topic_name = 'root_topic';
-    var consumer = connection.getConsumer(topic_name);
-    var producer = connection.getProducer();
+    var consumer = ConnectionProvider.getConsumer(topic_name);
+    var producer = ConnectionProvider.getProducer();
     console.log('server is running ');
     consumer.on('message', function (message) {
         console.log('message received for ' + topic_name +" ", fname);
         console.log(JSON.stringify(message.value));
         var data = JSON.parse(message.value);
-        
         fname.handle_request(data.data, function(err,res){
-            console.log('after handle'+res);
+            console.log('after handle response: --------------  '+ res + JSON.stringify(data.data));
             var payloads = [
                 { topic: data.replyTo,
                     messages:JSON.stringify({
@@ -52,5 +51,7 @@ function handleTopicRequest(topic_name,fname){
 // Add your TOPICs here
 //first argument is topic name
 //second argument is a function that will handle this topic request
+
+handleTopicRequest("message",Message)
 handleTopicRequest("restaurant",Restaurant)
 handleTopicRequest("user",User)

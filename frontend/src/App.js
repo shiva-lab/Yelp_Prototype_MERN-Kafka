@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+//import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter, BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import Home from "./views/Home";
 //import RestaurantLogin from './views/RestaurantLogin';
@@ -50,14 +51,14 @@ import NewOrderView from "./component/restaurantview/Order/neworderview";
 import UViewProfileRest from "./component/userview/Profile/uviewprofilerest";
 import ListAllUsers from "./component/userview/Profile/ListAllUsers";
 import ViewSocialProfile from "./component/userview/Profile/ViewSocialProfile";
-import IndividualMessagePage from "./component/userview/Messages/IndividualMessage";
-import MessagePage from "./component/userview/Messages/Messages";
+import RestaurantMessage from "./component/restaurantview/Messages/Messages";
+import UserMessage from "./component/userview/Messages/Messages";
 
 function App() {
   return (
     <Provider store={store}>
       <div>
-        <Router>
+        <BrowserRouter>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/RestaurantLogin" component={RestaurantLogin} />
@@ -104,10 +105,10 @@ function App() {
             <Route path="/uviewprofilerest" component={UViewProfileRest} />
             <Route path="/listallusers" component={ListAllUsers} />
             <Route path="/viewsocialprofile" component={ViewSocialProfile} />
-            <Route path="/individualmessages" component={IndividualMessagePage} />
-            <Route path="/messages" component={MessagePage} />
+            <Route path="/rMessages" component={RestaurantMessage} />
+            <Route path="/uMessages" component={UserMessage} />
           </Switch>
-        </Router>
+        </BrowserRouter>
       </div>
     </Provider>
   );

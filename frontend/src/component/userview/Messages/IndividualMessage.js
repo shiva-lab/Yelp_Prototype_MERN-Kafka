@@ -58,21 +58,21 @@ class IndividualMessagePage extends Component {
 
     submitEdit = () => {
         var data = {
-            from :localStorage.getItem('id'),
+            from :localStorage.getItem('user_id'),
             to : this.state.chatFrom,
             chat : this.state.newMessage,
             id : this.state.messageId
         }
         
         axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
-        axios.post("/useraddmessage", data)
+        axios.post("/addMessage", data)
             .then(response => {
                 console.log(response);
                 if (response.status == 200) {
                     this.props.sendMessage(data);
                     let newIM = this.state.individualMessage;
                     let temp = newIM.chats.concat({
-                        from :localStorage.getItem('id'),
+                        from :localStorage.getItem('user_id'),
                         to : this.state.chatFrom,
                         chat : this.state.newMessage,
                         time: new Date()
@@ -109,7 +109,7 @@ class IndividualMessagePage extends Component {
     render(){
       let chats = this.state.individualMessage.chats.map(chat => {
           console.log(chat);
-        if(chat.to === localStorage.getItem('id')){
+        if(chat.to === localStorage.getItem('user_id')){
             return (
                 <div className="incoming_msg">
                 <div className="incoming_msg_img"> <img src={this.state.chatFromProfilePic == null ? 'https://ptetutorials.com/images/user-profile.png' : this.state.chatFromProfilePic  } alt="sunil" /> </div>

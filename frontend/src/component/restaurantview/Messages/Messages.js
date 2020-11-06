@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import cookie from 'react-cookies';
-import MessagesNavbar from './MessagesNavbar';
+import Navbar from "../rNavbar";
 import {dateTimeToDate} from '../../../helperMethods'
 import IndividualMessage from './IndividualMessage'
 import { connect } from 'react-redux';
-import { setMessages  } from "../../../redux/action/restaurantmessage";
+import { setMessages  } from "../../../redux/action/restaurantmessage.js";
 
 
 class MessagesPage extends Component {
@@ -37,7 +37,7 @@ class MessagesPage extends Component {
         axios.defaults.withCredentials = true;
         //make a post request with the user data
         axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
-        await axios.get(`${backendServer}/api/message/getMessages/${localStorage.getItem('id')}`)
+        await axios.get(`http://localhost:3000/getMessages/${localStorage.getItem('restaurant_id')}`)
             .then(response => {
                 console.log(response);
                 this.props.setMessages(response.data.data);
@@ -58,9 +58,9 @@ class MessagesPage extends Component {
     }
 
     render(){
-      let messageList = this.props.messages.map(message => {
+      let messageList = this.state.messages.map(message => {
         let chattingWith = {};
-        if(message.user1.id === localStorage.getItem('id')){
+        if(message.user1.id === localStorage.getItem('restaurant_id')){
           chattingWith = message.user2
         }
         else{
@@ -81,7 +81,7 @@ class MessagesPage extends Component {
     });
 
     let messageFrom= null;
-    if(this.state.selectedMessage.user1.id===localStorage.getItem('id')){
+    if(this.state.selectedMessage.user1.id===localStorage.getItem('restaurant_id')){
       messageFrom = this.state.selectedMessage.user2.name
     }
     else{
@@ -90,6 +90,7 @@ class MessagesPage extends Component {
 
         return (
             <div className="body">
+            <Navbar/>
                 <div className=" col-sm-10 col-sm-offset-1 card-columns margin20">
                     <div className="col-sm-12 card">
                         <div className="message-heading margin20 container-fluid">
@@ -126,10 +127,12 @@ class MessagesPage extends Component {
         )
     }
 }
+// Issue with maps to props and line 61
+
 const mapStateToProps = state => {
   return {
-      messages: state.RestaurantMessageReducer.messages,
-      selectedMessage : state.RestaurantMessageReducer.selectedMessage
+      messages: state.messages,
+      selectedMessage : state.selectedMessage
   };
 };
 

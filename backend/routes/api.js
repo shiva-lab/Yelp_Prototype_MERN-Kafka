@@ -673,4 +673,23 @@ router.post("/viewreview", (req, res) => {
   });
 });
 
+
+const {
+  createMessage,
+    getMessages,
+    addMessage
+
+
+} = require("./message/messageController");
+
+router.get("/getMessages/:id", (req, res) => {
+  return getMessages(req,res)
+});
+router.post("/addMessage", (req, res) => {
+  return addMessage(req, res)
+});
+router.post("/createMessage", (req, res) => {
+  return createMessage(req, res)
+});
+
 module.exports = router;

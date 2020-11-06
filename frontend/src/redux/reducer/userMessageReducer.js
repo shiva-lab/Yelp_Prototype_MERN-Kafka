@@ -25,4 +25,4 @@ import { SET_MESSAGE,SEND_MESSAGE} from '../action/type'
       return state;
   }
   
-export default usertMessageReducer;
+export default userMessageReducer;

@@ -4,7 +4,6 @@ import Navbar from "../rNavbar";
 import cookie from "react-cookies";
 import { Redirect } from "react-router";
 import swal from 'sweetalert2';
-
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { addMenu } from "../../../redux/action/menuAction";

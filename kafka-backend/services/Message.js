@@ -50,7 +50,7 @@ function handle_request(msg, callBack) {
                 return callBack(null);
             }
             else {
-                console.log("---------else",data)
+                console.log(data)
 
                 var newMessage = new Message({
                     'user1.id' : data.user1.id,
@@ -60,7 +60,7 @@ function handle_request(msg, callBack) {
                     chats: []
                 });
                 newMessage.save()
-                console.log("=========== Data", newMessage)
+                console.log("=========== Data ===========", newMessage)
                 return callBack(null, data)
             }
         })

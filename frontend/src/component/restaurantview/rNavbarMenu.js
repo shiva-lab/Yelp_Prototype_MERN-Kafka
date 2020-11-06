@@ -47,7 +47,7 @@ export const MenuItems = [
 
   {
     title: 'Messages',
-    url: ' ',
+    url: '/rMessages',
     cName: 'nav-links'
   },
 

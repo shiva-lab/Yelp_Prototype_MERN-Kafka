@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import cookie from 'react-cookies';
-import MessagesNavbar from './MessagesNavbar';
 import {dateTimeToDate} from '../../../helperMethods'
 import IndividualMessage from './IndividualMessage'
 import { connect } from 'react-redux';
-import { setMessages  } from "../../../redux/action/usermessage"
+import { setMessages  } from "../../../redux/action/usermessage.js"
+import Navbar from "../uNavbar";
 
 class MessagesPage extends Component {
     constructor(props) {
@@ -37,7 +37,7 @@ class MessagesPage extends Component {
         axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
 
         //make a post request with the user data
-        await axios.get("/getMessages")
+        await axios.get(`http://localhost:3000/getMessages/${localStorage.getItem('user_id')}`)
             .then(response => {
                 console.log(response);
                 this.props.setMessages(response.data.data);
@@ -60,9 +60,9 @@ class MessagesPage extends Component {
     }
 
     render(){
-      let messageList = this.props.messages.map(message => {
+      let messageList = this.state.messages.map(message => {
         let chattingWith = {};
-        if(message.user1.id === localStorage.getItem('id')){
+        if(message.user1.id === localStorage.getItem('user_id')){
           chattingWith = message.user2
         }
         else{
@@ -72,7 +72,7 @@ class MessagesPage extends Component {
           //active_chat
           <div className="chat_list "  key={message._id} onClick={()=>this.showMessageDetail(message)}>
                 <div className="chat_people">
-                  <div className="chat_img"> <img src={  chattingWith.profile_img_url == null ? 'https://ptetutorials.com/images/user-profile.png' : chattingWith.profile_img_url} className="img-circle"/> </div>
+                  <div className="chat_img"> <img src={  chattingWith.profile_img_url == null ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQnl9uvXx-KYRMz1ld_g08_WQM4BF9C2_xm2A&usqp=CAU' : chattingWith.profile_img_url} className="img-circle"/> </div>
                   <div className="chat_ib">
                     <h5>{chattingWith.name} <span className="chat_date">{message.chats.length > 0 ? dateTimeToDate(message.chats[message.chats.length - 1].time) :""}</span></h5>
                     <p>{message.chats.length > 0 ? message.chats[message.chats.length - 1].chat : ""}</p>
@@ -83,7 +83,7 @@ class MessagesPage extends Component {
     });
 
     let messageFrom= null;
-    if(this.state.selectedMessage.user1.id===localStorage.getItem('id')){
+    if(this.state.selectedMessage.user1.id===localStorage.getItem('user_id')){
       messageFrom = this.state.selectedMessage.user2.name
     }
     else{
@@ -91,7 +91,8 @@ class MessagesPage extends Component {
     }
 
         return (
-            <div className="handshake-body">
+            <div className="body">
+            <Navbar/>
                 <div className=" col-sm-10 col-sm-offset-1 card-columns margin20">
                     <div className="col-sm-12 card">
                         <div className="message-heading margin20 container-fluid">
@@ -125,10 +126,11 @@ class MessagesPage extends Component {
         )
     }
 }
+// Issue with maps to props and line 63
 const mapStateToProps = state => {
   return {
-      messages: state.userMessageReducer.messages,
-      selectedMessage : state.userMessageReducer.selectedMessage
+      messages: state.messages,
+      selectedMessage : state.selectedMessage
   };
 };
 

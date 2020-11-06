@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect , Link } from "react-router-dom";
 import cookie from "react-cookies";
 import Navbar from "../../restaurantview/rNavbar";
 
@@ -39,6 +39,12 @@ class UViewProfileRest extends React.Component {
       });
   }
 
+  handleClick() {
+    return function () {
+      console.log("HullHooooo")
+    };
+  }
+
   render() {
     // let redirectVar = null;
     // if (!cookie.load("cookie1")) {
@@ -55,7 +61,7 @@ class UViewProfileRest extends React.Component {
                 <div className="main-div-menu">
                   <div className="panel" />
                   <div>
-                    <button class="ybtn ybtn--primary ybtn--small business-search-form_button">Message</button>
+                    <Link to="/rMessages"><button class="ybtn ybtn--primary ybtn--small business-search-form_button" onClick={this.handleClick()}>Message</button></Link>
                   </div>
                   <div>
                     <h1 className="heading-menu"> Profile</h1>

@@ -36,7 +36,7 @@ class IndividualMessagePage extends Component {
     //Call the Will Mount to set the auth Flag to false
      componentDidUpdate() {
         if(this.state.messageId !=this.props.individualMessage._id ){
-            if(this.props.individualMessage.user1.id!==localStorage.getItem('user_id')){
+            if(this.props.individualMessage.user1.id!==localStorage.getItem('restaurant_id')){
                 this.setState({
                     chatFrom :this.props.individualMessage.user1.id,
                     chatFromProfilePic :this.props.individualMessage.user1.profile_img_url,
@@ -60,7 +60,7 @@ class IndividualMessagePage extends Component {
 
     submitEdit = () => {
         var data = {
-            from :localStorage.getItem('user_id'),
+            from :localStorage.getItem('restaurant_id'),
             to : this.state.chatFrom,
             chat : this.state.newMessage,
             id : this.state.messageId
@@ -77,7 +77,7 @@ class IndividualMessagePage extends Component {
                     this.props.sendMessage(data);
                     let newIM = this.state.individualMessage;
                     let temp = newIM.chats.concat({
-                        from :localStorage.getItem('id'),
+                        from :localStorage.getItem('restaurant_id'),
                         to : this.state.chatFrom,
                         chat : this.state.newMessage,
                         time: new Date()
@@ -113,7 +113,7 @@ class IndividualMessagePage extends Component {
 
     render(){
       let chats = this.state.individualMessage.chats.map(chat => {
-        if(chat.to === localStorage.getItem('id')){
+        if(chat.to === localStorage.getItem('restaurant_id')){
             return (
                 <div className="incoming_msg">
                                 <div className="incoming_msg_img"> <img src={this.state.chatFromProfilePic == null ? 'https://ptetutorials.com/images/user-profile.png' : this.state.chatFromProfilePic  } alt="sunil" /> </div>
