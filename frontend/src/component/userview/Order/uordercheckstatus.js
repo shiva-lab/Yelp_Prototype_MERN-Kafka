@@ -4,6 +4,8 @@ import cookie from "react-cookies";
 import { Link, Redirect } from 'react-router-dom';
 import axios from "axios"
 import Navbar from "../uNavbar";
+import Moment from 'react-moment';
+import 'moment-timezone';
 
 // import Modal from 'react-modal';
 class UOrderStatusCheck extends React.Component {
@@ -113,8 +115,8 @@ class UOrderStatusCheck extends React.Component {
                 
                 <div>
                   <h1 className="heading-menu">Orders</h1>
-                  <button onClick={this.sortAscending}>asc</button>
-            <button onClick={this.sortDescending}>desc</button>
+                  <button onClick={this.sortAscending}>Asc</button>
+                  <button onClick={this.sortDescending}>Desc</button>
                   <form onSubmit={this.submit}>
               <select
                 value={this.state.value}
@@ -145,7 +147,6 @@ class UOrderStatusCheck extends React.Component {
                           <tr className="tbl-header">
                             <th>Date/Time</th>
                             <th>Order ID</th>
-                       
                             <th>Delivery Mode</th>
                             <th>Current Status</th>
                             <th>View Details</th>
@@ -156,7 +157,7 @@ class UOrderStatusCheck extends React.Component {
                         <tbody>
                           {this.state.order.map(order => (
                             <tr>
-                              <td>{order.ts}</td>
+                              <td><Moment format="D MMM YYYY HH:MM">{order.ts}</Moment></td>
                               <td>{order._id}</td>
                            
                               <td>{order.deliverymode}</td>

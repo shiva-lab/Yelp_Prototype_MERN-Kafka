@@ -125,7 +125,9 @@ eventroute.post("/vieweventlisting", (req, res) => {
   
 
   eventroute.get("/viewevent", async(req, res, next) => {
-    await restEvent.find({}, (error, result) => {
+    //.sort({date: -1}).exec((err, docs) => { ... });
+    var mysort = { date: -1 };
+    await restEvent.find({},(error, result) => {
       if (error) {
         res.writeHead(500, {
           "Content-Type": "text/plain",
@@ -138,7 +140,7 @@ eventroute.post("/vieweventlisting", (req, res) => {
         console.log(result);
         res.end(JSON.stringify(result));
       }
-    });
+    }).sort({date:-1});
   });
 
   eventroute.post("/vieweventdetails", async(req, res, next) => {

@@ -367,15 +367,15 @@ orderroute.post("/userorderstatus", (req, res) => {
         console.log(result);
         res.end(JSON.stringify(result));
       }
-    });
+    }).sort({ts:-1});
   });
 
   orderroute.post("/filterordersearch", (req, res) => {
     //console.log(req.body.user_id,req.body.filter);
     console.log(req.body);
     
-    Order.find({ $or: [{user_id: req.body.user_id }, {restaurant_id: req.body.restaurant_id}],orderstatus:req.body.filter} , (error, result) => {
-    //Order.find({ user_id: req.body.user_id,orderstatus:req.body.filter} , (error, result) => {
+    // Order.find({ $or: [{user_id: req.body.user_id }, {restaurant_id: req.body.restaurant_id}],orderstatus:req.body.filter} , (error, result) => {
+    Order.find({ user_id: req.body.user_id,orderstatus:req.body.filter} , (error, result) => {
       if (error) {
         console.log(error)
         res.writeHead(500, {

@@ -5,6 +5,8 @@ import axios from "axios";
 import Navbar from "../uNavbar";
 import { paginate, pages } from "../../../helperFunctions/paginate";
 import swal from 'sweetalert2';
+import Moment from 'react-moment';
+import 'moment-timezone';
 
 // import Modal from 'react-modal';
 class ViewEvent extends React.Component {
@@ -103,6 +105,14 @@ class ViewEvent extends React.Component {
     });
   };
 
+ 
+  sortDescending = () => {
+    console.log("Sorting Desc")
+    const { filteredEvent } = this.state;
+    filteredEvent.sort((a, b) => a.date - b.date).reverse()
+    this.setState({ filteredEvent })
+  }
+
   render() {
     localStorage.setItem("searcheve", this.state.searcheve);
     let redirectVar = null;
@@ -135,7 +145,7 @@ class ViewEvent extends React.Component {
           <td>{event.eventname} </td>
 
           <td>{event.eventdescription} </td>
-          <td>{event.date} </td>
+          <td><Moment format="D MMM YYYY">{event.date}</Moment> </td>
           <td>{event.time} </td>
           <td>{event.address}</td>
           <td>
@@ -198,8 +208,11 @@ class ViewEvent extends React.Component {
                       </span>
                     </button>
                   </Link>
+                  
                 </div>
               </label>
+              
+                  <button onClick={this.sortDescending}>Sort By Upcoming Events</button>
               <br />
               <br />
 
