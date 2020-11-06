@@ -3,8 +3,9 @@ const router = express.Router();
 //const connection = require("../models/yelpschema");
 var multer = require("multer");
 const Restaurant = require("../models/Restaurant");
-
+const Order = require('../models/Order');
 //let checkAuth = passport.authenticate('jwt', { session: false });
+const checkAuth =require('../config/checkAuth')
 
 var multerS3 = require("multer-s3");
 (aws = require("aws-sdk")),
@@ -89,6 +90,40 @@ router.post("/restaurantsearch", (req, res) => {
    });
  });
  
+
+router.post("/filterrestaurantsearch", (req, res) => {
+  console.log("Data Recieved from FrontEnd: ",req.body);
+  const search = req.body.search
+  const filter = req.body.filter
+  console.log("Data ", search,filter)
+    Restaurant.find()
+      .and([
+        { $or: [{delivery_method: req.body.filter }, {modeofdelivery : req.body.filter}] },
+          { $or: [{cuisine: req.body.search }, {location : req.body.search},{"menu.itemname" : req.body.search}] }
+      ])
+      .exec(function (error, result) {
+        if (error) {
+          console.log(error)
+          res.writeHead(500, {
+            "Content-Type": "text/plain",
+          });
+          res.end();
+        } else {
+          res.writeHead(200, {
+            "Content-Type": "application/json",
+          });
+          console.log(result);
+          res.end(JSON.stringify(result));
+        }
+      });
+  //    $and: [
+  //     { $or: [{delivery_method: req.body.filter }, {modeofdelivery : req.body.filter}] },,
+  //     { $or: [{cuisine: req.body.search }, {location : req.body.search},{"menu.itemname" : req.body.search}] }
+  // ]},
+  //    function(error, result) {
+      
+   
+  });
 
 // router.get("/homeviewrestaurant", (req, res, next) => {
 //   console.log("Hello from home Restaurant View");
@@ -298,7 +333,7 @@ router.post("/viewmenu", (req, res) => {
 });
 
 // router.post("/editmenu", (req, res) => {
-  router.post( "/editmenu",upload.single("myfile"), async(req, res, next) => {
+  router.post( "/editmenu",checkAuth,upload.single("myfile"), async(req, res, next) => {
     try {
       console.log("Uploading Menu Item Image...");
     } catch (err) {
@@ -308,7 +343,7 @@ router.post("/viewmenu", (req, res) => {
     console.log("Add Menu Item API Checkpoint");
     console.log("Image Path on AWS: ", path);
     const {
-      itemname,
+      itemname, 
       price,
       itemdescription,
       itemcategory,
@@ -370,6 +405,28 @@ var quantity="1"
   });
 
 
+  router.post("/filterorderrestsearch", (req, res) => {
+   
+    console.log(req.body.restaurant_id,req.body.filter);
+    
+    // Order.find({ $or: [{user_id: req.body.user_id }, {restaurant_id: req.body.restaurant_id}],orderstatus:req.body.filter} , (error, result) => {
+    Order.find({ restaurant_id: req.body.restaurant_id,orderstatus:req.body.filter} , (error, result) => {
+      if (error) {
+        console.log(error)
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end();
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        console.log("result")
+        console.log(result);
+        res.end(JSON.stringify(result));
+      }
+    });
+  });
 // router.post("/viewhome", (req, res, next) => {
 //   console.log("Hello from viewhome");
 //   var restaurant_id = req.body.restaurant_id;

@@ -42,6 +42,11 @@ export const MenuItems = [
     url: '/listallusers',
     cName: 'nav-links'
   },
+  {
+    title: 'Messages',
+    url: ' ',
+    cName: 'nav-links'
+  },
 
   {
     title: 'Logout',

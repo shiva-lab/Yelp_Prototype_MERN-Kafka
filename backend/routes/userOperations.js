@@ -116,6 +116,29 @@ userroute.post("/viewuserlist", async(req, res, next) => {
     }
   });
 });
+//********************* */
+// List of all Users by name or location
+//********************* */
+
+userroute.post("/filterusersearch", async(req, res, next) => {
+  const search1 = req.body.name;
+  console.log("Data: ",search1)
+  //console.log("UserID: ", user_id)
+  await User.find({ $or: [{fname: req.body.name }, {city: req.body.name}] }, (error, result) => {
+    if (error) {
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end();
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      console.log(result);
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 
 
 //********************* */
@@ -144,7 +167,7 @@ userroute.post("/followuserprofile",checkAuth, async (req, res, next) => {
 userroute.post("/usersifollow", async (req, res, next) => {
    
   const {user_id} = req.body;
-  console.log("Data in backend",user_id);
+  console.log("Data in backend for follo list",user_id);
   User.find({ _id:req.body.user_id },{},(error, result) => {
     if (error) {
       console.log(error)
@@ -179,7 +202,7 @@ userroute.post("/addtocart", async(req, res) => {
 //  console.log(objData)
 
   Order.findOneAndUpdate(
-    { user_id:req.body.user_id},
+    { user_id:req.body.user_id,restaurant_id: req.body.restaurant_id, orderstatus:" "},
     {  restaurant_id: req.body.restaurant_id,user_name:req.body.user_name,orderstatus:orderstatus, $push: { cart:{itemname:req.body.itemname ,itemid:req.body._id,price:req.body.price,path:req.body.path,cartstatus:cartstatus,user_id:req.body.user_id,restaurant_id:req.body.restaurant_id ,  user_name:req.body.user_name} }},{upsert:true},(error, data) => {
    
 // order = new Order({
@@ -217,9 +240,7 @@ else {
 
 
 userroute.post("/uviewcart", (req, res) => {
-  console.log(req.body.user_id);
-  
-  
+  console.log("User ID: ",req.body.user_id);
   Order.find({  "user_id": req.body.user_id,orderstatus:" " },{}, (error, result) => {
     
     if (error) {
@@ -340,17 +361,19 @@ userroute.post("/deletefromcart", (req, res) => {
 //       }
 //     });
 //   });
+
    userroute.post("/createorder", (req, res) => {
     const { deliverymode,user_id, order_id} = req.body;//removed rest id
     console.log(deliverymode,user_id, order_id)
     var orderstatus = "new order"
     var cartstatus="done"
+    var ts = Date.now()
   
    try {
         // Order.Update(
         //   { _id: req.body.order_id },{deliverymode:req.body.deliverymode,orderstatus:orderstatus,$set :{'cart.$.cartstatus:"done"}}, {multi: true}
         Order.updateOne({'_id': req.body.order_id, "cart.user_id": req.body.user_id},
-      {$set: {"cart.$.cartstatus": "done"}, deliverymode:req.body.deliverymode,orderstatus:orderstatus},
+      {$set: {"cart.$.cartstatus": "done"}, deliverymode:req.body.deliverymode,orderstatus:orderstatus,ts:ts},
     
           (error, results) => {
             if (error) {
@@ -611,7 +634,10 @@ userroute.post("/uviewprofile", (req, res) => {
           } = req.body;
         
           console.log(
-            "Data in backend",bio,headline,fname,lname,city,ustate,country,nick_name,mobile,emailid,address,favorites,myblog,things_ilove,find_me_in,path,user_id,dob
+            "Data in backend",bio,headline,fname,lname,city,ustate,
+            country,nick_name,mobile,emailid,address,favorites,myblog,things_ilove,find_me_in,path,
+user_id,
+            dob
           );
         
           User.findByIdAndUpdate(

@@ -4,6 +4,7 @@ import loginReducer from './loginReducer';
 import registerreducer from './registerreducer';
 import authReducer from './authReducer'
 import menuReducer from './menuReducer'
+import orderReducer from './orderReducer'
 
 const rootReducer = combineReducers({
   login: loginReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
    profile: profileReducer,
    auth:authReducer,
    menu:menuReducer,
+   order:orderReducer
 
 
 

@@ -17,6 +17,7 @@ class ListAllUsers extends React.Component {
     this.searcheveHandler = this.searcheveHandler.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.submit = this.submit.bind(this);
+    this.usersubmit = this.usersubmit.bind(this);
   }
   searcheveHandler = (e) => {
     console.log("Inside Search User Event Handler");
@@ -95,6 +96,22 @@ submit = (event) => {
   
 };
 
+usersubmit = (event) => {
+  event.preventDefault();
+  //const user_id = cookie.load('cookie1');
+  const data = { name: this.state.searcheve };
+  console.log("Testing user data", data);
+  console.log("Sending this data to backend", data);
+  const temp = this;
+  axios.post("/filterusersearch",data)
+    .then((response) => {
+      console.log("Filtered user: ", response.data)
+      temp.setState({ filteredUserdata: response.data });
+    })
+    .catch((err) => {
+      console.log("caught it! - ERROR", err);
+    });
+};
            
   render() {
     localStorage.setItem("searcheve", this.state.searcheve);
@@ -142,7 +159,7 @@ submit = (event) => {
               <h1 className="heading-menu"> List of all Users</h1>
               <br />
               <br />
-              <label>
+              {/* <label>
                 <div>
                   <span class="pseudo-input_field-holder">
                     <input
@@ -150,17 +167,18 @@ submit = (event) => {
                       id="dropperText_Mast"
                       maxlength="80"
                       name="search"
+                     
                       placeholder="User Name"
                       onChange={this.searcheveHandler}
                     />
                     <input type="hidden" name="ns" value="1" />
                   </span>
-                  <Link to="/searchevent">
+                   <Link to="/searchevent"> 
                     <button
                       class="ybtn ybtn--primary ybtn--small business-search-form_button"
                       value="submit"
-                    >
-                      {" "}
+                      onSubmit={this.usersubmit}>
+                       {" "}
                       Search
                       <span class="main-search_action-icon-wrap js-search-icon-wrap">
                         <span
@@ -169,9 +187,29 @@ submit = (event) => {
                         ></span>
                       </span>
                     </button>
-                  </Link>
+                   </Link> 
                 </div>
-              </label>
+              </label> */}
+
+              <form onSubmit={this.usersubmit}>
+              <input
+                    style={{ borderRadius: "3px" }}
+                    type="text"
+                    id="search"
+                    name="search"
+                    placeholder="Name,Location.."
+                    value={this.state.value}
+                    onChange={this.searcheveHandler}
+                  required/>
+                  
+              <input
+                class="btn btn-danger"
+                type="submit"
+                value="Submit"
+              ></input>
+
+<br/><br></br>
+            </form>
               <form onSubmit={this.submit}>
               <select
                 value={this.state.value}

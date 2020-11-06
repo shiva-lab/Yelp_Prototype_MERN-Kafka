@@ -38,7 +38,10 @@ export const addMenu = (formData, config) => (dispatch) => {
 
 
             console.log("Edit menu called from action");
-            // axios.defaults.withCredentials = true;
+            axios.defaults.withCredentials = true;
+            axios.defaults.headers.common["authorization"] = localStorage.getItem(
+              "token"
+            );
             axios.post("/editmenu", formData, config)
               .then((response) => {
                 console.log("From Edit Menu Action")

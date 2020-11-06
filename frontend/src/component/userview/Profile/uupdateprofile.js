@@ -351,7 +351,7 @@ uupdateprofile.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  user: state.profile.user,
+  user : Object.assign({}, state.profile.user)
 });
 
 export default connect(mapStateToProps, { updateUserProfile })(uupdateprofile);

@@ -29,15 +29,10 @@ import UViewMenu from "./component/userview/Order/uviewmenu";
 import UPlaceOrder from "./component/userview/Order/uplaceorder";
 import PlaceOrderForm from "./component/userview/Order/placeorderform";
 import RViewOrder from "./component/restaurantview/Order/rvieworder";
-import RCurrentOrder from "./component/restaurantview/Order/rcurrentorder";
-import RCompleteOrder from "./component/restaurantview/Order/rcompleteorder";
-import RFinalStatus from "./component/restaurantview/Order/rfinalstatus";
-import ROrderDone from "./component/restaurantview/Order/rorderdone";
 import MapContainer from "./component/userview/mapContainer";
 import UOrderCheckStatus from "./component/userview/Order/uordercheckstatus";
 import UOrderDetails from "./component/userview/Order/uorderdetails";
 import EditMenu from "./component/restaurantview/Menu/editmenu";
-import RrejectedOrder from "./component/restaurantview/Order/rrejectedorder";
 import EventCreate from "./component/restaurantview/Event/eventcreate";
 import ViewEvent from "./component/userview/Event/viewevent";
 import ViewEventSignup from "./component/restaurantview/Event/vieweventsignup";
@@ -88,11 +83,6 @@ function App() {
             <Route path="/uplaceorder" component={UPlaceOrder} />
             <Route path="/Placeorderform" component={PlaceOrderForm} />
             <Route path="/rvieworder" component={RViewOrder} />
-            <Route path="/rcurrentorder" component={RCurrentOrder} />
-            <Route path="/rcompleteorder" component={RCompleteOrder} />
-            <Route path="/rfinalstatus" component={RFinalStatus} />
-            <Route path="/rorderdone" component={ROrderDone} />
-            <Route path="/rrejectedorder" component={RrejectedOrder} />
             <Route path="/mapContainer" component={MapContainer} />
             <Route path="/uordercheckstatus" component={UOrderCheckStatus} />
             <Route path="/uorderdetails" component={UOrderDetails} />

@@ -64,6 +64,14 @@ class AllRestaurant extends React.Component {
   };
 
   render() {
+    let redirectVar = null;
+    if (!localStorage.getItem('token')){
+      redirectVar = <Redirect to="/UserLogin" />
+    }
+
+
+
+
     let links = [];
     if (this.state.pages > 0) {
       console.log(this.state.pages);
@@ -94,6 +102,8 @@ class AllRestaurant extends React.Component {
           <td>{food.rdescription} </td>
           <td>{food.contactinfo}</td>
           <td>{food.address}</td>
+          <td>{food.location}</td>
+
 
           <td>
             <Link to="/rviewprofile">
@@ -112,7 +122,7 @@ class AllRestaurant extends React.Component {
 
     return (
       <div>
-        {/* {redirectVar} */}
+        {redirectVar}
         <div>
           <div>
             <Navbar />
@@ -143,7 +153,7 @@ class AllRestaurant extends React.Component {
                             id="find_desc"
                             maxlength="64"
                             name="find_desc"
-                            placeholder="Food, delivery, takeout..."
+                            placeholder="Food, City, delivery,takeout,Neighborhoods..."
                             onChange={this.search1Handler}
                             class="pseudo-input_field business-search-form_input-field"
                             aria-autocomplete="list"
@@ -186,7 +196,7 @@ class AllRestaurant extends React.Component {
                           </span>
                           <span class="u-offscreen">Search</span>
                         </span>
-                        <div class="circle-spinner js-circle-spinner hidden">
+                        {/* <div class="circle-spinner js-circle-spinner hidden">
                           <div class="circle-spinner_segment container1">
                             <div class="circle1"></div>
                             <div class="circle2"></div>
@@ -205,7 +215,7 @@ class AllRestaurant extends React.Component {
                             <div class="circle3"></div>
                             <div class="circle4"></div>
                           </div>
-                        </div>
+                        </div> */}
                       </button>
                     </div>
                   </div>
@@ -227,6 +237,7 @@ class AllRestaurant extends React.Component {
                             <th>Description</th>
                             <th>Contact Info</th>
                             <th>Address</th>
+                            <th>City/Location</th>
                             <th>Order Now</th>
                           </tr>
                         </thead>

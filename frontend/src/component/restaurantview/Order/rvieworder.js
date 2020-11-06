@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import { Link, Redirect } from 'react-router-dom';
 import Navbar from "../rNavbar";
-import Rcurrentorder from "./rcurrentorder";
-import Rcompleteorder from "./rcompleteorder";
-import Rfinalstatus from "./rfinalstatus";
-import Rorderdone from "./rorderdone";
-import Rrejectedorder from "./rrejectedorder";
+
+
 import axios from "axios";
 
 // import Modal from 'react-modal';
@@ -158,20 +155,12 @@ class RViewOrder extends React.Component {
                     </tbody>
                   </table>
                 </div>
-                <Rcurrentorder />
+               
               </div>
-              <div>
-                <Rcompleteorder />
-              </div>
-              <div>
-                <Rfinalstatus />
-              </div>
-              <div>
-                <Rorderdone />
-              </div>
-              <div>
-                <Rrejectedorder />
-              </div>
+              
+              
+              
+             
 
             </div>
           </div>

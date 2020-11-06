@@ -54,6 +54,7 @@ class NewOrderView extends React.Component {
       });
   }
 
+  
   handleChange = ({ target }) => {
     const { name, value } = target;
     this.setState({ [name]: value });
@@ -61,7 +62,8 @@ class NewOrderView extends React.Component {
 
   submit = (event) => {
     event.preventDefault();
-    const data = { filter: this.state.filter };
+    const restaurant_id = localStorage.getItem('restaurant_id');
+    const data = { filter: this.state.filter,restaurant_id };
     console.log("Testing");
     console.log(data);
     const temp = this;
@@ -69,23 +71,15 @@ class NewOrderView extends React.Component {
     // make a post request with the user data
     axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
   
-    axios.post("/filterordersearch",data)
-      .then(function (response) {
-        if (response.status >= 400) {
-          throw new Error("Bad response from server");
-        }
-
-        return response.json();
-      })
-      .then(function (data) {
-        console.log(data);
-       
-        temp.setState({ order: data });
-      })
-      .catch((err) => {
-        console.log("caught it!", err);
-      });
-  };
+    axios.post("/filterorderrestsearch",data)
+    .then((response) => {
+      console.log("Filtered Data: ", response.data)
+      temp.setState({ order: response.data });
+    })
+    .catch((err) => {
+      console.log("caught it! - ERROR", err);
+    });
+};
 
   
  
@@ -110,6 +104,7 @@ fetch("/neworderstatuschange", {
       .then(res => res.json());{
         alert("status changed for order")
       }
+     // window.location.reload();
     };
   }
 
@@ -145,9 +140,9 @@ fetch("/neworderstatuschange", {
                       placeholder="filter"
                     >
                       <option>Filter</option>
-                      <option value="New order">New Order</option>
+                      <option value="new order">New Order</option>
                       <option value="Preparing">Preparing</option>
-                      <option value="Completed">Completed</option>
+                      {/* <option value="Completed">Completed</option> */}
                       <option value="Delivered">Delivered</option>
                       <option value="Picked up">Picked Up</option>
                       <option value="Rejected">Rejected</option>
@@ -197,14 +192,16 @@ fetch("/neworderstatuschange", {
                                   placeholder="updatestatus"
                                 >
                                   <option>Update Status</option>
-
+                                  <option value="Accepted">Accepted</option>
                                   <option value="In Progress">Preparing</option>
-                                  <option value="Completed">Completed</option>
+                                  <option value="On the way">On the way </option>
                                   <option value="Delivered">Delivered</option>
+                                  <option value="Pickup ready">Pick Up Reday</option>
                                   <option value="Picked up">Picked Up</option>
                                   <option value="Rejected">Rejected</option>
                                 </select>
                               </td>
+                             
                               <td>
                               <button
                               onClick={this.handleUpdate(order._id)}

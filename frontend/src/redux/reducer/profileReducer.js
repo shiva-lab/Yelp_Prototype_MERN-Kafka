@@ -17,9 +17,7 @@ export default function (state = initialState, action) {
         user: action.payload
       };
       case UPDATE_USER_PROFILE:
-        return Object.assign({}, state,  {
-          user: action.payload
-        });
+        return {...state, user: Object.assign({}, action.payload)};
         
     default:
       return state;

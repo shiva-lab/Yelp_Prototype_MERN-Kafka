@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import cookie from "react-cookies";
 import { Link, Redirect } from 'react-router-dom';
 import axios from "axios"
-
 import Navbar from "../uNavbar";
 
 // import Modal from 'react-modal';
@@ -63,32 +62,35 @@ class UOrderStatusCheck extends React.Component {
 
   submit = (event) => {
     event.preventDefault();
-    const data = { filter: this.state.filter };
-    console.log("Testing");
-    console.log(data);
+    const user_id = cookie.load('cookie1');
+    const data = { filter: this.state.filter,user_id };
+    console.log("Testing", data);
+    console.log("Sending this data to backend", data);
     const temp = this;
-    fetch("/filterordersearch", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then(function (response) {
-        if (response.status >= 400) {
-          throw new Error("Bad response from server");
-        }
-
-        return response.json();
-      })
-      .then(function (data) {
-        console.log(data);
-        temp.setState({ order: data[0].OrderPlaced });
+    axios.post("/filterordersearch",data)
+      .then((response) => {
+        console.log("Filtered Data: ", response.data)
+        temp.setState({ order: response.data });
       })
       .catch((err) => {
-        console.log("caught it!", err);
+        console.log("caught it! - ERROR", err);
       });
   };
+
+
+  sortAscending = () => {
+    console.log("Sorting ASC")
+    const { order } = this.state;
+    order.sort((a, b) => a - b)    
+    this.setState({ order })
+  }
+
+  sortDescending = () => {
+    console.log("Sorting Desc")
+    const { order } = this.state;
+    order.sort((a, b) => a - b).reverse()
+    this.setState({ order })
+  }
 
 
   render() {
@@ -111,6 +113,8 @@ class UOrderStatusCheck extends React.Component {
                 
                 <div>
                   <h1 className="heading-menu">Orders</h1>
+                  <button onClick={this.sortAscending}>asc</button>
+            <button onClick={this.sortDescending}>desc</button>
                   <form onSubmit={this.submit}>
               <select
                 value={this.state.value}
@@ -121,9 +125,11 @@ class UOrderStatusCheck extends React.Component {
               >
                 <option>Filter</option>
                 <option value="new order">New Order</option>
-                <option value="In Progress">Preparing</option>
-                <option value="Completed">Completed</option>
+                <option value="Accepted">Recieved</option> 
+                <option value="In Progress">Preparing</option> 
+                <option value="On the way">On the way </option>  
                 <option value="Delivered">Delivered</option>
+                <option value="Pickup ready">Pick Up Reday</option>
                 <option value="Picked up">Picked Up</option>
               </select>
               <input
@@ -188,4 +194,5 @@ class UOrderStatusCheck extends React.Component {
     );
   }
 }
+
 export default UOrderStatusCheck;

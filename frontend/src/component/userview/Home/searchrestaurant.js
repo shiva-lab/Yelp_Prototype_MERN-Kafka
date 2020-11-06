@@ -71,7 +71,8 @@ componentDidMount() {
 
   submit = (event) => {
     event.preventDefault();
-    const data = { filter: this.state.filter };
+    const search = localStorage.getItem('search1')
+    const data = { filter: this.state.filter,search};
     //ß  var data = "dine-in";
     console.log("Hellooooooo");
     console.log(data);

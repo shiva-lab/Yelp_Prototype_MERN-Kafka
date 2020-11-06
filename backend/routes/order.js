@@ -369,6 +369,30 @@ orderroute.post("/userorderstatus", (req, res) => {
       }
     });
   });
+
+  orderroute.post("/filterordersearch", (req, res) => {
+    //console.log(req.body.user_id,req.body.filter);
+    console.log(req.body);
+    
+    Order.find({ $or: [{user_id: req.body.user_id }, {restaurant_id: req.body.restaurant_id}],orderstatus:req.body.filter} , (error, result) => {
+    //Order.find({ user_id: req.body.user_id,orderstatus:req.body.filter} , (error, result) => {
+      if (error) {
+        console.log(error)
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end();
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        console.log("result")
+        console.log(result);
+        res.end(JSON.stringify(result));
+      }
+    });
+  });
+  
   
 
   orderroute.post("/uorderdetails", (req, res) => {

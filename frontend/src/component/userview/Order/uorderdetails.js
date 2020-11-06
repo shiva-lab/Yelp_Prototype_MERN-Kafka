@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Component, useState } from "react";
 import cookie from "react-cookies";
 import Navbar from "../uNavbar";
@@ -23,6 +24,12 @@ class UOrderDetails extends React.Component {
       },
       body: JSON.stringify(data),
     })
+    // axios.get("/uorderdetails", {
+    //   params: {
+    //     order_id: order_id
+    //   }
+    // })
+
       .then((response) => {
         if (response.status >= 400) {
           throw new Error("Bad response from server");

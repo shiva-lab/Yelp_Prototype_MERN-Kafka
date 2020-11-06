@@ -21,10 +21,7 @@ class rlogout extends React.Component {
        await axios
             .get("/logout")
             .then(function (response) {
-                    if (response.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-                    return response.json();
+                    console.log( response.data);
                 }).catch(err => {
                     console.log('caught it!', err);
                 })
