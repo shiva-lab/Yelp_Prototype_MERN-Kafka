@@ -43,7 +43,7 @@ class ViewEvent extends React.Component {
     axios.get("/viewevent", data).then((response) => {
       if (response.status === 200) {
         console.log("Printing response", response);
-        console.log("Printing Menu", response.data);
+        console.log("Printing Event List", response.data);
         this.setState({
           eventdata: response.data,
           filteredEvent: paginate(response.data, 1, 10),
@@ -101,16 +101,53 @@ class ViewEvent extends React.Component {
   }
   paginatinon = (e) => {
     this.setState({
-      filteredMenu: paginate(this.state.eventdata, e, 10),
+      filteredEvent: paginate(this.state.eventdata, e, 10),
     });
   };
 
  
   sortDescending = () => {
-    console.log("Sorting Desc")
-    const { filteredEvent } = this.state;
-    filteredEvent.sort((a, b) => a.date - b.date).reverse()
-    this.setState({ filteredEvent })
+    const restaurant_id = localStorage.getItem("restaurant_id");
+    const data = { restaurant_id };
+    axios.defaults.withCredentials = true;
+    //make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.get("/viewevent", data).then((response) => {
+      if (response.status === 200) {
+        console.log("Printing response", response);
+        console.log("Printing Event List", response.data);
+        this.setState({
+          eventdata: response.data,
+          filteredEvent: paginate(response.data, 1, 10),
+          pages: pages(response.data, 10),
+        });
+        console.log(pages);
+      } else {
+        console.log("error");
+      }
+    });
+  }
+
+  sortAscending = () => {
+    const restaurant_id = localStorage.getItem("restaurant_id");
+    const data = { restaurant_id };
+    axios.defaults.withCredentials = true;
+    //make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.get("/vieweventasc", data).then((response) => {
+      if (response.status === 200) {
+        console.log("Printing response", response);
+        console.log("Printing Event List", response.data);
+        this.setState({
+          eventdata: response.data,
+          filteredEvent: paginate(response.data, 1, 10),
+          pages: pages(response.data, 10),
+        });
+        console.log(pages);
+      } else {
+        console.log("error");
+      }
+    });
   }
 
   render() {
@@ -211,8 +248,8 @@ class ViewEvent extends React.Component {
                   
                 </div>
               </label>
-              
-                  <button onClick={this.sortDescending}>Sort By Upcoming Events</button>
+                  <button onClick={this.sortDescending}>Decending</button>
+                  <button onClick={this.sortAscending}> Ascending</button>
               <br />
               <br />
 

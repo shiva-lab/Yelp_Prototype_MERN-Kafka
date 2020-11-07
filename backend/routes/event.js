@@ -87,10 +87,11 @@ time,address, city,eventtype,hashtag
 },
 );
 
-eventroute.post("/vieweventlisting",checkAuth, (req, res) => {
+eventroute.post("/vieweventlisting", (req, res) => {
     console.log(req.body.restaurant_id);
     restEvent.find({ restaurant_id: req.body.restaurant_id } , (error, result) => {
       if (error) {
+        console.log("error:",error)
         res.writeHead(500, {
           "Content-Type": "text/plain",
         });
@@ -123,6 +124,25 @@ eventroute.post("/vieweventlisting",checkAuth, (req, res) => {
         res.end(JSON.stringify(result));
       }
     }).sort({date:-1});
+  });
+
+  eventroute.get("/vieweventasc", async(req, res, next) => {
+    //.sort({date: -1}).exec((err, docs) => { ... });
+    var mysort = { date: 1 };
+    await restEvent.find({},(error, result) => {
+      if (error) {
+        res.writeHead(500, {
+          "Content-Type": "text/plain",
+        });
+        res.end();
+      } else {
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+        });
+        console.log(result);
+        res.end(JSON.stringify(result));
+      }
+    }).sort({date:1});
   });
 
   eventroute.post("/vieweventdetails",  async(req, res, next) => {
