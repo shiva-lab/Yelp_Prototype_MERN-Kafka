@@ -14,7 +14,7 @@ class ViewEventListing extends React.Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
    
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
@@ -23,6 +23,7 @@ class ViewEventListing extends React.Component {
     // make a post request with the user data
     axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios.post("/vieweventlisting", data)
+  //  await axios.get(`http://localhost:3000/vieweventlisting/${localStorage.getItem('restaurant_id')}`)
         .then(response => {
             if (response.status === 200) {
               console.log("Printing response",response)
@@ -117,15 +118,6 @@ class ViewEventListing extends React.Component {
 
         )
       })
-
-
-
-
-
-
-
-
-
 
 
 

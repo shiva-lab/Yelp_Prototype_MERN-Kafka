@@ -19,6 +19,7 @@ const initialState = {
   find_me_in:null,
 
   file: null,
+  restuser:{}
 };
 
 export default function (state = initialState, action) {
@@ -31,7 +32,7 @@ export default function (state = initialState, action) {
     case UPDATE_PROFILE:
       return {
         ...state,
-        user: action.payload
+        restuser: action.payload
       };
       case UPDATE_USER_PROFILE:
         // return {...state, 

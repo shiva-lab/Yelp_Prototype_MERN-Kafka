@@ -10,9 +10,6 @@ const passport = require("passport");
 const checkAuth =require('../config/checkAuth')
 aws = require('aws-sdk'),
 
-
-
-
 aws.config.update({
   secretAccessKey: '0am/9n/qQMhH4NnBJBasYvoM8enIMta/FirpNhAf',
   accessKeyId: 'AKIAIX7RODER3FW5UBIA',
@@ -55,25 +52,32 @@ time,address, city,eventtype,hashtag
     if (event) {
         return res.status(400).json({ errors: [{ msg: 'Event Already Exists' }] });
     }
-     event = new restEvent({ restaurant_id,
- eventname,
-        eventdescription,
-        time,
-        date,
-        address,
-         city,
-         eventtype,
-        hashtag,
-        path
+     event = new restEvent({ restaurant_id:req.body.restaurant_id,
+      eventname:req.body.eventname,
+      eventdescription:req.body.eventdescription,
+      time:req.body.time,
+      date:req.body.date,
+      address:req.body.address,
+      city:req.body.city,
+      eventtype:req.body.eventtype,
+      hashtag:req.body.hashtag,
+      path:path
 
     });
-    await event.save();
-
-    res.writeHead(200, {
-      'Content-Type': 'text/plain'
-  })
-  res.end();
-
+    await event.save((error, data) => {
+      if (error) {
+          res.writeHead(500, {
+              'Content-Type': 'text/plain'
+          })
+          res.end();
+      }
+      else {
+          res.writeHead(200, {
+              'Content-Type': 'text/plain'
+          })
+          res.end();
+      }
+  });
 
 } catch (err) {
     console.error(err.message);
