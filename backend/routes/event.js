@@ -42,29 +42,11 @@ var app = express(),
   var path = req.file.location;
   console.log("Add event API Checkpoint");
   console.log("Image Path on AWS: ", path);
-  const {
-    restaurant_id,
-    eventname,
-    eventdescription,
-    date,
-    time,
-    address,
-     city,
-     eventtype,
-    hashtag
+  const { restaurant_id, eventname, eventdescription, date,
+time,address, city,eventtype,hashtag
   } = req.body;
-
-  console.log(
-    "Data in backend",
-    restaurant_id,
-    eventname,
-        eventdescription,
-        date,
-        time,
-        address,
-         city,
-         eventtype,
-        hashtag,
+ console.log("Data in backend",restaurant_id,eventname,
+  eventdescription,date,time,address, city,eventtype, hashtag,
         path
   );
   try {
@@ -73,9 +55,8 @@ var app = express(),
     if (event) {
         return res.status(400).json({ errors: [{ msg: 'Event Already Exists' }] });
     }
-     event = new restEvent({
-        restaurant_id,
-        eventname,
+     event = new restEvent({ restaurant_id,
+ eventname,
         eventdescription,
         time,
         date,
@@ -88,9 +69,6 @@ var app = express(),
     });
     await event.save();
 
-    // const payload = {
-    //   event: { id: event.id },
-    // };
     res.writeHead(200, {
       'Content-Type': 'text/plain'
   })
@@ -102,7 +80,6 @@ var app = express(),
     res.status(500).send('Server Error');
 }
 
-// console.log(req.body);
 },
 );
 

@@ -153,7 +153,7 @@ class AllRestaurant extends React.Component {
                             id="find_desc"
                             maxlength="64"
                             name="find_desc"
-                            placeholder="Food, City, delivery,takeout,Neighborhoods..."
+                            placeholder="Restaurant,Food, City, delivery,Neighborhoods..."
                             onChange={this.search1Handler}
                             class="pseudo-input_field business-search-form_input-field"
                             aria-autocomplete="list"

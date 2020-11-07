@@ -40,9 +40,9 @@ const RestEventSchema = new mongoose.Schema({
     },
     RegistredUser : [
         {
-            user_id : {type : String , required : true , unique: true,} ,
-            username:{type:String, required:true},
-            Emailid:{type:String, required:true},
+            user_id : {type : String } ,
+            username:{type:String},
+            Emailid:{type:String},
             date:{type:Date,default: Date.now}
         }
     ]

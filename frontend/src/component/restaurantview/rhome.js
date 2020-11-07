@@ -89,13 +89,13 @@ class RHome extends React.Component {
                   
                     <div className="login-form">
                       <div className="main-div-ru">
+                      
                         <div>
                           <div>
-                            <br />
-                            <br />
-                            <br />
+                            
 
                             <div>
+                            <h1>{food.restaurantname}</h1>
                               <table>
                                 <thead>
                                   <tr>

@@ -321,11 +321,11 @@ onChange=e=>{
 
 rupdateprofile.propTypes = {
   updateRestProfile: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
+  restuser: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  user: state.profile.user,
+  restuser: state.profile.restuser,
 });
 
 export default connect(mapStateToProps, { updateRestProfile })(rupdateprofile);

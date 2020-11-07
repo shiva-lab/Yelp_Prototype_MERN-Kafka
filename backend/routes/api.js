@@ -68,11 +68,11 @@ router.get("/homeviewrestaurant", (req, res) => {
 });
 
 
-router.post("/restaurantsearch",checkAuth, (req, res) => {
+router.post("/restaurantsearch", (req, res) => {
  console.log("Data Recieved from FrontEnd: ",req.body.search1);
  const filter = req.body.search1
    Restaurant.find(
-    { $or: [{cuisine: req.body.search1 }, {location : req.body.search1},{deliverymethod : req.body.search1},{"menu.itemname" : req.body.search1}] },
+    { $or: [{restaurantname: req.body.search1 },{cuisine: req.body.search1 }, {location : req.body.search1},{deliverymethod : req.body.search1},{"menu.itemname" : req.body.search1}] },
     function(error, result) {
      if (error) {
        console.log(error)

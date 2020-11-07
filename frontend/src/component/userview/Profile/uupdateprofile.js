@@ -13,22 +13,22 @@ class uupdateprofile extends React.Component {
   constructor(props) {
     super(props);
   this.state = {
-    bio: "",
-    headline:"",
-    fname: "",
-    lname: "",
-    dob:"",
-    city: "",
-    ustate:"",
-    country:"",
-    nick_name:"",
-    emailid:"",
-    mobile: "",
-    address: "",
-    favorites: "",
-    myblog:"",
-    things_ilove:"",
-    find_me_in:"",
+    bio: null,
+    headline:null,
+    fname: null,
+    lname: null,
+    dob:null,
+    city: null,
+    ustate:null,
+    country:null,
+    nick_name:null,
+    emailid:null,
+    mobile: null,
+    address: null,
+    favorites: null,
+    myblog:null,
+    things_ilove:null,
+    find_me_in:null,
     file: null,
     profile: [],
   };
@@ -152,7 +152,7 @@ class uupdateprofile extends React.Component {
                     placeholder={userprofile.bio}
                     value={this.state.description}
                     onChange={this.handleChange}
-                  required></textarea>
+                  ></textarea>
                   <br />
                   <br />
                   <lable>Headline</lable>
@@ -165,7 +165,7 @@ class uupdateprofile extends React.Component {
                     placeholder={userprofile.headline}
                     value={this.state.headline}
                     onChange={this.handleChange}
-                  required/>
+                  />
                   <br />
                   <br />
                   <lable>First Name</lable>
@@ -177,7 +177,7 @@ class uupdateprofile extends React.Component {
                     placeholder={userprofile.fname}
                     value={this.state.fname}
                     onChange={this.handleChange}
-                  required/>
+                  />
                   <br />
                   <br />
                   <lable>Last Name</lable>
@@ -190,7 +190,7 @@ class uupdateprofile extends React.Component {
                     placeholder={userprofile.lname}
                     value={this.state.lname}
                     onChange={this.handleChange}
-                  required/>
+                  />
                   <br />
                   <br />
                   <lable>Date of Birth</lable>
@@ -202,7 +202,7 @@ class uupdateprofile extends React.Component {
                     placeholder={userprofile.dob}
                     value={this.state.dob}
                     onChange={this.handleChange}
-                  required/>
+                  />
                   <br />
                   <br />
                   <lable>City</lable> <br />
@@ -214,7 +214,7 @@ class uupdateprofile extends React.Component {
                     placeholder={userprofile.city}
                     value={this.state.city}
                     onChange={this.handleChange}
-                  required/>
+                  />
                   <br />
                   <br />
                   <lable>State </lable> <br />
@@ -226,7 +226,7 @@ class uupdateprofile extends React.Component {
                     placeholder={userprofile.ustate}
                     value={this.state.ustate}
                     onChange={this.handleChange}
-                  required/>
+                  />
                   <br />
                   <br />
                   <lable>Country</lable><br/>
@@ -238,7 +238,7 @@ class uupdateprofile extends React.Component {
                     placeholder={userprofile.country}
                     value={this.state.country}
                     onChange={this.handleChange}
-                  required/>
+                  />
                   <br />
                   <br />
 
@@ -251,7 +251,7 @@ class uupdateprofile extends React.Component {
                     placeholder={userprofile.nick_name}
                     value={this.state.nick_name}
                     onChange={this.handleChange}
-                  required/>
+                  />
                   <br />
                   <br />
 
@@ -264,7 +264,7 @@ class uupdateprofile extends React.Component {
                     placeholder={userprofile.Emailid}
                     value={this.state.emailid}
                     onChange={this.handleChange}
-                  required/>
+                  />
                   <br />
                   <br/>
                   <lable>Mobile Number</lable>
@@ -276,7 +276,7 @@ class uupdateprofile extends React.Component {
                     placeholder={userprofile.mobile}
                     value={this.state.mobile}
                     onChange={this.handleChange}
-                  required/>
+                  />
                   <br />
                   <br />
 
@@ -289,7 +289,7 @@ class uupdateprofile extends React.Component {
                     placeholder={userprofile.address}
                     value={this.state.address}
                     onChange={this.handleChange}
-                  required/>
+                  />
                   <br />
                   <br />
                   <lable>Favorites</lable><br/>
@@ -301,7 +301,7 @@ class uupdateprofile extends React.Component {
                     placeholder={userprofile.favorites}
                     value={this.state.favorites}
                     onChange={this.handleChange}
-                  required/>
+                  />
                   <br />
                   <br />
 
@@ -314,7 +314,7 @@ class uupdateprofile extends React.Component {
                     placeholder={userprofile.myblog}
                     value={this.state.myblog}
                     onChange={this.handleChange}
-                  required/>
+                  />
                   <br />
                   <br />
 
@@ -327,7 +327,7 @@ class uupdateprofile extends React.Component {
                     placeholder={userprofile.things_ilove}
                     value={this.state.things_ilove}
                     onChange={this.handleChange}
-                  required/>
+                  />
                   <br />
                   <br />
                   <lable>Find Me in</lable>
@@ -339,13 +339,13 @@ class uupdateprofile extends React.Component {
                     placeholder={userprofile.find_me_in}
                     value={this.state.find_me_in}
                     onChange={this.handleChange}
-                  required/>
+                  />
                   <br />
                   <br />
 
                   <br />
                   <lable>Profile Pic</lable>
-                  <input type="file" name="myfile" onChange= {this.onChange} required/>
+                  <input type="file" name="myfile" onChange= {this.onChange}/>
 
                   <br />
                   <br />   
