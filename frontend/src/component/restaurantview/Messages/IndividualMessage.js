@@ -115,7 +115,7 @@ class IndividualMessagePage extends Component {
       let chats = this.state.individualMessage.chats.map(chat => {
         if(chat.to === localStorage.getItem('restaurant_id')){
             return (
-                <div className="incoming_msg">
+                <div className="incoming_msg" key={chat._id+chat.chat+chat.time+Math.random()}> 
                                 <div className="incoming_msg_img"> <img src={this.state.chatFromProfilePic == null ? 'https://ptetutorials.com/images/user-profile.png' : this.state.chatFromProfilePic  } alt="sunil" /> </div>
                 <div className="received_msg">
                   <div className="received_withd_msg">
@@ -127,7 +127,7 @@ class IndividualMessagePage extends Component {
         }
         else{
             return(
-                <div className="outgoing_msg">
+            <div className="outgoing_msg" key={chat._id+chat.chat+chat.time+Math.random()}>
               <div className="sent_msg">
               <p>{chat.chat}</p>
                     <span className="time_date float-right">{dateTimeToDate(chat.time)}</span></div>
@@ -147,13 +147,20 @@ class IndividualMessagePage extends Component {
                     <button onClick={this.cancelEdit} className="btn btn-danger edit-button">Cancel</button>
                 </p>
         }
+        let newMessage;
+        if (!this.state.newMessage){
+            newMessage = ""
+        }else{
+            newMessage = this.state.newMessage
+        }
+
         return (
             <div>
             <div className=" row messageListRight">
                 {chats}
            </div>
             <div className="row messageTextBox">
-            <textarea className="form-control" value={this.state.newMessage} onChange={this.typingHandler} placeholder="Type Here" rows="2"></textarea>
+            <textarea className="form-control" value={newMessage} onChange={this.typingHandler} placeholder="Type Here" rows="2"></textarea>
                     {buttons}
             </div>
             </div>

@@ -23,6 +23,7 @@ class UserLogin extends React.Component {
   }
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
+      console.log(localStorage.getItem('token'));
       this.props.history.push("/allRestaurant");
     }
   }
@@ -64,22 +65,24 @@ class UserLogin extends React.Component {
   }
 
   render() {
-    let redirectVar = null;
+    // let redirectVar = null;
 
-    if (cookie.load("cookie1")) {
-      //redirectVar = <Redirect to="/uviewrestaurant" />;
+    // if (cookie.load("cookie1")) {
+    //   //redirectVar = <Redirect to="/uviewrestaurant" />;
       var user_id_cookie = cookie.load("cookie1")
       console.log(user_id_cookie)
       localStorage.setItem("user_id", user_id_cookie);
-      redirectVar = <Redirect to="/allRestaurant" />;
+    //   redirectVar = <Redirect to="/allRestaurant" />;
       
-      localStorage.setItem("email", this.state.Emailid);
+     localStorage.setItem("email", this.state.Emailid);
     
       console.log("Saving email to localstorage");
-    }
+    // }
+
+
     return (
       <div>
-        {redirectVar}
+        {/* {redirectVar} */}
         <div>
           <div class="body">
             <Header />

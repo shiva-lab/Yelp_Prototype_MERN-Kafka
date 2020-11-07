@@ -57,7 +57,7 @@ class AddMenu extends React.Component {
     }
    
     //
-    if (!this.state.itemdescription) {
+    if (!this.state.item_description) {
       formIsValid = false;
       alert("Description is a Required field");
       console.log("Description cannot be empty");
@@ -81,7 +81,7 @@ class AddMenu extends React.Component {
     console.log("RestaurantID - Update", restaurant_id);
     const formData = new FormData();
     formData.append('myfile',this.state.file);
-    formData.append('itemdescription', this.state.itemdescription)
+    formData.append('item_description', this.state.item_description)
     formData.append('price', this.state.price)
     formData.append('itemname', this.state.itemname)
     formData.append('itemcategory',this.state.itemcategory)
@@ -95,8 +95,9 @@ class AddMenu extends React.Component {
       }
     };
     //this.props.addMenu(formData,config);
+    axios.defaults.withCredentials = true;
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios.post("/addmenu",formData,config)
-    
     .then(response => {
               console.log("Status Code : ", response.status);
               if (response.status === 200) {
@@ -173,12 +174,12 @@ class AddMenu extends React.Component {
 
                     <textarea
                       style={{ borderRadius: "3px" }}
-                      id="itemdescription"
-                      name="itemdescription"
+                      id="item_description"
+                      name="item_description"
                       cols="30"
                       rows="10"
                       placeholder="Item Description"
-                      value={this.state.itemdescription}
+                      value={this.state.item_description}
                       onChange={this.handleChange}
                     ></textarea>
                     <br />

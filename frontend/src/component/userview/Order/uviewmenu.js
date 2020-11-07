@@ -4,6 +4,7 @@ import cookie from "react-cookies";
 import Navbar from "../uNavbar";
 import {paginate, pages} from '../../../helperFunctions/paginate'
 import axios from "axios"
+import swal from 'sweetalert2'
 
 // import Modal from 'react-modal';
 class UViewMenu extends React.Component {
@@ -18,8 +19,10 @@ class UViewMenu extends React.Component {
   componentDidMount() {
     const restaurant_id = localStorage.getItem("restaurant_id_allrest");
     const data = { restaurant_id };
-    axios.defaults.withCredentials = true;
     const self = this;
+    axios.defaults.withCredentials = true;
+    // make a post request with the user data
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios.post('/uviewmenu',data)
     .then((response) => {
       if (response.status === 200) {
@@ -93,7 +96,12 @@ class UViewMenu extends React.Component {
       })      .then((response) => {
         if (response.status== 200) {
           //throw new Error("Bad response from server");
-          alert("Item added successfully")
+          //alert("Item added successfully")
+          swal.fire({
+            title: 'Success!',
+            text: 'Item Successfully Added',
+            icon: 'success'
+          })
         }
        // return response.json();
       })  
@@ -144,11 +152,12 @@ class UViewMenu extends React.Component {
                                 />
                               </td>
                               <td>{item.itemname}{' '}</td>
+                              <td>{item.Ingredients}{' '}</td>
                               <td>{item.item_description}{' '}</td>
                               <td>{item.price}</td>
                               <td>{item.itemcategory}</td>
                               <td>
-                                <button
+                                <button className="btn btn-primary" 
                              onClick={this.handleClick(item._id, item.itemname, item.price, item.path)}
                                 >
                                   Add to cart
@@ -182,7 +191,8 @@ class UViewMenu extends React.Component {
                           <tr className="tbl-header">
                             <th>Picture</th>
                             <th>Name</th>
-                            <th>Description</th>
+                            <th>Ingredients</th>
+                            <th>description</th>
                             <th>Price</th>
                             <th>Category</th>
                             <th>Add to cart</th>

@@ -111,7 +111,7 @@ class IndividualMessagePage extends Component {
           console.log(chat);
         if(chat.to === localStorage.getItem('user_id')){
             return (
-                <div className="incoming_msg">
+                <div className="incoming_msg" key={chat._id+chat.chat+chat.time+Math.random()}>
                 <div className="incoming_msg_img"> <img src={this.state.chatFromProfilePic == null ? 'https://ptetutorials.com/images/user-profile.png' : this.state.chatFromProfilePic  } alt="sunil" /> </div>
                 <div className="received_msg">
                   <div className="received_withd_msg">
@@ -123,7 +123,7 @@ class IndividualMessagePage extends Component {
         }
         else{
             return(
-                <div className="outgoing_msg">
+                <div className="outgoing_msg" key={chat._id+chat.chat+chat.time+Math.random()}>
               <div className="sent_msg">
               <p>{chat.chat}</p>
                     <span className="time_date float-right">{dateTimeToDate(chat.time)}</span></div>
@@ -157,8 +157,7 @@ class IndividualMessagePage extends Component {
     }
 }
 const mapStateToProps = state => {
-    return {
-       
+    return {       
     };
   };
   

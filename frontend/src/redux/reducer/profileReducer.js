@@ -1,9 +1,9 @@
 import { GET_PROFILE, UPDATE_PROFILE, UPDATE_USER_PROFILE} from '../action/type';
 
 const initialState = {
-  bio: "",
-  headline:"",
-  fname: "",
+  bio: null,
+  headline:null,
+  fname: null,
   lname: "",
   dob:"",
   city: "",

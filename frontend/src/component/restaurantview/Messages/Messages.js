@@ -34,20 +34,23 @@ class MessagesPage extends Component {
     //Call the Will Mount to set the auth Flag to false
     async componentWillMount() {
 
+      console.log(localStorage.getItem('user_id'))
+
         axios.defaults.withCredentials = true;
         //make a post request with the user data
         axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
         await axios.get(`http://localhost:3000/getMessages/${localStorage.getItem('restaurant_id')}`)
             .then(response => {
                 console.log(response);
-                this.props.setMessages(response.data.data);
-                this.setState({
-                    selectedMessage: response.data.data[0],
-                })
-                // this.props.updateFilteredJobs({jobs:this.state.jobList});
+                if(response.data.data.length > 0){
+                  this.props.setMessages(response.data.data);
+                  this.setState({
+                      selectedMessage: response.data.data[0],
+                  })
+                }
             }
             ).catch(ex => {
-                alert("error");
+                console.log("eroor in message ", ex)
             });
     }
 
@@ -58,7 +61,7 @@ class MessagesPage extends Component {
     }
 
     render(){
-      let messageList = this.state.messages.map(message => {
+      let messageList = this.props.messages.map(message => {
         let chattingWith = {};
         if(message.user1.id === localStorage.getItem('restaurant_id')){
           chattingWith = message.user2
@@ -87,7 +90,6 @@ class MessagesPage extends Component {
     else{
       messageFrom = this.state.selectedMessage.user1.name
     }
-
         return (
             <div className="body">
             <Navbar/>
@@ -131,8 +133,8 @@ class MessagesPage extends Component {
 
 const mapStateToProps = state => {
   return {
-      messages: state.messages,
-      selectedMessage : state.selectedMessage
+      messages: state.restaurantMessage.messages,
+      selectedMessage : state.restaurantMessage.selectedMessage
   };
 };
 

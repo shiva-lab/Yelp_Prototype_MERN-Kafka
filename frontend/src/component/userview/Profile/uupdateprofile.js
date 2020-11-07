@@ -42,31 +42,10 @@ class uupdateprofile extends React.Component {
   };
   componentDidMount() {
     const self = this;
-    // const user_id = cookie.load("cookie1");
-    const user_id = localStorage.getItem('user_id');
+     const user_id = cookie.load("cookie1");
+    //const user_id = localStorage.getItem('user_id');
     const data = { user_id };
-  //   fetch("/uviewprofile", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then((response) => {
-  //       if (response.status >= 400) {
-  //         throw new Error("Bad response from server");
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((response) => {
-  //       console.log(response);
-  //       self.setState({ profile: response });
-  //     })
-  //     .catch((err) => {
-  //       console.log("caught it!", err);
-  //     });
-  // }
-
+  
     axios.defaults.withCredentials = true;
     axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios.post("/uviewprofile", data)
@@ -74,6 +53,7 @@ class uupdateprofile extends React.Component {
       if (response.status === 200) {
         console.log("Printing Response",response)
         console.log("Printing User Profile",response.data)
+
           this.setState({
             profile: response.data,
           })
@@ -398,6 +378,7 @@ uupdateprofile.propTypes = {
 const mapStateToProps = (state) => ({
   user: state.profile.user,
 });
+
 
 export default connect(mapStateToProps, { updateUserProfile })(uupdateprofile);
 //export default uupdateprofile;

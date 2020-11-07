@@ -15,8 +15,8 @@ const rootReducer = combineReducers({
    auth:authReducer,
    menu:menuReducer,
    order:orderReducer,
-   restaurantMessageReducer,
-   userMessageReducer
+   restaurantMessage:restaurantMessageReducer,
+   userMessage:userMessageReducer
    
 
 

@@ -13,8 +13,8 @@ class UViewProfile extends React.Component {
   }
   componentDidMount() {
     const self = this;
-    // const user_id = cookie.load("cookie1");
-    const user_id = localStorage.getItem('user_id');
+     const user_id = cookie.load("cookie1");
+    //const user_id = localStorage.getItem('user_id');
     const data = { user_id };
     fetch("/uviewprofile", {
       method: "POST",

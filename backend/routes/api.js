@@ -49,7 +49,7 @@ router.post("/viewhome", (req, res) => {
   });
 });
 
-router.get("/homeviewrestaurant",checkAuth, (req, res) => {
+router.get("/homeviewrestaurant", (req, res) => {
  // console.log(req.body.restaurant_id);
   Restaurant.find({}, (error, result) => {
     if (error) {
@@ -240,13 +240,13 @@ router.post("/addmenu",checkAuth, upload.single("myfile"), async (req, res, next
   const {
     itemname,
     price,
-    itemdescription,
+    item_description,
     itemcategory,
     ingredients,
     restaurant_id,
   } = req.body;
-var objData={ itemname:req.body.itemname,price:req.body.price,description:req.body.description,path:path,itemcategory:req.body.itemcategory, Ingredients:req.body.ingredients};
-  console.log(  "Data in backend", itemname, price, itemdescription,itemcategory,ingredients,path,restaurant_id
+var objData={ itemname:req.body.itemname,price:req.body.price,item_description:req.body.item_description,path:path,itemcategory:req.body.itemcategory, Ingredients:req.body.ingredients};
+  console.log(  "Data in backend", itemname, price, item_description,itemcategory,ingredients,path,restaurant_id
   );
   try {
     Restaurant.findByIdAndUpdate(
@@ -345,7 +345,7 @@ router.post("/viewmenu", checkAuth,(req, res) => {
     const {
       itemname, 
       price,
-      itemdescription,
+      item_description,
       itemcategory,
       ingredients,
       restaurant_id,
@@ -356,7 +356,7 @@ var quantity="1"
       "Data in backend",
       itemname,
       price,
-      itemdescription,
+      item_description,
       itemcategory,
       ingredients,
       path,
@@ -370,7 +370,7 @@ var quantity="1"
 
     await  Restaurant.updateOne(
         { _id: req.body.restaurant_id, "menu._id":req.body.item_id},
-          { $set: { "menu.$.itemname" : itemname,"menu.$.price":price, "menu.$.itemdescription":itemdescription,"menu.$.itemcategory":itemcategory,"menu.$.quantity":quantity,"menu.$.Ingredients":ingredients,"menu.$.path":path} }
+          { $set: { "menu.$.itemname" : itemname,"menu.$.price":price, "menu.$.item_description":item_description,"menu.$.itemcategory":itemcategory,"menu.$.quantity":quantity,"menu.$.Ingredients":ingredients,"menu.$.path":path} }
        , (error, results) => {
           if (error) {
             console.log(error);
@@ -595,7 +595,7 @@ var quantity="1"
 // //   });
 // // });
 
-router.post("/addreview", checkAuth,upload.single("myfile"), async (req, res, next) => {
+router.post("/addreview",upload.single("myfile"), async (req, res, next) => {
   try {
     console.log("Uploading Review Item Image...");
   } catch (err) {

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Redirect , Link } from "react-router-dom";
 import cookie from "react-cookies";
+import axios from "axios"
 import Navbar from "../../restaurantview/rNavbar";
 
 // import Modal from 'react-modal';
@@ -41,7 +42,26 @@ class UViewProfileRest extends React.Component {
 
   handleClick() {
     return function () {
-      console.log("HullHooooo")
+      var data = {
+        chats:[],
+        user1:{
+          id: localStorage.getItem('restaurant_id'),
+          name: localStorage.getItem('email'),
+        },
+        user2:{
+          id:localStorage.getItem('user_id'),
+          name:localStorage.getItem('user_name')
+        }
+      }
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.post("/createMessage", data)
+        .then(response => {
+            console.log("Message Created");
+            window.location = '/rMessages';
+        }
+        ).catch(ex => {
+            alert(ex);
+        });
     };
   }
 
@@ -61,7 +81,7 @@ class UViewProfileRest extends React.Component {
                 <div className="main-div-menu">
                   <div className="panel" />
                   <div>
-                    <Link to="/rMessages"><button class="ybtn ybtn--primary ybtn--small business-search-form_button" onClick={this.handleClick()}>Message</button></Link>
+                    <button class="ybtn ybtn--primary ybtn--small business-search-form_button" onClick={this.handleClick()}>Message</button>
                   </div>
                   <div>
                     <h1 className="heading-menu"> Profile</h1>

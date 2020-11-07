@@ -149,7 +149,7 @@ userroute.post("/followuserprofile",checkAuth, async (req, res, next) => {
    
   const {user_id,_id,fname,lname,city,Emailid,headline} = req.body;
   console.log("Data in backend",user_id,_id,user_id,fname,lname,city,Emailid,headline);
-  User.update({ _id: req.body.user_id },  { $push: { followedUser: {_id:req.body._id,fname:req.body.fname,lname:req.body.lname,city:req.body.city,Emailid:req.body.Emailid,headline:req.body.headline} }}, {  safe: true, upsert: true },(err, data) => console.log(data))
+  User.updateOne({ _id: req.body.user_id },  { $addToSet: { followedUser: {_id:req.body._id,fname:req.body.fname,lname:req.body.lname,city:req.body.city,Emailid:req.body.Emailid,headline:req.body.headline} }}, {  safe: true },(err, data) => console.log(data))
         .then(response => {
           return res.status(200).json("Successfully Followed");
         })
@@ -239,7 +239,7 @@ else {
 
 
 
-userroute.post("/uviewcart",checkAuth,(req, res) => {
+userroute.post("/uviewcart",(req, res) => {
   console.log("User ID: ",req.body.user_id);
   Order.find({  "user_id": req.body.user_id,orderstatus:" " },{}, (error, result) => {
     
@@ -260,16 +260,14 @@ userroute.post("/uviewcart",checkAuth,(req, res) => {
   });
 });
 userroute.post("/deletefromcart", (req, res) => {
-  console.log(req.body.itemid);
-  
-  Order.updateOne({ user_id:req.body.user_id},{ "$pull": { "cart": { "itemid": req.body.itemid } }}, { safe: true, multi:true },(error, result) => {
+  console.log("Printing Body",req.body);
+  Order.updateOne({ user_id:req.body.user_id,restaurant_id:req.body.restaurant_id,orderstatus:" "},{ $pull: { "cart": { "itemid": req.body.itemid } }}, { safe: true, multi:true },(error, result) => {
     if (error) {
       res.writeHead(500, {
           'Content-Type': 'text/plain'
       })
       res.end();
   }
- 
   else {
       res.writeHead(200, {
           'Content-Type': 'text/plain'
@@ -362,7 +360,7 @@ userroute.post("/deletefromcart", (req, res) => {
 //     });
 //   });
 
-   userroute.post("/createorder",checkAuth, (req, res) => {
+   userroute.post("/createorder", (req, res) => {
     const { deliverymode,user_id, order_id} = req.body;//removed rest id
     console.log(deliverymode,user_id, order_id)
     var orderstatus = "new order"
@@ -660,7 +658,7 @@ user_id,
             find_me_in,
             path,
             dob
-            },(error, results) => {
+            },{new:true},(error, results) => {
               if (error) {
                 console.log("error");
               } else {

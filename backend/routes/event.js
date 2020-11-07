@@ -125,7 +125,7 @@ eventroute.post("/vieweventlisting",checkAuth, (req, res) => {
   });
   
 
-  eventroute.get("/viewevent", checkAuth, async(req, res, next) => {
+  eventroute.get("/viewevent", async(req, res, next) => {
     //.sort({date: -1}).exec((err, docs) => { ... });
     var mysort = { date: -1 };
     await restEvent.find({},(error, result) => {
@@ -144,7 +144,7 @@ eventroute.post("/vieweventlisting",checkAuth, (req, res) => {
     }).sort({date:-1});
   });
 
-  eventroute.post("/vieweventdetails",checkAuth,  async(req, res, next) => {
+  eventroute.post("/vieweventdetails",  async(req, res, next) => {
     console.log(req.body.event_id)
     await restEvent.find({_id:req.body.event_id}, (error, result) => {
       if (error) {
@@ -162,7 +162,7 @@ eventroute.post("/vieweventlisting",checkAuth, (req, res) => {
     });
   });
 
-  eventroute.post("/eventsignup", checkAuth,async (req, res, next) => {
+  eventroute.post("/eventsignup",async (req, res, next) => {
    
     const {user_id,restaurant_id,_id ,username,Emailid} = req.body;
   //var objData={ user_id:req.body.user_id,restaurant_id:req.body.restaurant_id};
@@ -171,7 +171,7 @@ eventroute.post("/vieweventlisting",checkAuth, (req, res) => {
     console.log(
       "Data in backend",user_id,restaurant_id,_id,username,Emailid
     );
-    restEvent.update({ _id: req.body._id },  { $push: { RegistredUser: {user_id:req.body.user_id,username:req.body,username,Emailid:req.body.Emailid} }}, {  safe: true, upsert: true },(err, data) => console.log(data))
+    restEvent.update({ _id: req.body._id },  { $addToSet: { RegistredUser: {user_id:req.body.user_id,username:req.body,username,Emailid:req.body.Emailid} }}, {  safe: true },(err, data) => console.log(data))
     // restEvent.update(
     //   { _id: req.body._id },
     //   { $push: { RegistredUser: user_id } },
@@ -196,7 +196,7 @@ eventroute.post("/vieweventlisting",checkAuth, (req, res) => {
     
   
   
-  eventroute.post("/viewusersignedupevent", checkAuth,(req, res, next) => {
+  eventroute.post("/viewusersignedupevent",(req, res, next) => {
 
     console.log("Inside viewusersignedupevent",req.body.user_id);
    // Event.find({ user_id: req.body.user_id },{'signedup':[]}, (error, result) => {
@@ -216,7 +216,7 @@ eventroute.post("/vieweventlisting",checkAuth, (req, res) => {
     });
   });
 
-  eventroute.post("/vieweventsignup", checkAuth,async(req, res, next) => {
+  eventroute.post("/vieweventsignup",async(req, res, next) => {
 
      console.log("Inside vieweventsignup",req.body.event_id,req.body.restaurant_id);
   //   Event.findOne({ _id: req.body.event_id },{'signedup':[]}, (error, result) => {
@@ -401,7 +401,7 @@ eventroute.post("/vieweventlisting",checkAuth, (req, res) => {
 //     });
 //   });
 
-eventroute.post("/searchevent", checkAuth,(req, res) => {
+eventroute.post("/searchevent",(req, res) => {
   console.log("Data Recieved from FrontEnd: ",req.body.eventname);
   
     restEvent.find(

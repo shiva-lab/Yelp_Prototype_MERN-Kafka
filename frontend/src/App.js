@@ -29,7 +29,6 @@ import store from "./redux/store";
 import UViewMenu from "./component/userview/Order/uviewmenu";
 import UPlaceOrder from "./component/userview/Order/uplaceorder";
 import PlaceOrderForm from "./component/userview/Order/placeorderform";
-import RViewOrder from "./component/restaurantview/Order/rvieworder";
 import MapContainer from "./component/userview/mapContainer";
 import UOrderCheckStatus from "./component/userview/Order/uordercheckstatus";
 import UOrderDetails from "./component/userview/Order/uorderdetails";
@@ -83,7 +82,6 @@ function App() {
             <Route path="/uviewmenu" component={UViewMenu} />
             <Route path="/uplaceorder" component={UPlaceOrder} />
             <Route path="/Placeorderform" component={PlaceOrderForm} />
-            <Route path="/rvieworder" component={RViewOrder} />
             <Route path="/mapContainer" component={MapContainer} />
             <Route path="/uordercheckstatus" component={UOrderCheckStatus} />
             <Route path="/uorderdetails" component={UOrderDetails} />

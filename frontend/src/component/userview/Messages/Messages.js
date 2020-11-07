@@ -40,14 +40,13 @@ class MessagesPage extends Component {
         await axios.get(`http://localhost:3000/getMessages/${localStorage.getItem('user_id')}`)
             .then(response => {
                 console.log(response);
-                this.props.setMessages(response.data.data);
-                this.setState({
-                    selectedMessage: response.data.data[0],
-                })
-              
-
-                // this.props.updateFilteredJobs({jobs:this.state.jobList});
-            }
+                if(response.data.data.length > 0){
+                  this.props.setMessages(response.data.data);
+                  this.setState({
+                      selectedMessage: response.data.data[0],
+                  })
+                }
+         }
             ).catch(ex => {
                 alert("error");
             });
@@ -60,7 +59,7 @@ class MessagesPage extends Component {
     }
 
     render(){
-      let messageList = this.state.messages.map(message => {
+      let messageList = this.props.messages.map(message => {
         let chattingWith = {};
         if(message.user1.id === localStorage.getItem('user_id')){
           chattingWith = message.user2
@@ -129,8 +128,8 @@ class MessagesPage extends Component {
 // Issue with maps to props and line 63
 const mapStateToProps = state => {
   return {
-      messages: state.messages,
-      selectedMessage : state.selectedMessage
+      messages: state.userMessage.messages,
+      selectedMessage : state.userMessage.selectedMessage
   };
 };
 

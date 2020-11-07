@@ -22,7 +22,7 @@ class Home extends React.Component{
       localStorage.removeItem('user_id');
       localStorage.removeItem('restaurant_id');
       localStorage.removeItem('token');
-      localStorage.removeItem('email');
+      //localStorage.removeItem('email');
       window.addEventListener("beforeunload", (e) => {
          e.preventDefault();
          //cookies.remove("cookie1");

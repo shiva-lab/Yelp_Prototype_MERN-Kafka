@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Link, Redirect } from 'react-router-dom';
-import { paginate, pages } from '../../../helperFunctions/paginate'
-import axios from 'axios';
+import { Link, Redirect } from "react-router-dom";
+import { paginate, pages } from "../../../helperFunctions/paginate";
+import axios from "axios";
 import cookie from "react-cookies";
 import Navbar from "../rNavbar";
 import PropTypes from "prop-types";
@@ -13,7 +13,7 @@ class ViewMenu extends React.Component {
     super();
     this.state = {
       menu: [],
-      filteredMenu:[],
+      filteredMenu: [],
     };
   }
 
@@ -25,64 +25,60 @@ class ViewMenu extends React.Component {
     //this.props.viewMenu(data);
     // make a post request with the user data
     axios.defaults.withCredentials = true;
-    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
-    axios.post("/viewmenu", data)
-        .then(response => {
-            if (response.status === 200) {
-             // console.log("Printing response",response)
-              console.log("Printing Menu",response.data[0].menu)
-                this.setState({
-                  menu: response.data,
-                  filteredMenu : paginate(response.data[0].menu,1,10),
-                  pages: pages(response.data, 10)
-
-                })
-                console.log(pages);
-            } else {
-                console.log("error");
-            }
+    axios.defaults.headers.common["authorization"] = localStorage.getItem(
+      "token"
+    );
+    axios.post("/viewmenu", data).then((response) => {
+      if (response.status === 200) {
+        // console.log("Printing response",response)
+        console.log("Printing Menu", response.data[0].menu);
+        this.setState({
+          menu: response.data,
+          filteredMenu: paginate(response.data[0].menu, 1, 10),
+          pages: pages(response.data, 10),
         });
-}
-
-
+        console.log(pages);
+      } else {
+        console.log("error");
+      }
+    });
+  }
 
   handleClick(item_id) {
     return function () {
       console.log(item_id);
-      localStorage.setItem('item_id_menudetails', item_id);
+      localStorage.setItem("item_id_menudetails", item_id);
       return <Redirect to="/editmenu" />;
     };
   }
 
-
-  handleClickdelete(_id) {
-    return function () {
-      const self = this;
-      console.log(_id);
-      const restaurant_id = localStorage.getItem("restaurant_id");
-      const newdata = { _id,restaurant_id };
-      console.log(newdata);
-      // make a post request with the user data
-    // axios.defaults.withCredentials = true;
-    // axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
-    //   axios.post("/deletefrommenu", newdata)
-    fetch("/deletefrommenu", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newdata),
-    })
-      .then(res => res.json());
-    };
-  }
+  // handleClickdelete(_id) {
+  //   return function () {
+  //     const self = this;
+  //     console.log(_id);
+  //     const restaurant_id = localStorage.getItem("restaurant_id");
+  //     const newdata = { _id,restaurant_id };
+  //     console.log(newdata);
+  //     // make a post request with the user data
+  //   // axios.defaults.withCredentials = true;
+  //   // axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+  //   //   axios.post("/deletefrommenu", newdata)
+  //   fetch("/deletefrommenu", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(newdata),
+  //   })
+  //     .then(res => res.json());
+  //   };
+  // }
 
   paginatinon = (e) => {
     this.setState({
-        filteredMenu: paginate(this.state.menu,e, 10)
-    })
-}
-
+      filteredMenu: paginate(this.state.menu, e, 10),
+    });
+  };
 
   render() {
     let redirectVar = null;
@@ -92,58 +88,53 @@ class ViewMenu extends React.Component {
 
     let links = [];
     if (this.state.pages > 0) {
-        console.log(this.state.pages);
-        for (let i = 1; i <= this.state.pages; i++) {
-            links.push(<li className="page-item" key={i}><a className="page-link" onClick={() => { this.paginatinon(i) }}>
-                {i}
-            </a></li>
-            )
-        }
+      console.log(this.state.pages);
+      for (let i = 1; i <= this.state.pages; i++) {
+        links.push(
+          <li className="page-item" key={i}>
+            <a
+              className="page-link"
+              onClick={() => {
+                this.paginatinon(i);
+              }}
+            >
+              {i}
+            </a>
+          </li>
+        );
+      }
     }
 
-    let menu = this.state.filteredMenu.map(food => {
+    let menu = this.state.filteredMenu.map((food) => {
       return (
         <tr>
           <td>
-            <img
-              src={food.path}
-              width={150}
-              height={120}
-              mode="fit"
-            />
+            <img src={food.path} width={150} height={120} mode="fit" />
           </td>
-          <td>
-            {food.itemname}
-            {' '}
-          </td>
-          <td>
-            {food.Ingredients}
-            {' '}
-          </td>
-          <td>{food.price}</td>
+          <td>{food.itemname} </td>
+          <td>{food.Ingredients} </td>
+          <td>{food.item_description}</td>
+          <td>${food.price}</td>
           <td>{food.itemcategory}</td>
           <td>
             <Link to="/editmenu">
-              <button onClick={this.handleClick(food._id)}>Edit</button>
-            </Link>
-          </td>
-          <td>
-            <Link>
-              <button onClick={this.handleClickdelete(food._id)}>Delete</button>
+              <button
+                className="btn btn-primary"
+                onClick={this.handleClick(food._id)}
+              >
+                Edit
+              </button>
             </Link>
           </td>
         </tr>
-      )
-    })
+      );
+    });
 
-
-
-  return (
+    return (
       <div>
         {redirectVar}
         <div>
           <div>
-
             <Navbar />
             <div className="container">
               <div className="main-div-menu">
@@ -158,17 +149,15 @@ class ViewMenu extends React.Component {
                             <th>Picture</th>
                             <th>Name</th>
                             <th>Main Ingredients</th>
+                            <th>Description</th>
                             <th>Price</th>
                             <th>Category</th>
                             <th>Edit Item</th>
-                            <th>Delete Item</th>
                           </tr>
                         </thead>
                         <tbody>
-                        {menu}
-                            <ul className="pagination">
-                            {links}
-                            </ul>
+                          {menu}
+                          <ul className="pagination">{links}</ul>
                         </tbody>
                       </table>
                     </div>
@@ -185,7 +174,7 @@ class ViewMenu extends React.Component {
 // viewmenu.propTypes = {
 //   viewMenu: PropTypes.func.isRequired,
 //   menuitem: PropTypes.object.isRequired,
- 
+
 // };
 
 // const mapStateToProps = (state) => ({
@@ -193,6 +182,5 @@ class ViewMenu extends React.Component {
 // });
 
 // export default connect(mapStateToProps, { viewMenu })(viewmenu);
-
 
 export default ViewMenu;

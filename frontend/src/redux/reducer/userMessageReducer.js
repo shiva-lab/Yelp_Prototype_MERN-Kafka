@@ -22,6 +22,13 @@ import { SET_MESSAGE,SEND_MESSAGE} from '../action/type'
             selectedMessage: action.payload[0]
         });
       }
+      if(action.type === SEND_MESSAGE){
+        return Object.assign({}, state, {
+          selectedMessage: Object.assign({}, state.selectedMessage,{
+            chats: [...state.selectedMessage.chats, action.payload]
+          })
+        });
+      }
       return state;
   }
   
