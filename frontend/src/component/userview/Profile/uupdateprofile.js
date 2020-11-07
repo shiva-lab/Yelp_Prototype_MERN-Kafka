@@ -29,48 +29,60 @@ class uupdateprofile extends React.Component {
     myblog:"",
     things_ilove:"",
     find_me_in:"",
-    profile : [],
     file: null,
+    profile: [],
   };
   this.submit = this.submit.bind(this);
   this.onChange = this.onChange.bind(this);
-}
-
-componentDidMount() {
-  const self = this;
-  // const user_id = cookie.load("cookie1");
-  const user_id = localStorage.getItem('user_id');
-  const data = { user_id };
-  fetch("/uviewprofile", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => {
-      if (response.status >= 400) {
-        throw new Error("Bad response from server");
-      }
-      return response.json();
-    })
-    .then((response) => {
-      console.log(response);
-      self.setState({ profile: response });
-
-    })
-    .catch((err) => {
-      console.log("caught it!", err);
-    });
 }
 
   handleChange = ({ target }) => {
     const { name, value } = target;
     this.setState({ [name]: value });
   };
+  componentDidMount() {
+    const self = this;
+    // const user_id = cookie.load("cookie1");
+    const user_id = localStorage.getItem('user_id');
+    const data = { user_id };
+  //   fetch("/uviewprofile", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then((response) => {
+  //       if (response.status >= 400) {
+  //         throw new Error("Bad response from server");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((response) => {
+  //       console.log(response);
+  //       self.setState({ profile: response });
+  //     })
+  //     .catch((err) => {
+  //       console.log("caught it!", err);
+  //     });
+  // }
 
+    axios.defaults.withCredentials = true;
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.post("/uviewprofile", data)
+    .then(response => {
+      if (response.status === 200) {
+        console.log("Printing Response",response)
+        console.log("Printing User Profile",response.data)
+          this.setState({
+            profile: response.data,
+          })
+      } else {
+          console.log("error");
+      }
+  });
+  }
 
-  
   submit = (event) => {
     event.preventDefault();
     let user_id = cookie.load('cookie1');
@@ -101,9 +113,7 @@ componentDidMount() {
           'content-type': 'multipart/form-data'
       }
     };
-    this.props.updateUserProfile(formData)
-
-
+    this.props.updateUserProfile(formData);
   //   axios.post("/uupdateprofile",formData,config)
   //   .then(response => {
   //     console.log("inside success")
@@ -130,20 +140,21 @@ componentDidMount() {
   render() {
     console.log("State: ", this.state);
    
-    // let redirectVar = null;
+    let redirectVar = null;
 
-    // if (!cookie.load("cookie1")) {
-    //   redirectVar = <Redirect to="/" />;
-    // }
+    if (!cookie.load("cookie1")) {
+      redirectVar = <Redirect to="/" />;
+    }
         return (
-            // <div>
-            // {redirectVar}
-            // <div>
+            <div>
+            {redirectVar}
+            <div>
             <Provider store={store}>
       <div>
         <Navbar />
 
         <div class="container">
+        {this.state.profile.map(userprofile => (
           <div class="login-form">
             <div class="main-div">
               <div class="panel"></div>
@@ -151,49 +162,52 @@ componentDidMount() {
                 <h1 class="heading">User Profile Update</h1>
                 <form onSubmit={this.submit}>
                   <br />
+                  <lable>Bio</lable>
                   <textarea
                     style={{ borderRadius: "3px" }}
                     id="bio"
                     name="bio"
                     cols="30"
                     rows="10"
-                    // placeholder="A Brief Bio about your Yourself"
-                    value={this.state.profile.description}
+                    placeholder={userprofile.bio}
+                    value={this.state.description}
                     onChange={this.handleChange}
                   required></textarea>
                   <br />
                   <br />
-
+                  <lable>Headline</lable>
+                  <br />
                   <input
                     type="text"
                     style={{ borderRadius: "3px" }}
                     id="headline"
                     name="headline"
-                    placeholder="headline"
+                    placeholder={userprofile.headline}
                     value={this.state.headline}
                     onChange={this.handleChange}
                   required/>
                   <br />
                   <br />
-
+                  <lable>First Name</lable>
                   <input
                     type="text"
                     style={{ borderRadius: "3px" }}
                     id="fname"
                     name="fname"
-                    placeholder="First Name"
+                    placeholder={userprofile.fname}
                     value={this.state.fname}
                     onChange={this.handleChange}
                   required/>
                   <br />
                   <br />
+                  <lable>Last Name</lable>
                   <input
                     type="text"
                     style={{ borderRadius: "3px" }}
                     type="text"
                     id="lname"
                     name="lname"
-                    placeholder="Last Name"
+                    placeholder={userprofile.lname}
                     value={this.state.lname}
                     onChange={this.handleChange}
                   required/>
@@ -203,147 +217,146 @@ componentDidMount() {
                   <input
                     type="date"
                     style={{ borderRadius: "3px" }}
-
                     id="dob"
                     name="dob"
-                    placeholder="Date of Birth"
+                    placeholder={userprofile.dob}
                     value={this.state.dob}
                     onChange={this.handleChange}
                   required/>
                   <br />
                   <br />
-
+                  <lable>City</lable> <br />
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
                     id="city"
                     name="city"
-                    placeholder="City"
+                    placeholder={userprofile.city}
                     value={this.state.city}
                     onChange={this.handleChange}
                   required/>
                   <br />
                   <br />
-
+                  <lable>State </lable> <br />
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
                     id="ustate"
                     name="ustate"
-                    placeholder="State"
+                    placeholder={userprofile.ustate}
                     value={this.state.ustate}
                     onChange={this.handleChange}
                   required/>
                   <br />
                   <br />
-
+                  <lable>Country</lable><br/>
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
                     id="country"
                     name="country"
-                    placeholder=" Country"
+                    placeholder={userprofile.country}
                     value={this.state.country}
                     onChange={this.handleChange}
                   required/>
                   <br />
                   <br />
 
-
+                  <lable>Nick Name</lable>
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
                     id="nick_name"
                     name="nick_name"
-                    placeholder="Nick Name"
+                    placeholder={userprofile.nick_name}
                     value={this.state.nick_name}
                     onChange={this.handleChange}
                   required/>
                   <br />
                   <br />
 
-
+                  <lable>Email Address</lable>
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
                     id="emailid"
                     name="emailid"
-                    placeholder="emailid"
+                    placeholder={userprofile.Emailid}
                     value={this.state.emailid}
                     onChange={this.handleChange}
                   required/>
                   <br />
                   <br/>
-
+                  <lable>Mobile Number</lable>
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
                     id="mobile"
                     name="mobile"
-                    placeholder="Mobile Number"
+                    placeholder={userprofile.mobile}
                     value={this.state.mobile}
                     onChange={this.handleChange}
                   required/>
                   <br />
                   <br />
 
-                  
+                  <lable>Physical Address</lable>
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
                     id="address"
                     name="address"
-                    placeholder=" Address"
+                    placeholder={userprofile.address}
                     value={this.state.address}
                     onChange={this.handleChange}
                   required/>
                   <br />
                   <br />
-
+                  <lable>Favorites</lable><br/>
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
                     id="favorites"
                     name="favorites"
-                    placeholder="Favorites"
+                    placeholder={userprofile.favorites}
                     value={this.state.favorites}
                     onChange={this.handleChange}
                   required/>
                   <br />
                   <br />
 
-
+                  <lable>MyBlog/Website</lable>
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
                     id="myblog"
                     name="myblog"
-                    placeholder="myblog"
+                    placeholder={userprofile.myblog}
                     value={this.state.myblog}
                     onChange={this.handleChange}
                   required/>
                   <br />
                   <br />
 
-
+                  <lable>Things I Love</lable>
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
                     id="things_ilove"
                     name="things_ilove"
-                    placeholder="things_ilove"
+                    placeholder={userprofile.things_ilove}
                     value={this.state.things_ilove}
                     onChange={this.handleChange}
                   required/>
                   <br />
                   <br />
-
+                  <lable>Find Me in</lable>
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
                     id="find_me_in"
                     name="find_me_in"
-                    placeholder="find_me_in"
+                    placeholder={userprofile.find_me_in}
                     value={this.state.find_me_in}
                     onChange={this.handleChange}
                   required/>
@@ -351,6 +364,7 @@ componentDidMount() {
                   <br />
 
                   <br />
+                  <lable>Profile Pic</lable>
                   <input type="file" name="myfile" onChange= {this.onChange} required/>
 
                   <br />
@@ -365,11 +379,12 @@ componentDidMount() {
               </div>
             </div>
           </div>
+          ))}
         </div>
       </div>
       </Provider>
-      // </div>
-      // </div>
+      </div>
+      </div>
     );
   }
 }
@@ -381,7 +396,7 @@ uupdateprofile.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  user : Object.assign({}, state.profile.user)
+  user: state.profile.user,
 });
 
 export default connect(mapStateToProps, { updateUserProfile })(uupdateprofile);

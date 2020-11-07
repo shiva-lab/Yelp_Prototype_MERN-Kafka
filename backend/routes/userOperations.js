@@ -405,7 +405,7 @@ userroute.post("/deletefromcart", (req, res) => {
 
 
 
-userroute.post("/uviewprofile", checkAuth,(req, res) => {
+userroute.post("/uviewprofile",(req, res) => {
   console.log(req.body.user_id);
   User.find({ _id: req.body.user_id }, (error, result) => {
     if (error) {

@@ -15,12 +15,13 @@ class ViewEventSignup extends React.Component {
   }
 
   componentDidMount() {
-    axios.defaults.withCredentials = true;
+    
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const event_id = localStorage.getItem("event_id_eventsignup");
     const data = { restaurant_id, event_id };
     // make a post request with the user data
+    axios.defaults.withCredentials = true;
     axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios.post("/vieweventsignup", data)
     .then(response => {
@@ -61,6 +62,7 @@ class ViewEventSignup extends React.Component {
         for (let i = 1; i <= this.state.pages; i++) {
             links.push(<li className="page-item" key={i}><a className="page-link" onClick={() => { this.paginatinon(i) }}>
                 {i}
+                
             </a></li>
             )
         }
