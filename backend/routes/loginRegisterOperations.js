@@ -11,10 +11,6 @@ const passport = require("passport");
 var kafka = require("../kafka/client");
 let checkAuth = passport.authenticate('jwt', { session: false });
 
-// @route  POST /api/restusers
-// @Desc   Resgister User
-// @access Public
-// Restaurant Registration
 
 
 //****************** */
@@ -259,7 +255,7 @@ loginroute.post(
         jwt.sign(
           payload,
           keys.secretOrKey,
-          { expiresIn: 3600 },
+          { expiresIn: 8000 },
           (err, token) => {
             res.json({
               success: true,

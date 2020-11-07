@@ -111,15 +111,15 @@ class UPlaceOrder extends React.Component {
 
 
   render() {
-    let redirectVar = null;
+    // let redirectVar = null;
 
-    if (!cookie.load("cookie1")) {
-      redirectVar = <Redirect to="/" />;
-    }
+    // if (!cookie.load("cookie1")) {
+    //   redirectVar = <Redirect to="/" />;
+    // }
     return (
-      <div>
-        {redirectVar}
-        <div>
+      // <div>
+      //   {redirectVar}
+      //   <div>
           <div>
             <Navbar />
             <div className="container">
@@ -200,8 +200,8 @@ class UPlaceOrder extends React.Component {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+      //   </div>
+      // </div>
     );
   }
 }

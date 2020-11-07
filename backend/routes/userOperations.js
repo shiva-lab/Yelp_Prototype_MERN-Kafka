@@ -7,9 +7,9 @@ var multer = require('multer');
 var multerS3 = require('multer-s3');
 const Order = require('../models/Order');
 const Restaurant = require("../models/Restaurant");
+const checkAuth =require('../config/checkAuth')
 
 const passport = require('passport');
-let checkAuth = passport.authenticate('jwt', { session: false });
 
 aws = require('aws-sdk'),
 aws.config.update({
@@ -56,7 +56,7 @@ var app = express(),
 //     });
 //   });
   
-  userroute.post("/uviewmenu", (req, res) => {
+  userroute.post("/uviewmenu", checkAuth,(req, res) => {
   console.log(req.body.restaurant_id);
   console.log(req.body.restaurant_id);
   Restaurant.find({ _id: req.body.restaurant_id },{'menu':[]}, (error, result) => {
@@ -98,7 +98,7 @@ var app = express(),
 //********************* */
 
 
-userroute.post("/viewuserlist", async(req, res, next) => {
+userroute.post("/viewuserlist",checkAuth, async(req, res, next) => {
   const {user_id} = req.body;
   console.log("UserID: ", user_id)
   await User.find({_id: {$ne: req.body.user_id}}, (error, result) => {
@@ -239,7 +239,7 @@ else {
 
 
 
-userroute.post("/uviewcart", (req, res) => {
+userroute.post("/uviewcart",checkAuth,(req, res) => {
   console.log("User ID: ",req.body.user_id);
   Order.find({  "user_id": req.body.user_id,orderstatus:" " },{}, (error, result) => {
     
@@ -362,7 +362,7 @@ userroute.post("/deletefromcart", (req, res) => {
 //     });
 //   });
 
-   userroute.post("/createorder", (req, res) => {
+   userroute.post("/createorder",checkAuth, (req, res) => {
     const { deliverymode,user_id, order_id} = req.body;//removed rest id
     console.log(deliverymode,user_id, order_id)
     var orderstatus = "new order"
@@ -405,7 +405,7 @@ userroute.post("/deletefromcart", (req, res) => {
 
 
 
-userroute.post("/uviewprofile", (req, res) => {
+userroute.post("/uviewprofile", checkAuth,(req, res) => {
   console.log(req.body.user_id);
   User.find({ _id: req.body.user_id }, (error, result) => {
     if (error) {

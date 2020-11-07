@@ -29,11 +29,39 @@ class uupdateprofile extends React.Component {
     myblog:"",
     things_ilove:"",
     find_me_in:"",
-
+    profile : [],
     file: null,
   };
   this.submit = this.submit.bind(this);
   this.onChange = this.onChange.bind(this);
+}
+
+componentDidMount() {
+  const self = this;
+  // const user_id = cookie.load("cookie1");
+  const user_id = localStorage.getItem('user_id');
+  const data = { user_id };
+  fetch("/uviewprofile", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (response.status >= 400) {
+        throw new Error("Bad response from server");
+      }
+      return response.json();
+    })
+    .then((response) => {
+      console.log(response);
+      self.setState({ profile: response });
+
+    })
+    .catch((err) => {
+      console.log("caught it!", err);
+    });
 }
 
   handleChange = ({ target }) => {
@@ -73,7 +101,9 @@ class uupdateprofile extends React.Component {
           'content-type': 'multipart/form-data'
       }
     };
-    this.props.updateUserProfile(formData);
+    this.props.updateUserProfile(formData)
+
+
   //   axios.post("/uupdateprofile",formData,config)
   //   .then(response => {
   //     console.log("inside success")
@@ -100,15 +130,15 @@ class uupdateprofile extends React.Component {
   render() {
     console.log("State: ", this.state);
    
-    let redirectVar = null;
+    // let redirectVar = null;
 
-    if (!cookie.load("cookie1")) {
-      redirectVar = <Redirect to="/" />;
-    }
+    // if (!cookie.load("cookie1")) {
+    //   redirectVar = <Redirect to="/" />;
+    // }
         return (
-            <div>
-            {redirectVar}
-            <div>
+            // <div>
+            // {redirectVar}
+            // <div>
             <Provider store={store}>
       <div>
         <Navbar />
@@ -127,8 +157,8 @@ class uupdateprofile extends React.Component {
                     name="bio"
                     cols="30"
                     rows="10"
-                    placeholder="A Brief Bio about your Yourself"
-                    value={this.state.description}
+                    // placeholder="A Brief Bio about your Yourself"
+                    value={this.state.profile.description}
                     onChange={this.handleChange}
                   required></textarea>
                   <br />
@@ -338,8 +368,8 @@ class uupdateprofile extends React.Component {
         </div>
       </div>
       </Provider>
-      </div>
-      </div>
+      // </div>
+      // </div>
     );
   }
 }

@@ -25,8 +25,8 @@ class Home extends React.Component{
       localStorage.removeItem('email');
       window.addEventListener("beforeunload", (e) => {
          e.preventDefault();
-         cookies.remove("cookie1");
-         cookies.remove("username");
+         //cookies.remove("cookie1");
+         //cookies.remove("username");
        });
       
     }

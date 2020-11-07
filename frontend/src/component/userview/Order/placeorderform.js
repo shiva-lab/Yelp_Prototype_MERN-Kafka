@@ -28,10 +28,10 @@ class PlaceOrderForm extends React.Component {
 // }
   submit = (event) => {
     event.preventDefault();
-    let restaurant_id = localStorage.getItem("restaurant_id_menu");
+   // let restaurant_id = localStorage.getItem("restaurant_id_menu");
     let user_id = cookie.load("cookie1");
     //let cartprice = cookie.load("cartprice");
-    let status = "Order Placed";
+    //let status = "Order Placed";
    // console.log("RestaurantID:", restaurant_id);
     console.log("user_id:", user_id);
   //  console.log("cartprice:", cartprice);

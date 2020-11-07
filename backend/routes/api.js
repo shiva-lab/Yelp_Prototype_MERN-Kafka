@@ -49,7 +49,7 @@ router.post("/viewhome", (req, res) => {
   });
 });
 
-router.get("/homeviewrestaurant", (req, res) => {
+router.get("/homeviewrestaurant",checkAuth, (req, res) => {
  // console.log(req.body.restaurant_id);
   Restaurant.find({}, (error, result) => {
     if (error) {
@@ -68,7 +68,7 @@ router.get("/homeviewrestaurant", (req, res) => {
 });
 
 
-router.post("/restaurantsearch", (req, res) => {
+router.post("/restaurantsearch",checkAuth, (req, res) => {
  console.log("Data Recieved from FrontEnd: ",req.body.search1);
  const filter = req.body.search1
    Restaurant.find(
@@ -91,7 +91,7 @@ router.post("/restaurantsearch", (req, res) => {
  });
  
 
-router.post("/filterrestaurantsearch", (req, res) => {
+router.post("/filterrestaurantsearch", checkAuth,(req, res) => {
   console.log("Data Recieved from FrontEnd: ",req.body);
   const search = req.body.search
   const filter = req.body.filter
@@ -143,7 +143,7 @@ router.post("/filterrestaurantsearch", (req, res) => {
 
 // // Updating Restaurant Profile
 router.post(
-  "/restaurantupdate",
+  "/restaurantupdate",checkAuth,
   upload.array("photos", 4),
   async (req, res, next) => {
     try {
@@ -228,7 +228,7 @@ router.post(
 );
 
 // Addmenu
-router.post("/addmenu", upload.single("myfile"), async (req, res, next) => {
+router.post("/addmenu",checkAuth, upload.single("myfile"), async (req, res, next) => {
   try {
     console.log("Uploading Menu Item Image...");
   } catch (err) {
@@ -312,7 +312,7 @@ var objData={ itemname:req.body.itemname,price:req.body.price,description:req.bo
 // );
 
 
-router.post("/viewmenu", (req, res) => {
+router.post("/viewmenu", checkAuth,(req, res) => {
   console.log(req.body.restaurant_id);
   Restaurant.find({ _id: req.body.restaurant_id },{} ,(error, result) => {
     if (error) {
@@ -384,7 +384,7 @@ var quantity="1"
     }
   );
   
-  router.post("/deletefrommenu", (req, res) => {
+  router.post("/deletefrommenu",checkAuth, (req, res) => {
     console.log(req.body._id,req.body.restaurant_id);
     
     Restaurant.updateOne({ _id:req.body.restaurant_id} ,{"$pull":{"menu":{"_id": req.body._id }}},{ safe: true, multi:true }, (error, result) => {
@@ -405,7 +405,7 @@ var quantity="1"
   });
 
 
-  router.post("/filterorderrestsearch", (req, res) => {
+  router.post("/filterorderrestsearch", checkAuth,(req, res) => {
    
     console.log(req.body.restaurant_id,req.body.filter);
     
@@ -595,7 +595,7 @@ var quantity="1"
 // //   });
 // // });
 
-router.post("/addreview", upload.single("myfile"), async (req, res, next) => {
+router.post("/addreview", checkAuth,upload.single("myfile"), async (req, res, next) => {
   try {
     console.log("Uploading Review Item Image...");
   } catch (err) {
@@ -653,7 +653,7 @@ var objData={ review_desc:req.body.review,
 });
 
 
-router.post("/viewreview", (req, res) => {
+router.post("/viewreview",checkAuth, (req, res) => {
   console.log(req.body.restaurant_id);
   Restaurant.find({ _id: req.body.restaurant_id },{} ,(error, result) => {
     if (error) {

@@ -9,9 +9,9 @@ const Order = require('../models/Order');
 //const Restaurant = require("../models/Restaurant");
 //const Cart = require("../models/Cart");
 const passport = require("passport");
-let checkAuth = passport.authenticate('jwt', { session: false });
+const checkAuth =require('../config/checkAuth')
 
- orderroute.post("/rvieworder", (req, res) => {
+ orderroute.post("/rvieworder",(req, res) => {
    Order.find({restaurant_id:req.body.restaurant_id,orderstatus:{ $ne: " " }}, (error, result) => {
     if (error) {
       console.log(error)
@@ -351,7 +351,7 @@ let checkAuth = passport.authenticate('jwt', { session: false });
 // });
 
 
-orderroute.post("/userorderstatus", (req, res) => {
+orderroute.post("/userorderstatus",(req, res) => {
     Order.find({ user_id: req.body.user_id,orderstatus:{ $ne: " " }} , (error, result) => {
       if (error) {
         console.log(error)
@@ -370,7 +370,7 @@ orderroute.post("/userorderstatus", (req, res) => {
     }).sort({ts:-1});
   });
 
-  orderroute.post("/filterordersearch", (req, res) => {
+  orderroute.post("/filterordersearch",(req, res) => {
     //console.log(req.body.user_id,req.body.filter);
     console.log(req.body);
     
@@ -395,7 +395,7 @@ orderroute.post("/userorderstatus", (req, res) => {
   
   
 
-  orderroute.post("/uorderdetails", (req, res) => {
+  orderroute.post("/uorderdetails",(req, res) => {
     console.log(req.body.order_id);
     
     Order.find({ "_id": req.body.order_id},{'cart':[]}, (error, result) => {

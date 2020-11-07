@@ -1,7 +1,24 @@
 import { GET_PROFILE, UPDATE_PROFILE, UPDATE_USER_PROFILE} from '../action/type';
 
 const initialState = {
-  user: {}
+  bio: "",
+  headline:"",
+  fname: "",
+  lname: "",
+  dob:"",
+  city: "",
+  ustate:"",
+  country:"",
+  nick_name:"",
+  emailid:"",
+  mobile: "",
+  address: "",
+  favorites: "",
+  myblog:"",
+  things_ilove:"",
+  find_me_in:"",
+
+  file: null,
 };
 
 export default function (state = initialState, action) {
