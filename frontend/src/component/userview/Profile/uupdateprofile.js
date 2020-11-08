@@ -142,7 +142,7 @@ class uupdateprofile extends React.Component {
                 <h1 class="heading">User Profile Update</h1>
                 <form onSubmit={this.submit}>
                   <br />
-                  <lable>Bio</lable>
+                  <lable>Bio</lable><br />
                   <textarea
                     style={{ borderRadius: "3px" }}
                     id="bio"
@@ -168,7 +168,7 @@ class uupdateprofile extends React.Component {
                   />
                   <br />
                   <br />
-                  <lable>First Name</lable>
+                  <lable>First Name</lable><br />
                   <input
                     type="text"
                     style={{ borderRadius: "3px" }}
@@ -180,7 +180,7 @@ class uupdateprofile extends React.Component {
                   />
                   <br />
                   <br />
-                  <lable>Last Name</lable>
+                  <lable>Last Name</lable><br />
                   <input
                     type="text"
                     style={{ borderRadius: "3px" }}
@@ -193,7 +193,7 @@ class uupdateprofile extends React.Component {
                   />
                   <br />
                   <br />
-                  <lable>Date of Birth</lable>
+                  <lable>Date of Birth</lable><br />
                   <input
                     type="date"
                     style={{ borderRadius: "3px" }}
@@ -242,7 +242,7 @@ class uupdateprofile extends React.Component {
                   <br />
                   <br />
 
-                  <lable>Nick Name</lable>
+                  <lable>Nick Name</lable><br />
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
@@ -255,7 +255,7 @@ class uupdateprofile extends React.Component {
                   <br />
                   <br />
 
-                  <lable>Email Address</lable>
+                  <lable>Email Address</lable><br />
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
@@ -267,7 +267,7 @@ class uupdateprofile extends React.Component {
                   />
                   <br />
                   <br/>
-                  <lable>Mobile Number</lable>
+                  <lable>Mobile Number</lable><br />
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
@@ -280,7 +280,7 @@ class uupdateprofile extends React.Component {
                   <br />
                   <br />
 
-                  <lable>Physical Address</lable>
+                  <lable>Physical Address</lable><br />
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
@@ -305,7 +305,7 @@ class uupdateprofile extends React.Component {
                   <br />
                   <br />
 
-                  <lable>MyBlog/Website</lable>
+                  <lable>MyBlog/Website</lable><br />
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
@@ -318,7 +318,7 @@ class uupdateprofile extends React.Component {
                   <br />
                   <br />
 
-                  <lable>Things I Love</lable>
+                  <lable>Things I Love</lable><br />
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
@@ -330,7 +330,7 @@ class uupdateprofile extends React.Component {
                   />
                   <br />
                   <br />
-                  <lable>Find Me in</lable>
+                  <lable>Find Me in</lable><br />
                   <input
                     style={{ borderRadius: "3px" }}
                     type="text"
@@ -344,7 +344,7 @@ class uupdateprofile extends React.Component {
                   <br />
 
                   <br />
-                  <lable>Profile Pic</lable>
+                  <lable>Profile Pic</lable><br />
                   <input type="file" name="myfile" onChange= {this.onChange}/>
 
                   <br />

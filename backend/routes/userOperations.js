@@ -145,7 +145,7 @@ userroute.post("/filterusersearch", async(req, res, next) => {
 // Follow Users
 //********************* */
 
-userroute.post("/followuserprofile",checkAuth, async (req, res, next) => {
+userroute.post("/followuserprofile", async (req, res, next) => {
    
   const {user_id,_id,fname,lname,city,Emailid,headline} = req.body;
   console.log("Data in backend",user_id,_id,user_id,fname,lname,city,Emailid,headline);

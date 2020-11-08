@@ -126,7 +126,7 @@ loginroute.post( "/restaurantlogin", async (req, res) => {
           jwt.sign(
             payload,
             keys.secretOrKey,
-            { expiresIn: 3600 },
+            { expiresIn: 900000 },
             (err, token) => {
               res.json({
                 success: true,
@@ -256,7 +256,7 @@ loginroute.post(
         jwt.sign(
           payload,
           keys.secretOrKey,
-          { expiresIn: 8000 },
+          { expiresIn: 9000000 },
           (err, token) => {
             res.json({
               success: true,

@@ -38,6 +38,7 @@ class ListAllUsers extends React.Component {
     const self = this;
     const user_id = localStorage.getItem('user_id');
     const data = { user_id };
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios.post('/viewuserlist',data)
       .then((response) => {
         if (response.status === 200) {
