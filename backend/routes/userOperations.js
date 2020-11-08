@@ -56,7 +56,7 @@ var app = express(),
 //     });
 //   });
   
-  userroute.post("/uviewmenu", checkAuth,(req, res) => {
+  userroute.post("/uviewmenu",(req, res) => {
   console.log(req.body.restaurant_id);
   console.log(req.body.restaurant_id);
   Restaurant.find({ _id: req.body.restaurant_id },{'menu':[]}, (error, result) => {

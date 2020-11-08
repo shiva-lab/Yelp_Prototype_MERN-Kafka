@@ -1,27 +1,24 @@
-  // export const viewMenu = (data) => (dispatch) => {
+// import axios from "axios";
+// import {ORDER_PLACED} from "./type";
+// import swal from 'sweetalert2'
 
 
-          //   console.log("View menu called from action");
-          //   // axios.defaults.withCredentials = true;
-          //   axios.post("/viewmenu", data)
-          //     .then((response) => {
-          //       console.log("From view menu")
-          //       console.log("response is ", response);
-                
-          //       dispatch({
-          
-          //         type: VIEW_MENU,
-          //         payload: response.data,
+// export const OrderPlace = userdata => (dispatch) => {
+//   axios({
+//     url: "/createorder",
+//     method: "POST",
+//     data: payload,
+//   }).then(function (response) {
+//     alert("Order Placed Successfully")
+//     console.log(response);
+//     dispatch({
+//       type: ORDER_PLACED,
+//       payload: response.data
+//     });
+//   })
+//     .catch(() => {
+//       console.log("Internal server error");
+//     });
+// };
 
-          //       });
-          //     })
-          //     .catch((error) => {
-          //       if (error.response && error.response.data) {
-          //         return dispatch({
-          //           type: VIEW_MENU,
-          //           payload: error.response.data
-          //         });
-          //       }
-          //     });
-          // };
-          
+
