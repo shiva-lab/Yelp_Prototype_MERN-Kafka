@@ -18,9 +18,12 @@ class SearchEvent extends React.Component {
     const eventname = localStorage.getItem("searcheve");
     const data = { eventname };
     console.log(data);
+    var bearer = localStorage.getItem('token');
+    console.log('Token :', bearer)
     fetch('/searchevent', {
       method: 'POST',
       headers: {
+        'Authorization': bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data)
@@ -47,6 +50,8 @@ class SearchEvent extends React.Component {
   handleClick(event_id, restaurant_id) {
     return function () {
       const user_id = cookie.load('cookie1');
+      var bearer = localStorage.getItem('token');
+      console.log('Token :', bearer)
       console.log(event_id, restaurant_id, user_id);
       const newdata = {
         user_id,
@@ -57,6 +62,7 @@ class SearchEvent extends React.Component {
       fetch("/eventsignup", {
         method: "POST",
         headers: {
+          'Authorization': bearer,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newdata),

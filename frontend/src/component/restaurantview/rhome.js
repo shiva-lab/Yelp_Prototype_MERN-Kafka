@@ -18,10 +18,12 @@ class RHome extends React.Component {
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
-    //axios.post("/viewhome",data)
+    var bearer = localStorage.getItem('token');
+    console.log('Token :', bearer)
     fetch("/viewhome", {
       method: "POST",
       headers: {
+        'Authorization': bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),

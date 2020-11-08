@@ -23,9 +23,12 @@ class UPlaceOrder extends React.Component {
     // let restaurant_id = localStorage.getItem("restaurant_id");
     const data = { user_id };
     //axios.post("/uviewcart",data)
+    var bearer = localStorage.getItem('token');
+console.log('Token :', bearer)
     fetch("/uviewcart", {
       method: "POST",
       headers: {
+        'Authorization': bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
@@ -77,9 +80,12 @@ class UPlaceOrder extends React.Component {
         cart_id,
       };
       console.log(newdata);
+      var bearer = localStorage.getItem('token');
+console.log('Token :', bearer)
       fetch("/deletefromcart", {
         method: "POST",
         headers: {
+          'Authorization': bearer,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newdata),

@@ -78,6 +78,8 @@ class NewOrderView extends React.Component {
       var updatestatus = localStorage.getItem("orderupdatestatus");
       const newdata = { _id, updatestatus };
       console.log("New Data: ",newdata);
+      var bearer = localStorage.getItem('token');
+      console.log('Token :', bearer)
       //axios.defaults.withCredentials = true;
       // make a post request with the user data
       //axios.defaults.headers.common["authorization"] = localStorage.getItem('token');
@@ -85,6 +87,7 @@ class NewOrderView extends React.Component {
       fetch("/neworderstatuschange", {
         method: "POST",
         headers: {
+          'Authorization': bearer,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newdata),

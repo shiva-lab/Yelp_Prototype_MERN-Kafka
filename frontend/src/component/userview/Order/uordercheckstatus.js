@@ -25,7 +25,6 @@ class UOrderStatusCheck extends React.Component {
     const user_id = cookie.load('cookie1');
     const data = { order_id, user_id };
     axios.post("/userorderstatus",data)
-      
       .then((response) => {
         console.log("Data", response.data)
         self.setState({ order: response.data });
@@ -81,17 +80,36 @@ class UOrderStatusCheck extends React.Component {
 
 
   sortAscending = () => {
-    console.log("Sorting ASC")
-    const { order } = this.state;
-    order.sort((a, b) => a - b)    
-    this.setState({ order })
+    const self = this;
+    const order_id = cookie.load('order_id');
+    const user_id = cookie.load('cookie1');
+    const data = { order_id, user_id };
+    axios.post("/userorderstatus",data)
+      .then((response) => {
+        console.log("Data", response.data)
+        self.setState({ order: response.data });
+      })
+      .catch((err) => {
+        console.log("caught it!", err);
+      });
+    
+    
   }
 
   sortDescending = () => {
-    console.log("Sorting Desc")
-    const { order } = this.state;
-    order.sort((a, b) => a - b).reverse()
-    this.setState({ order })
+    const self = this;
+    const order_id = cookie.load('order_id');
+    const user_id = cookie.load('cookie1');
+    const data = { order_id, user_id };
+    axios.post("/userorderstatusdesc",data)
+      .then((response) => {
+        console.log("Data", response.data)
+        self.setState({ order: response.data });
+      })
+      .catch((err) => {
+        console.log("caught it!", err);
+      });
+    
   }
 
 

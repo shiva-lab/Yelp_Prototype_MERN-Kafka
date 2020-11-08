@@ -17,9 +17,12 @@ class ViewSocialProfile extends React.Component {
     // const user_id = cookie.load("cookie1");
     const user_id = localStorage.getItem('user_id_profileview');
     const data = { user_id };
+    var bearer = localStorage.getItem('token');
+console.log('Token :', bearer)
     fetch("/uviewprofile", {
       method: "POST",
       headers: {
+        'Authorization': bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),

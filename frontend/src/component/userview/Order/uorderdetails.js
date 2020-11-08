@@ -17,9 +17,12 @@ class UOrderDetails extends React.Component {
     const self = this;
     const order_id = localStorage.getItem("order_id_details");
     const data = { order_id };
+    var bearer = localStorage.getItem('token');
+    console.log('Token :', bearer)
     fetch("/uorderdetails", {
       method: "POST",
       headers: {
+        'Authorization': bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),

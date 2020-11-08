@@ -23,9 +23,12 @@ class RViewProfile extends React.Component {
     // make a post request with the user data
     //axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     //axios.post("/viewhome",data)
+    var bearer = localStorage.getItem('token');
+console.log('Token :', bearer)
     fetch("/viewhome", {
       method: "POST",
       headers: {
+        'Authorization': bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),

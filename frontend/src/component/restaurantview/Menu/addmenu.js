@@ -35,7 +35,6 @@ class AddMenu extends React.Component {
     //
     if (!this.state.itemname) {
       formIsValid = false;
-      //alert(" Please enter item name");
       swal.fire({
         title: 'Failed!',
         text: 'Item Name Cannot be Empty',
@@ -115,7 +114,6 @@ class AddMenu extends React.Component {
                   ...this.state,
                   message: "!!!!can not add item!!!!"
               });
-              //alert("can not add data")
               swal.fire({
                 title: 'Failed!',
                 text: 'Cannot Add Data',
@@ -140,9 +138,6 @@ class AddMenu extends React.Component {
     if (!cookie.load("restaurant_id")) {
       redirectVar = <Redirect to="/" />;
     }
-    
-      
-     
     return (
 
       <div>

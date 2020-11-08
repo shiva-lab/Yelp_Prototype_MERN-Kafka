@@ -70,9 +70,12 @@ class ViewEvent extends React.Component {
         Emailid
       };
       console.log(newdata);
+      var bearer = localStorage.getItem('token');
+      console.log('Token :', bearer)
       fetch("/eventsignup", {
         method: "POST",
         headers: {
+          'Authorization': bearer,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newdata),

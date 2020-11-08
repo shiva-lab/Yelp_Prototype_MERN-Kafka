@@ -87,9 +87,12 @@ class UViewMenu extends React.Component {
 
       };
       console.log(newdata);
+      var bearer = localStorage.getItem('token');
+console.log('Token :', bearer)
       fetch("/addtocart", {
         method: "POST",
         headers: {
+          'Authorization': bearer,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newdata),

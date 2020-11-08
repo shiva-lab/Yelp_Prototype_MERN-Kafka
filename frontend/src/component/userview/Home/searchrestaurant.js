@@ -31,9 +31,12 @@ componentDidMount() {
    // const data = { search1, search2 };
    const data = { search1 };
    //axios.post("/restaurantsearch",data)
+   var bearer = localStorage.getItem('token');
+console.log('Token :', bearer)
     fetch("/restaurantsearch", {
       method: "POST",
       headers: {
+        'Authorization': bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
@@ -73,13 +76,14 @@ componentDidMount() {
     event.preventDefault();
     const search = localStorage.getItem('search1')
     const data = { filter: this.state.filter,search};
-    //ß  var data = "dine-in";
-    console.log("Hellooooooo");
     console.log(data);
     const temp = this;
+    var bearer = localStorage.getItem('token');
+    console.log('Token :', bearer)
     fetch("/filterrestaurantsearch", {
       method: "POST",
       headers: {
+        'Authorization': bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),

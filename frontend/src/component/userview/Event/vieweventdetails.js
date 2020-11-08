@@ -17,11 +17,13 @@ class ViewEventDetails extends React.Component {
   componentDidMount() {
     const self = this;
     const event_id = localStorage.getItem("event_id_selected");
-    
+    var bearer = localStorage.getItem('token');
+    console.log('Token :', bearer)
     const data = {event_id};
     fetch("/vieweventdetails", {
       method: "POST",
       headers: {
+        'Authorization': bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
@@ -55,10 +57,13 @@ class ViewEventDetails extends React.Component {
         Emailid
 
       };
+      var bearer = localStorage.getItem('token');
+console.log('Token :', bearer)
       console.log(newdata);
       fetch("/eventsignup", {
         method: "POST",
         headers: {
+          'Authorization': bearer,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newdata),

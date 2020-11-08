@@ -18,9 +18,13 @@ class UViewRestaurant extends React.Component {
     const self = this;
     const zipcode = cookie.load("userzipcode");
     const data = { zipcode };
+    var bearer = localStorage.getItem('token');
+console.log('Token :', bearer)
+
     fetch("/uviewrestaurant", {
       method: "POST",
       headers: {
+        'Authorization': bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
