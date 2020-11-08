@@ -7,7 +7,7 @@ import Navbar from "../rNavbar";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { viewMenu } from "../../../redux/action/menuAction";
-// import Modal from 'react-modal';
+
 class ViewMenu extends React.Component {
   constructor(props) {
     super();
@@ -18,19 +18,16 @@ class ViewMenu extends React.Component {
   }
 
   componentDidMount() {
-    
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
-    //this.props.viewMenu(data);
-    // make a post request with the user data
     axios.defaults.withCredentials = true;
     axios.defaults.headers.common["authorization"] = localStorage.getItem(
-      'token'
+      "token"
     );
     axios.post("/viewmenu", data).then((response) => {
       if (response.status === 200) {
-        console.log("Printing response",response)
+        console.log("Printing response", response);
         console.log("Printing Menu", response.data[0].menu);
         this.setState({
           menu: response.data,
@@ -51,8 +48,6 @@ class ViewMenu extends React.Component {
       return <Redirect to="/editmenu" />;
     };
   }
-
-
 
   paginatinon = (e) => {
     this.setState({
@@ -151,16 +146,5 @@ class ViewMenu extends React.Component {
     );
   }
 }
-// viewmenu.propTypes = {
-//   viewMenu: PropTypes.func.isRequired,
-//   menuitem: PropTypes.object.isRequired,
-
-// };
-
-// const mapStateToProps = (state) => ({
-//   menuitem: state.menu.menuitem,
-// });
-
-// export default connect(mapStateToProps, { viewMenu })(viewmenu);
 
 export default ViewMenu;

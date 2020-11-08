@@ -6,10 +6,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { restLogin } from "../../../redux/action/loginaction";
-import Footer from "../../Footer";
 import Header from "../../Header";
-import swal from 'sweetalert2';
-
 
 class RestaurantLogin extends React.Component {
   constructor() {
@@ -23,7 +20,7 @@ class RestaurantLogin extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-componentDidMount() {
+  componentDidMount() {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/rhome");
     }
@@ -45,11 +42,7 @@ componentDidMount() {
       authFlag: false,
     });
   }
-  //email change handler to update state variable with the text entered by the user
-  //password change handler to update state variable with the text entered by the user
-  //Email
-  //Password
-  //submit Login handler to send a request to the node backend
+
   onSubmit(e) {
     e.preventDefault();
 

@@ -4,7 +4,7 @@ import { Card } from "react-bootstrap";
 import Navbar from "../rNavbar";
 import { paginate, pages } from "../../../helperFunctions/paginate";
 
-// import Modal from 'react-modal';
+
 class ViewReview extends React.Component {
   constructor(props) {
     super();

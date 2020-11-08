@@ -1,17 +1,16 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
-import {paginate, pages} from '../../../helperFunctions/paginate'
+import { paginate, pages } from "../../../helperFunctions/paginate";
 import cookie from "react-cookies";
 import axios from "axios";
 import Navbar from "../uNavbar";
 
-// import Modal from 'react-modal';
 class ListAllUsers extends React.Component {
   constructor(props) {
     super();
     this.state = {
       userdata: [],
-      filteredUserdata:[],
+      filteredUserdata: [],
       searcheve: "",
     };
     this.searcheveHandler = this.searcheveHandler.bind(this);
@@ -36,84 +35,83 @@ class ListAllUsers extends React.Component {
   componentDidMount() {
     axios.defaults.withCredentials = true;
     const self = this;
-    const user_id = localStorage.getItem('user_id');
+    const user_id = localStorage.getItem("user_id");
     const data = { user_id };
-    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
-    axios.post('/viewuserlist',data)
-      .then((response) => {
-        if (response.status === 200) {
-          console.log("Printing response",response)
-          console.log("Printing User Data",response.data)
-            this.setState({
-              userdata: response.data,
-              filteredUserdata : paginate(response.data,1,10),
-              pages: pages(response.data, 10)
-
-            })
-            console.log(pages);
-        } else {
-            console.log("error");
-        }
+    axios.defaults.headers.common["authorization"] = localStorage.getItem(
+      "token"
+    );
+    axios.post("/viewuserlist", data).then((response) => {
+      if (response.status === 200) {
+        console.log("Printing response", response);
+        console.log("Printing User Data", response.data);
+        this.setState({
+          userdata: response.data,
+          filteredUserdata: paginate(response.data, 1, 10),
+          pages: pages(response.data, 10),
+        });
+        console.log(pages);
+      } else {
+        console.log("error");
+      }
     });
   }
 
   paginatinon = (e) => {
     this.setState({
-      filteredUserdata: paginate(this.state.userdata,e, 10)
-    })
-}
+      filteredUserdata: paginate(this.state.userdata, e, 10),
+    });
+  };
 
-handleChange = ({ target }) => {
-  const { name, value } = target;
-  this.setState({ [name]: value });
-};
+  handleChange = ({ target }) => {
+    const { name, value } = target;
+    this.setState({ [name]: value });
+  };
 
-
-submit = (event) => {
-  event.preventDefault();
-  var user_id = localStorage.getItem('user_id')
-  const data = {user_id};
-  console.log(data);
-  const self = this;
-  axios.defaults.withCredentials = true;
+  submit = (event) => {
+    event.preventDefault();
+    var user_id = localStorage.getItem("user_id");
+    const data = { user_id };
+    console.log(data);
+    const self = this;
+    axios.defaults.withCredentials = true;
     // make a post request with the user data
-    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
-    axios.post('/usersifollow',data)
+    axios.defaults.headers.common["authorization"] = localStorage.getItem(
+      "token"
+    );
+    axios.post("/usersifollow", data).then((response) => {
+      if (response.status === 200) {
+        console.log("Printing response", response);
+        console.log("Printing User Data", response.data[0].followedUser);
+        this.setState({
+          userdata: response.data[0].followedUser,
+          filteredUserdata: paginate(response.data[0].followedUser, 1, 10),
+          pages: pages(response.data[0].followedUser, 10),
+        });
+        console.log("Pages", pages);
+      } else {
+        console.log("error");
+      }
+    });
+  };
+
+  usersubmit = (event) => {
+    event.preventDefault();
+    //const user_id = cookie.load('cookie1');
+    const data = { name: this.state.searcheve };
+    console.log("Testing user data", data);
+    console.log("Sending this data to backend", data);
+    const temp = this;
+    axios
+      .post("/filterusersearch", data)
       .then((response) => {
-        if (response.status === 200) {
-          console.log("Printing response",response)
-          console.log("Printing User Data",response.data[0].followedUser)
-            this.setState({
-              userdata: response.data[0].followedUser,
-              filteredUserdata : paginate(response.data[0].followedUser,1,10),
-              pages: pages(response.data[0].followedUser, 10)
+        console.log("Filtered user: ", response.data);
+        temp.setState({ filteredUserdata: response.data });
+      })
+      .catch((err) => {
+        console.log("caught it! - ERROR", err);
+      });
+  };
 
-            })
-            console.log("Pages",pages);
-        } else {
-            console.log("error");
-        }
-    });
-  
-};
-
-usersubmit = (event) => {
-  event.preventDefault();
-  //const user_id = cookie.load('cookie1');
-  const data = { name: this.state.searcheve };
-  console.log("Testing user data", data);
-  console.log("Sending this data to backend", data);
-  const temp = this;
-  axios.post("/filterusersearch",data)
-    .then((response) => {
-      console.log("Filtered user: ", response.data)
-      temp.setState({ filteredUserdata: response.data });
-    })
-    .catch((err) => {
-      console.log("caught it! - ERROR", err);
-    });
-};
-           
   render() {
     localStorage.setItem("searcheve", this.state.searcheve);
     let redirectVar = null;
@@ -123,16 +121,24 @@ usersubmit = (event) => {
 
     let links = [];
     if (this.state.pages > 0) {
-        console.log(this.state.pages);
-        for (let i = 1; i <= this.state.pages; i++) {
-            links.push(<li className="page-item" key={i}><a className="page-link" onClick={() => { this.paginatinon(i) }}>
-                {i}
-            </a></li>
-            )
-        }
+      console.log(this.state.pages);
+      for (let i = 1; i <= this.state.pages; i++) {
+        links.push(
+          <li className="page-item" key={i}>
+            <a
+              className="page-link"
+              onClick={() => {
+                this.paginatinon(i);
+              }}
+            >
+              {i}
+            </a>
+          </li>
+        );
+      }
     }
 
-    let userdata = this.state.filteredUserdata.map(socialprofile => {
+    let userdata = this.state.filteredUserdata.map((socialprofile) => {
       return (
         <tr>
           <td>{socialprofile.fname}</td>
@@ -140,14 +146,16 @@ usersubmit = (event) => {
           <td>{socialprofile.Emailid}</td>
           <td>{socialprofile.headline}</td>
           <td>{socialprofile.city}</td>
-          <td><Link to="/ViewSocialProfile">
-            <button onClick={this.viewprofileHandler(socialprofile._id)}>View Profile
-                            </button></Link></td>
+          <td>
+            <Link to="/ViewSocialProfile">
+              <button onClick={this.viewprofileHandler(socialprofile._id)}>
+                View Profile
+              </button>
+            </Link>
+          </td>
         </tr>
-      )
-    })
-
-
+      );
+    });
 
     return (
       <div>
@@ -160,105 +168,73 @@ usersubmit = (event) => {
               <h1 className="heading-menu"> List of all Users</h1>
               <br />
               <br />
-              {/* <label>
-                <div>
-                  <span class="pseudo-input_field-holder">
-                    <input
-                      autocomplete="off"
-                      id="dropperText_Mast"
-                      maxlength="80"
-                      name="search"
-                     
-                      placeholder="User Name"
-                      onChange={this.searcheveHandler}
-                    />
-                    <input type="hidden" name="ns" value="1" />
-                  </span>
-                   <Link to="/searchevent"> 
-                    <button
-                      class="ybtn ybtn--primary ybtn--small business-search-form_button"
-                      value="submit"
-                      onSubmit={this.usersubmit}>
-                       {" "}
-                      Search
-                      <span class="main-search_action-icon-wrap js-search-icon-wrap">
-                        <span
-                          aria-hidden="true"
-                          styles="width: 24px; height: 24px;"
-                        ></span>
-                      </span>
-                    </button>
-                   </Link> 
-                </div>
-              </label> */}
 
               <form onSubmit={this.usersubmit}>
-              <input
-                    style={{ borderRadius: "3px" }}
-                    type="text"
-                    id="search"
-                    name="search"
-                    placeholder="Name,Location.."
-                    value={this.state.value}
-                    onChange={this.searcheveHandler}
-                  required/>
-                  
-              <input
-                class="btn btn-danger"
-                type="submit"
-                value="Submit"
-              ></input>
+                <input
+                  style={{ borderRadius: "3px" }}
+                  type="text"
+                  id="search"
+                  name="search"
+                  placeholder="Name,Location.."
+                  value={this.state.value}
+                  onChange={this.searcheveHandler}
+                  required
+                />
 
-<br/><br></br>
-            </form>
+                <input
+                  class="btn btn-danger"
+                  type="submit"
+                  value="Submit"
+                ></input>
+
+                <br />
+                <br></br>
+              </form>
               <form onSubmit={this.submit}>
-              <select
-                value={this.state.value}
-                onChange={this.handleChange}
-                id="filter"
-                name="filter"
-                placeholder="filter"
-              >
-                <option>Filter</option>
-                <option value="followedusers">Users I follow</option>
-              </select>
-              <input
-                class="btn btn-primary"
-                type="submit"
-                value="Submit"
-              ></input>
-            </form>
+                <select
+                  value={this.state.value}
+                  onChange={this.handleChange}
+                  id="filter"
+                  name="filter"
+                  placeholder="filter"
+                >
+                  <option>Filter</option>
+                  <option value="followedusers">Users I follow</option>
+                </select>
+                <input
+                  class="btn btn-primary"
+                  type="submit"
+                  value="Submit"
+                ></input>
+              </form>
               <br />
               <br />
               <div className="container">
-                    <div>
-              <div className="panel panel-default p50 uth-panel">
-                <table className="tables">
-                  <thead>
-                    <tr className="tbl-header">
-                      <th>First Name</th>
-                      <th>Last Name</th>
-                      <th>Email</th>
-                      <th>Headline</th>
-                      <th>City</th>
-                      <th>View Profile</th>
-                    </tr>
-                  </thead>
-                  
-                  <tbody>
+                <div>
+                  <div className="panel panel-default p50 uth-panel">
+                    <table className="tables">
+                      <thead>
+                        <tr className="tbl-header">
+                          <th>First Name</th>
+                          <th>Last Name</th>
+                          <th>Email</th>
+                          <th>Headline</th>
+                          <th>City</th>
+                          <th>View Profile</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
                         {userdata}
-                            <ul className="pagination">
-                            {links}
-                            </ul>
-                        </tbody>
-                 
-                </table>
+                        <ul className="pagination">{links}</ul>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      </div>
       </div>
     );
   }

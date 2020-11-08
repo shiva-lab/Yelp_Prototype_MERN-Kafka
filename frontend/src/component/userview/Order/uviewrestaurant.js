@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
-
 import cookie from "react-cookies";
 import Navbar from "../uNavbar";
 
-
-// import Modal from 'react-modal';
 class UViewRestaurant extends React.Component {
   constructor(props) {
     super();
@@ -18,13 +15,13 @@ class UViewRestaurant extends React.Component {
     const self = this;
     const zipcode = cookie.load("userzipcode");
     const data = { zipcode };
-    var bearer = localStorage.getItem('token');
-console.log('Token :', bearer)
+    var bearer = localStorage.getItem("token");
+    console.log("Token :", bearer);
 
     fetch("/uviewrestaurant", {
       method: "POST",
       headers: {
-        'Authorization': bearer,
+        Authorization: bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
@@ -69,7 +66,6 @@ console.log('Token :', bearer)
           <div className="main-div-menu">
             <div className="panel" />
             <div>
-
               <div className="container">
                 <div>
                   <table className="tables">
@@ -85,7 +81,7 @@ console.log('Token :', bearer)
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.resturantlist.map(food => (
+                      {this.state.resturantlist.map((food) => (
                         <tr>
                           <td>
                             <img
@@ -95,14 +91,8 @@ console.log('Token :', bearer)
                               mode="fit"
                             />
                           </td>
-                          <td>
-                            {food.restaurant_name}
-                            {' '}
-                          </td>
-                          <td>
-                            {food.rdescription}
-                            {' '}
-                          </td>
+                          <td>{food.restaurant_name} </td>
+                          <td>{food.rdescription} </td>
                           <td>{food.contactinfo}</td>
                           <td>{food.cuisine}</td>
                           <td>

@@ -52,17 +52,7 @@ export const userRegister = userData => (dispatch) => {
 export const restaurantRegister = restData => (dispatch) => {
   console.log("Restaurant Registration called from action");
   // axios.defaults.withCredentials = true;
-  axios
-    .post("/restaurantregister", restData)
-  //      .then(response => {
-    //      console.log("Status Code : ", response.status);
-    //      if (response.status === 200) {
-    //        this.setState({
-    //          authFlag: true
-    //        });
-    //        alert("Restaurant Profile Created");
-    //      }
-    //    })
+  axios.post("/restaurantregister", restData)
     .then((response) => {
       console.log("response is ", response);
       alert("Successfully Signed up,Please Sign in");

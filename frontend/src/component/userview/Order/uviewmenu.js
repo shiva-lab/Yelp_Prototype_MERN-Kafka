@@ -1,18 +1,17 @@
 import React, { Component, useState } from "react";
-import { Redirect } from 'react-router';
+import { Redirect } from "react-router";
 import cookie from "react-cookies";
 import Navbar from "../uNavbar";
-import {paginate, pages} from '../../../helperFunctions/paginate'
-import axios from "axios"
-import swal from 'sweetalert2'
+import { paginate, pages } from "../../../helperFunctions/paginate";
+import axios from "axios";
+import swal from "sweetalert2";
 
-// import Modal from 'react-modal';
 class UViewMenu extends React.Component {
   constructor(props) {
     super();
     this.state = {
       menu: [],
-      filteredMenu:[]
+      filteredMenu: [],
     };
   }
 
@@ -21,61 +20,31 @@ class UViewMenu extends React.Component {
     const data = { restaurant_id };
     const self = this;
     axios.defaults.withCredentials = true;
-    // make a post request with the user data
-    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
-    axios.post('/uviewmenu',data)
-    .then((response) => {
+    axios.defaults.headers.common["authorization"] = localStorage.getItem(
+      "token"
+    );
+    axios.post("/uviewmenu", data).then((response) => {
       if (response.status === 200) {
-        console.log("Printing response",response)
-        console.log("Printing User Data",response.data[0].menu)
-          this.setState({
-            menu: response.data[0].menu,
-            filteredMenu : paginate(response.data[0].menu,1,10),
-            pages: pages(response.data[0].menu, 10)
-
-          })
-          console.log(pages);
+        console.log("Printing response", response);
+        console.log("Printing User Data", response.data[0].menu);
+        this.setState({
+          menu: response.data[0].menu,
+          filteredMenu: paginate(response.data[0].menu, 1, 10),
+          pages: pages(response.data[0].menu, 10),
+        });
+        console.log(pages);
       } else {
-          console.log("error");
+        console.log("error");
       }
-  });
-}
-
-
-
-
-
-
-  //   fetch("/uviewmenu", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then((response) => {
-  //       if (response.status >= 400) {
-  //         throw new Error("Bad response from server");
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       console.log("data")
-  //       console.log(data)
-  //       self.setState({ items: data});
-  //     })
-  //     .catch((err) => {
-  //       console.log("caught it!", err);
-  //     });
-  // }
-
+    });
+  }
 
   handleClick(_id, itemname, price, path) {
     return function () {
-      const user_id = cookie.load('cookie1');
-      const user_name = cookie.load('username');
+      const user_id = cookie.load("cookie1");
+      const user_name = cookie.load("username");
       const restaurant_id = localStorage.getItem("restaurant_id_allrest");
-      console.log(_id, itemname, restaurant_id, price, path,user_name);
+      console.log(_id, itemname, restaurant_id, price, path, user_name);
       const newdata = {
         _id,
         itemname,
@@ -83,48 +52,39 @@ class UViewMenu extends React.Component {
         price,
         user_id,
         path,
-        user_name
-
+        user_name,
       };
       console.log(newdata);
-      var bearer = localStorage.getItem('token');
-console.log('Token :', bearer)
+      var bearer = localStorage.getItem("token");
+      console.log("Token :", bearer);
       fetch("/addtocart", {
         method: "POST",
         headers: {
-          'Authorization': bearer,
+          Authorization: bearer,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newdata),
-      })      .then((response) => {
-        if (response.status== 200) {
-          //throw new Error("Bad response from server");
-          //alert("Item added successfully")
-          swal.fire({
-            title: 'Success!',
-            text: 'Item Successfully Added',
-            icon: 'success'
-          })
-        }
-       // return response.json();
-      })  
-    //   .then(res => {
-    //     console.log("data")
-    //    // console.log(data[0].menu)
-    //  alert("Item added successfully")
-    //   })
-      .catch((err) => {
-        console.log("caught it!", err);
-      });
-  }
-
+      })
+        .then((response) => {
+          if (response.status == 200) {
+            swal.fire({
+              title: "Success!",
+              text: "Item Successfully Added",
+              icon: "success",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log("caught it!", err);
+        });
+    };
   }
 
   paginatinon = (e) => {
     this.setState({
-        filteredMenu: paginate(this.state.menu,e, 10)
-    })
-}
+      filteredMenu: paginate(this.state.menu, e, 10),
+    });
+  };
 
   render() {
     let redirectVar = null;
@@ -134,52 +94,54 @@ console.log('Token :', bearer)
     }
     let links = [];
     if (this.state.pages > 0) {
-        //console.log(this.state.pages);
-        for (let i = 1; i <= this.state.pages; i++) {
-            links.push(<li className="page-item" key={i}><a className="page-link" onClick={() => { this.paginatinon(i) }}>
-                {i}
-            </a></li>
-            )
-        }
+      for (let i = 1; i <= this.state.pages; i++) {
+        links.push(
+          <li className="page-item" key={i}>
+            <a
+              className="page-link"
+              onClick={() => {
+                this.paginatinon(i);
+              }}
+            >
+              {i}
+            </a>
+          </li>
+        );
+      }
     }
 
-    let userdata = this.state.filteredMenu.map(item => {
-      return(
-    <tr>
-                      <td>
-                                <img
-                                  src={item.path}
-                                  width={150}
-                                  height={120}
-                                  mode="fit"
-                                />
-                              </td>
-                              <td>{item.itemname}{' '}</td>
-                              <td>{item.Ingredients}{' '}</td>
-                              <td>{item.item_description}{' '}</td>
-                              <td>{item.price}</td>
-                              <td>{item.itemcategory}</td>
-                              <td>
-                                <button className="btn btn-primary" 
-                             onClick={this.handleClick(item._id, item.itemname, item.price, item.path)}
-                                >
-                                  Add to cart
-                                </button>
-                              </td>
-                              </tr>
-                           
-    )})
-
-
-
-
-
+    let userdata = this.state.filteredMenu.map((item) => {
+      return (
+        <tr>
+          <td>
+            <img src={item.path} width={150} height={120} mode="fit" />
+          </td>
+          <td>{item.itemname} </td>
+          <td>{item.Ingredients} </td>
+          <td>{item.item_description} </td>
+          <td>{item.price}</td>
+          <td>{item.itemcategory}</td>
+          <td>
+            <button
+              className="btn btn-primary"
+              onClick={this.handleClick(
+                item._id,
+                item.itemname,
+                item.price,
+                item.path
+              )}
+            >
+              Add to cart
+            </button>
+          </td>
+        </tr>
+      );
+    });
 
     return (
       <div>
         {redirectVar}
         <div>
-
           <div>
             <Navbar />
             <div className="container">
@@ -202,12 +164,8 @@ console.log('Token :', bearer)
                           </tr>
                         </thead>
                         <tbody>
-                        {userdata}
-                            <ul className="pagination">
-                            {links}
-                            </ul>
-                        
-                        
+                          {userdata}
+                          <ul className="pagination">{links}</ul>
                         </tbody>
                       </table>
                     </div>

@@ -48,36 +48,8 @@ class EditMenu extends React.Component {
       },
     };
     this.props.editMenu(formData, config);
-
-    // axios.post("/editmenu",formData,config)
-
-    // .then(response => {
-    //     if (response.status === 200) {
-    //     alert("Item Successfully Updated")
-    //     console.log(response);
-    //     }
-    //   })
-    //   // .then(() => {
-    //   //   console.log("Data has been sent to the server");
-    //   //   this.resetUserInputs();
-    //   // })
-
-    //   .catch(() => {
-    //     console.log("Internal server error");
-
-    //   });
   };
 
-  // resetUserInputs = () => {
-  //   this.setState({
-  //     itemname: "",
-  //     itemdescription: "",
-  //     price: "",
-  //     foodimage: "",
-  //     itemcategory: "",
-  //     ingredients:"",
-  //   });
-  // };
   onChange(e) {
     this.setState({ file: e.target.files[0] });
   }
@@ -199,4 +171,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, { editMenu })(EditMenu);
-//export default editmenu

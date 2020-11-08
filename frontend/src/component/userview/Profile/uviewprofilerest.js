@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { Redirect , Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import cookie from "react-cookies";
-import axios from "axios"
+import axios from "axios";
 import Navbar from "../../restaurantview/rNavbar";
 
-// import Modal from 'react-modal';
 class UViewProfileRest extends React.Component {
   constructor(props) {
     super();
@@ -15,15 +14,14 @@ class UViewProfileRest extends React.Component {
 
   componentDidMount() {
     const self = this;
-    // const user_id = cookie.load("cookie1");
-    const user_id = localStorage.getItem('user_id');
+    const user_id = localStorage.getItem("user_id");
     const data = { user_id };
-    var bearer = localStorage.getItem('token');
-console.log('Token :', bearer)
+    var bearer = localStorage.getItem("token");
+    console.log("Token :", bearer);
     fetch("/uviewprofile", {
       method: "POST",
       headers: {
-        'Authorization': bearer,
+        Authorization: bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
@@ -46,45 +44,50 @@ console.log('Token :', bearer)
   handleClick() {
     return function () {
       var data = {
-        chats:[],
-        user1:{
-          id: localStorage.getItem('restaurant_id'),
-          name: localStorage.getItem('email'),
+        chats: [],
+        user1: {
+          id: localStorage.getItem("restaurant_id"),
+          name: localStorage.getItem("email"),
         },
-        user2:{
-          id:localStorage.getItem('user_id'),
-          name:localStorage.getItem('user_name')
-        }
-      }
-    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
-    axios.post("/createMessage", data)
-        .then(response => {
-            console.log("Message Created");
-            window.location = '/rMessages';
-        }
-        ).catch(ex => {
-            alert(ex);
+        user2: {
+          id: localStorage.getItem("user_id"),
+          name: localStorage.getItem("user_name"),
+        },
+      };
+      axios.defaults.headers.common["authorization"] = localStorage.getItem(
+        "token"
+      );
+      axios
+        .post("/createMessage", data)
+        .then((response) => {
+          console.log("Message Created");
+          window.location = "/rMessages";
+        })
+        .catch((ex) => {
+          alert(ex);
         });
     };
   }
 
   render() {
-    // let redirectVar = null;
-    // if (!cookie.load("cookie1")) {
-    //   redirectVar = <Redirect to="/" />;
-    // }
+   
     return (
       <div>
-        {/* {redirectVar} */}
+        
         <div>
           <div>
             <Navbar />
             <div className="container">
-              {this.state.profile.map(userprofile => (
+              {this.state.profile.map((userprofile) => (
                 <div className="main-div-menu">
                   <div className="panel" />
                   <div>
-                    <button class="ybtn ybtn--primary ybtn--small business-search-form_button" onClick={this.handleClick()}>Message</button>
+                    <button
+                      class="ybtn ybtn--primary ybtn--small business-search-form_button"
+                      onClick={this.handleClick()}
+                    >
+                      Message
+                    </button>
                   </div>
                   <div>
                     <h1 className="heading-menu"> Profile</h1>
@@ -94,19 +97,13 @@ console.log('Token :', bearer)
                         <tr>
                           <th className="profilepagefont">First Name</th>
                           <td className="profiletdfont">
-                            <b>
-                              {userprofile.fname}
-                              {' '}
-                            </b>
+                            <b>{userprofile.fname} </b>
                           </td>
                         </tr>
                         <tr>
                           <th className="profilepagefont">Last Name</th>
                           <td className="profiletdfont">
-                            <b>
-                              {userprofile.lname}
-                              {' '}
-                            </b>
+                            <b>{userprofile.lname} </b>
                           </td>
                         </tr>
 
@@ -124,86 +121,78 @@ console.log('Token :', bearer)
 
                         <tr>
                           <th className="profilepagefont">Email ID</th>
-                          <td className="profiletdfont">{userprofile.Emailid}</td>
+                          <td className="profiletdfont">
+                            {userprofile.Emailid}
+                          </td>
                         </tr>
                         <tr>
                           <th className="profilepagefont">City</th>
-                          <td className="profiletdfont">
-                            {userprofile.city}
-                            {' '}
-                          </td>
+                          <td className="profiletdfont">{userprofile.city} </td>
                         </tr>
                         <tr>
                           <th className="profilepagefont">Zipcode</th>
-                          <td className="profiletdfont">{userprofile.zipcode}</td>
+                          <td className="profiletdfont">
+                            {userprofile.zipcode}
+                          </td>
                         </tr>
                         <tr>
                           <th className="profilepagefont">Description</th>
-                          <td className="profiletdfont">
-                            {userprofile.bio}
-                            {' '}
-                          </td>
+                          <td className="profiletdfont">{userprofile.bio} </td>
                         </tr>
 
                         <tr>
                           <th className="profilepagefont">Username</th>
                           <td className="profiletdfont">
-                            {userprofile.user_name}
-                            {' '}
+                            {userprofile.user_name}{" "}
                           </td>
                         </tr>
                         <tr>
                           <th className="profilepagefont">Nick Name</th>
                           <td className="profiletdfont">
-                            {userprofile.nick_name}
-                            {' '}
+                            {userprofile.nick_name}{" "}
                           </td>
                         </tr>
                         <tr>
                           <th className="profilepagefont">Favorites</th>
                           <td className="profiletdfont">
-                            {userprofile.favorites}
-                            {' '}
+                            {userprofile.favorites}{" "}
                           </td>
                         </tr>
 
                         <tr>
                           <th className="profilepagefont">Website/MyBlog</th>
-                          <td className="profiletdfont">{userprofile.myblog}</td>
+                          <td className="profiletdfont">
+                            {userprofile.myblog}
+                          </td>
                         </tr>
                         <tr>
                           <th className="profilepagefont">Contact Number</th>
                           <td className="profiletdfont">
-                            {userprofile.mobile}
-                            {' '}
+                            {userprofile.mobile}{" "}
                           </td>
                         </tr>
                         <tr>
                           <th className="profilepagefont">Yelping Since</th>
                           <td className="profiletdfont">
-                            {userprofile.yelpingsince}
-                            {' '}
+                            {userprofile.yelpingsince}{" "}
                           </td>
                         </tr>
                         <tr>
                           <th className="profilepagefont">Things I love</th>
                           <td className="profiletdfont">
-                            {userprofile.things_ilove}
-                            {' '}
+                            {userprofile.things_ilove}{" "}
                           </td>
                         </tr>
                         <tr>
                           <th className="profilepagefont">Headline</th>
                           <td className="profiletdfont">
-                            {userprofile.headline}
-                            {' '}
+                            {userprofile.headline}{" "}
                           </td>
                         </tr>
                         <tr>
                           <th className="profilepagefont">State</th>
                           <td className="profiletdfont">
-                            {userprofile.ustate}
-                            {' '}
+                            {userprofile.ustate}{" "}
                           </td>
                         </tr>
                       </thead>

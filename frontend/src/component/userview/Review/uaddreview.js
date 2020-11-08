@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import cookie from "react-cookies";
 import Navbar from "../uNavbar";
-import StartRating from "./StarRating"
+import StartRating from "./StarRating";
 
 class AddReview extends React.Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class AddReview extends React.Component {
     };
     this.submit = this.submit.bind(this);
     this.onChange = this.onChange.bind(this);
-}
+  }
   handleChange = ({ target }) => {
     const { name, value } = target;
     this.setState({ [name]: value });
@@ -29,31 +29,32 @@ class AddReview extends React.Component {
     let email = localStorage.getItem("email");
 
     const formData = new FormData();
-    formData.append('myfile',this.state.file);
-    formData.append('review', this.state.review,)
-    formData.append('rating', rating)
-    formData.append('order_id',order_id)
-    formData.append('restaurant_id',restaurant_id)
-    formData.append('user_id',user_id)
-    formData.append('email',email)
+    formData.append("myfile", this.state.file);
+    formData.append("review", this.state.review);
+    formData.append("rating", rating);
+    formData.append("order_id", order_id);
+    formData.append("restaurant_id", restaurant_id);
+    formData.append("user_id", user_id);
+    formData.append("email", email);
     const config = {
       headers: {
-          'content-type': 'multipart/form-data'
-      }
+        "content-type": "multipart/form-data",
+      },
     };
-    axios.post("/addreview",formData,config)
-            .then((response) => {
-              if (response.status === 200) {
-                alert("Your review is successfully uploaded");
-              }
-              if (response.status >=400) {
-                alert("Can not add review at the moment");
-              }
-            }).catch((error) => {
-              alert("can not upload review,please try again")
-        });
-
-  }
+    axios
+      .post("/addreview", formData, config)
+      .then((response) => {
+        if (response.status === 200) {
+          alert("Your review is successfully uploaded");
+        }
+        if (response.status >= 400) {
+          alert("Can not add review at the moment");
+        }
+      })
+      .catch((error) => {
+        alert("can not upload review,please try again");
+      });
+  };
 
   resetUserInputs = () => {
     this.setState({
@@ -63,15 +64,15 @@ class AddReview extends React.Component {
   };
 
   onChange(e) {
-    this.setState({file:e.target.files[0]});
-}
+    this.setState({ file: e.target.files[0] });
+  }
 
   render() {
     console.log("State: ", this.state);
     var restaurnt_id = cookie.load("cookie");
     return (
       <div>
-        <Navbar/>
+        <Navbar />
         <div class="container">
           <div class="login-form">
             <div class="main-div">
@@ -94,26 +95,16 @@ class AddReview extends React.Component {
                     <br />
                     <br />
 
-                    {/* <select
-                      value={this.state.value}
-                      onChange={this.handleChange}
-                      id="rating"
-                      name="rating"
-                      placeholder="Rating"
-                    >
-                      <option>Rating</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                    </select> */}
-
-                    <StartRating/>
+                    <StartRating />
 
                     <br />
                     <br />
-                    <input type="file" name="myfile" onChange= {this.onChange} required/>
+                    <input
+                      type="file"
+                      name="myfile"
+                      onChange={this.onChange}
+                      required
+                    />
                     <br />
                     <br />
                     <input

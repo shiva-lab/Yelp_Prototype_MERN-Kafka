@@ -3,9 +3,8 @@ import cookie from "react-cookies";
 import { Redirect } from "react-router";
 import Navbar from "./rNavbar";
 import MapContainer from "../userview/mapContainer";
-import axios from "axios";
 
-// import Modal from 'react-modal';
+
 class RHome extends React.Component {
   constructor(props) {
     super();
@@ -18,12 +17,12 @@ class RHome extends React.Component {
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
-    var bearer = localStorage.getItem('token');
-    console.log('Token :', bearer)
+    var bearer = localStorage.getItem("token");
+    console.log("Token :", bearer);
     fetch("/viewhome", {
       method: "POST",
       headers: {
-        'Authorization': bearer,
+        Authorization: bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
@@ -63,41 +62,18 @@ class RHome extends React.Component {
               <div className="row">
                 <div>
                   <div>
-                  <br/>
-                <img
-                                      src={food.path}
-                                      width={400}
-                                      height={250}
-                                      mode="fit"
-                                    />
-                                    <img
-                                      src={food.path1}
-                                      width={400}
-                                      height={250}
-                                      mode="fit"
-                                    />  
-                                    <img
-                                      src={food.path2}
-                                      width={400}
-                                      height={250}
-                                      mode="fit"
-                                    /> 
-                                    <img
-                                      src={food.path3}
-                                      width={400}
-                                      height={250}
-                                      mode="fit"
-                                    /> 
-                  
+                    <br />
+                    <img src={food.path} width={400} height={250} mode="fit" />
+                    <img src={food.path1} width={400} height={250} mode="fit" />
+                    <img src={food.path2} width={400} height={250} mode="fit" />
+                    <img src={food.path3} width={400} height={250} mode="fit" />
+
                     <div className="login-form">
                       <div className="main-div-ru">
-                      
                         <div>
                           <div>
-                            
-
                             <div>
-                            <h1>{food.restaurantname}</h1>
+                              <h1>{food.restaurantname}</h1>
                               <table>
                                 <thead>
                                   <tr>
@@ -109,20 +85,6 @@ class RHome extends React.Component {
                                     </td>
                                   </tr>
 
-                                  {/* <tr>
-                                    <th className="profilepagefont">
-                                      Restaurant Image
-                                    </th>
-                                    <td>
-                                      <img
-                                        src={food.path}
-                                        width={200}
-                                        height={200}
-                                        mode="fit"
-                                      />
-                                    </td>{" "}
-                                    <br />
-                                  </tr> */}
 
                                   <tr>
                                     <th className="profilepagefont">Address</th>
@@ -227,9 +189,6 @@ class RHome extends React.Component {
                                       {food.Emailid}{" "}
                                     </td>
                                   </tr>
-
-                                
-                                 
                                 </thead>
                                 <tbody />
                               </table>

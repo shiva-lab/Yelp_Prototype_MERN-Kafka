@@ -4,11 +4,10 @@ import cookie from "react-cookies";
 import axios from "axios";
 import Navbar from "../uNavbar";
 import { paginate, pages } from "../../../helperFunctions/paginate";
-import swal from 'sweetalert2';
-import Moment from 'react-moment';
-import 'moment-timezone';
+import swal from "sweetalert2";
+import Moment from "react-moment";
+import "moment-timezone";
 
-// import Modal from 'react-modal';
 class ViewEvent extends React.Component {
   constructor(props) {
     super();
@@ -38,8 +37,9 @@ class ViewEvent extends React.Component {
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
     axios.defaults.withCredentials = true;
-    //make a post request with the user data
-    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.defaults.headers.common["authorization"] = localStorage.getItem(
+      "token"
+    );
     axios.get("/viewevent", data).then((response) => {
       if (response.status === 200) {
         console.log("Printing response", response);
@@ -60,22 +60,22 @@ class ViewEvent extends React.Component {
     return function () {
       const user_id = cookie.load("cookie1");
       console.log(_id, restaurant_id, user_id);
-      const username = cookie.load('username');
-      const Emailid=localStorage.getItem('email');
+      const username = cookie.load("username");
+      const Emailid = localStorage.getItem("email");
       const newdata = {
         user_id,
         restaurant_id,
         _id,
         username,
-        Emailid
+        Emailid,
       };
       console.log(newdata);
-      var bearer = localStorage.getItem('token');
-      console.log('Token :', bearer)
+      var bearer = localStorage.getItem("token");
+      console.log("Token :", bearer);
       fetch("/eventsignup", {
         method: "POST",
         headers: {
-          'Authorization': bearer,
+          Authorization: bearer,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newdata),
@@ -85,14 +85,12 @@ class ViewEvent extends React.Component {
           console.log("Status Code : ", response.status);
           if (response.status === 200) {
             console.log("success", response);
-           // alert("successfully registered for event");
+
             swal.fire({
-              title: 'Success!',
-              text: 'Successfully registered for Event',
-              icon: 'success'
-            })
-           // window.location.reload();
-            // console.log(response)
+              title: "Success!",
+              text: "Successfully registered for Event",
+              icon: "success",
+            });
           }
         })
         .catch((err) => {
@@ -108,13 +106,13 @@ class ViewEvent extends React.Component {
     });
   };
 
- 
   sortDescending = () => {
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
     axios.defaults.withCredentials = true;
-    //make a post request with the user data
-    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.defaults.headers.common["authorization"] = localStorage.getItem(
+      "token"
+    );
     axios.get("/viewevent", data).then((response) => {
       if (response.status === 200) {
         console.log("Printing response", response);
@@ -129,14 +127,15 @@ class ViewEvent extends React.Component {
         console.log("error");
       }
     });
-  }
+  };
 
   sortAscending = () => {
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
     axios.defaults.withCredentials = true;
-    //make a post request with the user data
-    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.defaults.headers.common["authorization"] = localStorage.getItem(
+      "token"
+    );
     axios.get("/vieweventasc", data).then((response) => {
       if (response.status === 200) {
         console.log("Printing response", response);
@@ -151,7 +150,7 @@ class ViewEvent extends React.Component {
         console.log("error");
       }
     });
-  }
+  };
 
   render() {
     localStorage.setItem("searcheve", this.state.searcheve);
@@ -185,7 +184,9 @@ class ViewEvent extends React.Component {
           <td>{event.eventname} </td>
 
           <td>{event.eventdescription} </td>
-          <td><Moment format="D MMM YYYY">{event.date}</Moment> </td>
+          <td>
+            <Moment format="D MMM YYYY">{event.date}</Moment>{" "}
+          </td>
           <td>{event.time} </td>
           <td>{event.address}</td>
           <td>
@@ -248,11 +249,10 @@ class ViewEvent extends React.Component {
                       </span>
                     </button>
                   </Link>
-                  
                 </div>
               </label>
-                  <button onClick={this.sortDescending}>Decending</button>
-                  <button onClick={this.sortAscending}> Ascending</button>
+              <button onClick={this.sortDescending}>Decending</button>
+              <button onClick={this.sortAscending}> Ascending</button>
               <br />
               <br />
 

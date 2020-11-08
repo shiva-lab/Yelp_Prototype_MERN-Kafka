@@ -32,9 +32,6 @@ class EventCreate extends React.Component {
     event.preventDefault();
     let restaurant_id = localStorage.getItem("restaurant_id");
     console.log("RestaurantID - Update", restaurant_id);
-
-    
-
     const formData = new FormData();
     formData.append('restaurant_id',restaurant_id)
     formData.append('eventname', this.state.eventname)
@@ -51,13 +48,11 @@ class EventCreate extends React.Component {
           'content-type': 'multipart/form-data'
       }
     };
-    // make a post request with the user data
     axios.defaults.withCredentials = true;
     axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios.post("/addevent",formData,config)
       .then(response => {
             if (response.status === 200) {
-            //alert("Event created Successfully ")
             swal.fire({
               title: 'Success!',
               text: 'Event Created Successfully',

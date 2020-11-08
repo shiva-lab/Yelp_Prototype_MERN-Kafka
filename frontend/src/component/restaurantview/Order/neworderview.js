@@ -8,7 +8,7 @@ import { paginate, pages } from "../../../helperFunctions/paginate";
 import Moment from 'react-moment';
 import 'moment-timezone';
 
-// import Modal from 'react-modal';
+
 class NewOrderView extends React.Component {
   constructor(props) {
     super();
@@ -80,10 +80,6 @@ class NewOrderView extends React.Component {
       console.log("New Data: ",newdata);
       var bearer = localStorage.getItem('token');
       console.log('Token :', bearer)
-      //axios.defaults.withCredentials = true;
-      // make a post request with the user data
-      //axios.defaults.headers.common["authorization"] = localStorage.getItem('token');
-      //axios.post("/neworderstatuschange",newdata)
       fetch("/neworderstatuschange", {
         method: "POST",
         headers: {
@@ -96,7 +92,6 @@ class NewOrderView extends React.Component {
       {
         alert("Order Status Changed");
       }
-      // window.location.reload();
     };
   }
 
@@ -204,7 +199,6 @@ class NewOrderView extends React.Component {
                       <option>Filter</option>
                       <option value="new order">New Order</option>
                       <option value="Preparing">Preparing</option>
-                      {/* <option value="Completed">Completed</option> */}
                       <option value="Delivered">Delivered</option>
                       <option value="Picked up">Picked Up</option>
                       <option value="Rejected">Rejected</option>

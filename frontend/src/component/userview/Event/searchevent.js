@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import cookie from "react-cookies";
 import axios from "axios"
 import Navbar from "../uNavbar";
+import swal from "sweetalert2";
 
 // import Modal from 'react-modal';
 class SearchEvent extends React.Component {
@@ -71,7 +72,12 @@ class SearchEvent extends React.Component {
         console.log("Status Code : ", response.status);
         if (response.status === 200) {
           console.log("success", response);
-          alert("successfully registered for event");
+          //alert("successfully registered for event");
+          swal.fire({
+            title: "Success!",
+            text: "Successfully registered for event",
+            icon: "success",
+          });
           window.location.reload();
           // console.log(response)
         }

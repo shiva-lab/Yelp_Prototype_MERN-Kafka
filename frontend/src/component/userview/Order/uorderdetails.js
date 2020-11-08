@@ -3,8 +3,6 @@ import React, { Component, useState } from "react";
 import cookie from "react-cookies";
 import Navbar from "../uNavbar";
 
-
-// import Modal from 'react-modal';
 class UOrderDetails extends React.Component {
   constructor(props) {
     super();
@@ -27,11 +25,7 @@ class UOrderDetails extends React.Component {
       },
       body: JSON.stringify(data),
     })
-    // axios.get("/uorderdetails", {
-    //   params: {
-    //     order_id: order_id
-    //   }
-    // })
+    
 
       .then((response) => {
         if (response.status >= 400) {
@@ -40,12 +34,11 @@ class UOrderDetails extends React.Component {
         return response.json();
       })
       .then((data) => {
-        console.log("heeeeyyyy..Im here");
-        console.log(data[0].cart);
+        console.log("Data: ",data[0].cart);
         self.setState({ items: data[0].cart });
       })
       .catch((err) => {
-        console.log("caught it!", err);
+        console.log("Error - Caught it!", err);
       });
   }
 

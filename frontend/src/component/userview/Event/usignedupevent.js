@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import cookie from "react-cookies";
 import { Card } from "react-bootstrap";
-import { Redirect } from 'react-router';
+import { Redirect } from "react-router";
 import Navbar from "../uNavbar";
-import axios from "axios"
+import axios from "axios";
 
-// import Modal from 'react-modal';
 class usignedupevent extends React.Component {
   constructor(props) {
     super();
@@ -20,28 +19,21 @@ class usignedupevent extends React.Component {
     const data = { user_id };
     axios.defaults.withCredentials = true;
     //make a post request with the user data
-    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
-    axios.post("/viewusersignedupevent",data)
-    .then((response) => {
+    axios.defaults.headers.common["authorization"] = localStorage.getItem(
+      "token"
+    );
+    axios.post("/viewusersignedupevent", data).then((response) => {
       if (response.status === 200) {
         console.log("Printing response", response);
         console.log("Printing Menu", response.data);
         this.setState({
-          eventdata: response.data
+          eventdata: response.data,
         });
       } else {
         console.log("error");
       }
     });
   }
-
-
-
-
-
-
-
-
 
   render() {
     let redirectVar = null;
@@ -62,7 +54,7 @@ class usignedupevent extends React.Component {
               <div className="main-div-menu">
                 <div className="panel" />
                 <div className="container">
-                  {this.state.eventdata.map(newevent => (
+                  {this.state.eventdata.map((newevent) => (
                     <div className="cardclass">
                       <Card style={{ width: "18rem" }}>
                         <Card.Img
@@ -72,9 +64,7 @@ class usignedupevent extends React.Component {
                           src={newevent.path}
                         />
                         <Card.Body>
-                          <Card.Title>
-                            {newevent.eventname}
-                          </Card.Title>
+                          <Card.Title>{newevent.eventname}</Card.Title>
                           <h3>Details</h3>
                           <Card.Text>{newevent.eventdescription}</Card.Text>
                           <h3>Event Type</h3>

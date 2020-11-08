@@ -6,8 +6,6 @@ import {dateTimeToDate} from '../../../helperMethods'
 import { sendMessage  } from "../../../redux/action/restaurantmessage"
 
 
-
-
 class IndividualMessagePage extends Component {
     constructor(props) {
         //Call the constrictor of Super classNameName i.e The Component

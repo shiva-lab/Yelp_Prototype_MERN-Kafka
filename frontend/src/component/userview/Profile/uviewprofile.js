@@ -17,7 +17,7 @@ class UViewProfile extends React.Component {
     //const user_id = localStorage.getItem('user_id');
     const data = { user_id };
     var bearer = localStorage.getItem('token');
-console.log('Token :', bearer)
+    console.log('Token :', bearer)
     fetch("/uviewprofile", {
       method: "POST",
       headers: {
@@ -42,13 +42,8 @@ console.log('Token :', bearer)
   }
 
   render() {
-    // let redirectVar = null;
-    // if (!cookie.load("cookie1")) {
-    //   redirectVar = <Redirect to="/" />;
-    // }
     return (
       <div>
-        {/* {redirectVar} */}
         <div>
           <div>
             <Navbar />

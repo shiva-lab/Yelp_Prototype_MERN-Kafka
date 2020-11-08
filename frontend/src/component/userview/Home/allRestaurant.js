@@ -7,7 +7,7 @@ import MapContainer from "../mapContainer";
 import { paginate, pages } from "../../../helperFunctions/paginate";
 import axios from "axios";
 
-// import Modal from 'react-modal';
+
 class AllRestaurant extends React.Component {
   constructor(props) {
     super();
@@ -24,7 +24,6 @@ class AllRestaurant extends React.Component {
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
-    // make a post request with the user data
     axios.defaults.headers.common["authorization"] = localStorage.getItem(
       "token"
     );
@@ -196,26 +195,6 @@ class AllRestaurant extends React.Component {
                           </span>
                           <span class="u-offscreen">Search</span>
                         </span>
-                        {/* <div class="circle-spinner js-circle-spinner hidden">
-                          <div class="circle-spinner_segment container1">
-                            <div class="circle1"></div>
-                            <div class="circle2"></div>
-                            <div class="circle3"></div>
-                            <div class="circle4"></div>
-                          </div>
-                          <div class="circle-spinner_segment container2">
-                            <div class="circle1"></div>
-                            <div class="circle2"></div>
-                            <div class="circle3"></div>
-                            <div class="circle4"></div>
-                          </div>
-                          <div class="circle-spinner_segment container3">
-                            <div class="circle1"></div>
-                            <div class="circle2"></div>
-                            <div class="circle3"></div>
-                            <div class="circle4"></div>
-                          </div>
-                        </div> */}
                       </button>
                     </div>
                   </div>

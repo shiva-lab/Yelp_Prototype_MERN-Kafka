@@ -7,7 +7,6 @@ import MapContainer from "../mapContainer";
 import Navbar from "../uNavbar";
 import axios from "axios";
 
-//import Modal from 'react-modal';
 class SearchRestaurant extends React.Component {
   constructor(props) {
     super();
@@ -15,28 +14,24 @@ class SearchRestaurant extends React.Component {
       resturantlist: [],
       filter: "",
     };
-
-    //Bind the handlers to this class
     this.handleChange = this.handleChange.bind(this);
     this.submit = this.submit.bind(this);
   }
 
-componentDidMount() {
-    
-
+  componentDidMount() {
     let self = this;
 
     let search1 = localStorage.getItem("search1");
-   // let search2 = localStorage.getItem("search2");
-   // const data = { search1, search2 };
-   const data = { search1 };
-   //axios.post("/restaurantsearch",data)
-   var bearer = localStorage.getItem('token');
-console.log('Token :', bearer)
+    // let search2 = localStorage.getItem("search2");
+    // const data = { search1, search2 };
+    const data = { search1 };
+    //axios.post("/restaurantsearch",data)
+    var bearer = localStorage.getItem("token");
+    console.log("Token :", bearer);
     fetch("/restaurantsearch", {
       method: "POST",
       headers: {
-        'Authorization': bearer,
+        Authorization: bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
@@ -48,11 +43,12 @@ console.log('Token :', bearer)
         return response.json();
       })
       .then(function (data) {
-        console.log("Search Result",data)
+        console.log("Search Result", data);
         self.setState({
-          resturantlist: data, latlng: data.map((d) => ({ latitude: d.lat, longitude: d.lng })),
+          resturantlist: data,
+          latlng: data.map((d) => ({ latitude: d.lat, longitude: d.lng })),
         });
-      //  self.setState({ resturantlist: data });
+        //  self.setState({ resturantlist: data });
       })
       .catch((err) => {
         console.log("caught it!", err);
@@ -74,16 +70,16 @@ console.log('Token :', bearer)
 
   submit = (event) => {
     event.preventDefault();
-    const search = localStorage.getItem('search1')
-    const data = { filter: this.state.filter,search};
+    const search = localStorage.getItem("search1");
+    const data = { filter: this.state.filter, search };
     console.log(data);
     const temp = this;
-    var bearer = localStorage.getItem('token');
-    console.log('Token :', bearer)
+    var bearer = localStorage.getItem("token");
+    console.log("Token :", bearer);
     fetch("/filterrestaurantsearch", {
       method: "POST",
       headers: {
-        'Authorization': bearer,
+        Authorization: bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
@@ -97,12 +93,7 @@ console.log('Token :', bearer)
       })
       .then(function (data) {
         console.log(data);
-        //window.location.reload();
-        // temp.setState({
-        //   latlng: data.map((d) => ({ latitude: d.lat, longitude: d.lng })),
-        // });
         temp.setState({ resturantlist: data });
-        
       })
       .catch((err) => {
         console.log("caught it!", err);
@@ -110,12 +101,11 @@ console.log('Token :', bearer)
   };
 
   render() {
-
     return (
       <div>
         <Navbar />
-            <br />
-            <br />
+        <br />
+        <br />
         <div class="grid-container">
           <div class="ResDescription">
             <form onSubmit={this.submit}>
@@ -171,9 +161,7 @@ console.log('Token :', bearer)
 
                         <td>
                           <Link to="/rviewprofile">
-                            <button
-                              onClick={this.handleClick(food._id)}
-                            >
+                            <button onClick={this.handleClick(food._id)}>
                               View Restaurant
                             </button>
                           </Link>

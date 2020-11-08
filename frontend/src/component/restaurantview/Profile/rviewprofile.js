@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import cookie from "react-cookies";
-import axios from "axios"
+import axios from "axios";
 
 import MapContainer from "../../userview/mapContainer";
 
@@ -19,16 +19,12 @@ class RViewProfile extends React.Component {
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id_allrest");
     const data = { restaurant_id };
-    //axios.defaults.withCredentials = true;
-    // make a post request with the user data
-    //axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
-    //axios.post("/viewhome",data)
-    var bearer = localStorage.getItem('token');
-console.log('Token :', bearer)
+    var bearer = localStorage.getItem("token");
+    console.log("Token :", bearer);
     fetch("/viewhome", {
       method: "POST",
       headers: {
-        'Authorization': bearer,
+        Authorization: bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
@@ -60,8 +56,8 @@ console.log('Token :', bearer)
 
   handleReviewClick(_id, user_id) {
     return function () {
-      console.log("Restaurant ID:",_id);
-      localStorage.setItem("restaurant_id_review",_id);
+      console.log("Restaurant ID:", _id);
+      localStorage.setItem("restaurant_id_review", _id);
       console.log("User ID:", user_id);
       localStorage.setItem("user_id_review", user_id);
       return <Redirect to="/addreview" />;
@@ -69,94 +65,65 @@ console.log('Token :', bearer)
   }
 
   render() {
-    // let redirectVar = null;
-
-    // if (!cookie.load("cookie1")) {
-    //   redirectVar = <Redirect to="/" />;
-    // }
-
     return (
-      // <div>
-      //   {redirectVar}
-      //   <div>
       <div>
         <Navbar />
         <div className="body">
           {this.state.resta.map((food) => (
             <div className="row">
-            
               <div>
                 <div>
-                <div>
-                <br/>
-                <img
-                                      src={food.path}
-                                      width={400}
-                                      height={250}
-                                      mode="fit"
-                                    />
-                                    <img
-                                      src={food.path1}
-                                      width={400}
-                                      height={250}
-                                      mode="fit"
-                                    />  
-                                    <img
-                                      src={food.path2}
-                                      width={400}
-                                      height={250}
-                                      mode="fit"
-                                    /> 
-                                    <img
-                                      src={food.path3}
-                                      width={400}
-                                      height={250}
-                                      mode="fit"
-                                    /> 
+                  <div>
+                    <br />
+                    <img src={food.path} width={400} height={250} mode="fit" />
+                    <img src={food.path1} width={400} height={250} mode="fit" />
+                    <img src={food.path2} width={400} height={250} mode="fit" />
+                    <img src={food.path3} width={400} height={250} mode="fit" />
                   </div>
                   <div className="login-form">
-                  
                     <div className="main-div-ru">
                       <div>
                         <div>
-                          
-
                           <div>
                             <table>
-                              
-
-
                               <thead>
-                                
-
                                 <tr>
                                   <th className="profilepagefont">
-                                  <h1><b><upper>{food.restaurantname}</upper> </b></h1>
+                                    <h1>
+                                      <b>
+                                        <upper>{food.restaurantname}</upper>{" "}
+                                      </b>
+                                    </h1>
                                   </th>
                                 </tr>
                                 <tr>
                                   <td>
-                                  <Link to="/uviewmenu">
-                                  <button
-                                    className="btn btn-danger"
-                                    onClick={()=>{ localStorage.getItem('restaurant_id_allrest');}}
-                                  >
-                                    View Menu
-                                  </button>
-                                </Link>
-                                </td><td>
-                                <Link to="/addreview">
-                                  <button
-                                    className="btn btn-danger"
-                                    onClick={this.handleReviewClick(
-                                      food._id,
-                                      food.user_id
-                                    )}
-                                  >
-                                    Rate Restaurant
-                                  </button>
-                                </Link>
-                                </td>
+                                    <Link to="/uviewmenu">
+                                      <button
+                                        className="btn btn-danger"
+                                        onClick={() => {
+                                          localStorage.getItem(
+                                            "restaurant_id_allrest"
+                                          );
+                                        }}
+                                      >
+                                        View Menu
+                                      </button>
+                                    </Link>
+                                  </td>
+                                  <td>
+                                    <Link to="/addreview">
+                                      <button
+                                        className="btn btn-danger"
+                                        onClick={this.handleReviewClick(
+                                          food._id,
+                                          food.user_id
+                                        )}
+                                      >
+                                        Rate Restaurant
+                                      </button>
+                                    </Link>
+                                  </td>
                                 </tr>
 
                                 <tr>
@@ -235,14 +202,7 @@ console.log('Token :', bearer)
                                     {food.contactinfo}{" "}
                                   </td>
                                 </tr>
-                                {/* <tr>
-                          <th className="profilepagefont">Latitude</th>
-                          <td className="profiletdfont">{food.lat} </td>
-                        </tr>
-                        <tr>
-                          <th className="profilepagefont">Longitude</th>
-                          <td className="profiletdfont">{food.lng} </td>
-                        </tr> */}
+
                                 <tr>
                                   <th className="profilepagefont">
                                     Email Address
@@ -270,8 +230,6 @@ console.log('Token :', bearer)
           ))}
         </div>
       </div>
-      //   </div>
-      // </div>
     );
   }
 }

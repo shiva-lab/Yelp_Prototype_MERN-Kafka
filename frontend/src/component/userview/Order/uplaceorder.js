@@ -23,12 +23,12 @@ class UPlaceOrder extends React.Component {
     // let restaurant_id = localStorage.getItem("restaurant_id");
     const data = { user_id };
     //axios.post("/uviewcart",data)
-    var bearer = localStorage.getItem('token');
-console.log('Token :', bearer)
+    var bearer = localStorage.getItem("token");
+    console.log("Token :", bearer);
     fetch("/uviewcart", {
       method: "POST",
       headers: {
-        'Authorization': bearer,
+        Authorization: bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
@@ -43,12 +43,11 @@ console.log('Token :', bearer)
       .then((data) => {
         console.log("data - ID", data[0]._id);
         console.log("data", data[0]._id);
-
         self.setState({ items: data[0].cart });
         localStorage.setItem("order_id", data[0]._id);
       })
       .catch((err) => {
-        console.log("caught it!", err);
+        console.log("Error - caught it!", err);
       });
   }
 
@@ -80,12 +79,12 @@ console.log('Token :', bearer)
         cart_id,
       };
       console.log(newdata);
-      var bearer = localStorage.getItem('token');
-console.log('Token :', bearer)
+      var bearer = localStorage.getItem("token");
+      console.log("Token :", bearer);
       fetch("/deletefromcart", {
         method: "POST",
         headers: {
-          'Authorization': bearer,
+          Authorization: bearer,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newdata),
@@ -111,7 +110,7 @@ console.log('Token :', bearer)
   submit = (event) => {
     event.preventDefault();
     let user_id = cookie.load("cookie1");
-    console.log("user_id:", user_id)
+    console.log("user_id:", user_id);
     var order_id = localStorage.getItem("order_id");
     const payload = {
       deliverymode: this.state.deliverymode,
