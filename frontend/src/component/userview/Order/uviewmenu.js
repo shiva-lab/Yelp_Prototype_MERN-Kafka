@@ -44,11 +44,13 @@ class UViewMenu extends React.Component {
       const user_id = cookie.load("cookie1");
       const user_name = cookie.load("username");
       const restaurant_id = localStorage.getItem("restaurant_id_allrest");
-      console.log(_id, itemname, restaurant_id, price, path, user_name);
+      const restaurant_name = localStorage.getItem("restaurant_name_allrest");
+      console.log(_id, itemname, restaurant_id,restaurant_name, price, path, user_name);
       const newdata = {
         _id,
         itemname,
         restaurant_id,
+        restaurant_name,
         price,
         user_id,
         path,

@@ -10,6 +10,7 @@ const orderSchema = new Schema({
         type: String,
         
     },
+    restaurant_name: {type: String},
    
    
     user_id: {
@@ -45,6 +46,7 @@ const orderSchema = new Schema({
         cartstatus:  {type: String , default:" "},
         user_id:{type: String}, 
         restaurant_id: {type: String},
+        restaurant_name: {type: String},
         user_name: {type: String}
     }],  
 },

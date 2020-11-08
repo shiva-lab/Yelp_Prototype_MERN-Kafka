@@ -30,9 +30,9 @@ class ViewMenu extends React.Component {
         console.log("Printing response", response);
         console.log("Printing Menu", response.data[0].menu);
         this.setState({
-          menu: response.data,
+          menu: response.data[0].menu,
           filteredMenu: paginate(response.data[0].menu, 1, 10),
-          pages: pages(response.data, 10),
+          pages: pages(response.data[0].menu, 10),
         });
         console.log(pages);
       } else {

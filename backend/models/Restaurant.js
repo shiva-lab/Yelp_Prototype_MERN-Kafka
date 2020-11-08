@@ -5,14 +5,12 @@ const RestaurantSchema = new mongoose.Schema({
     //     type: mongoose.Schema.Types.ObjectId,
     //   unique:true},
     restaurantname: {type: String},
-   
     Emailid: {type: String,unique: true},
     restpass: {type: String},
     location: {type: String},
     rdescription: {type: String},
     ts: { type: Date,default: Date.now},
     contactinfo: {type: Number},
-   
     cuisine: {type: String},
     timings: {type: String},
     zipcode: {type: Number},

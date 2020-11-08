@@ -28,7 +28,7 @@ class UOrderStatusCheck extends React.Component {
     axios.post("/userorderstatus", data).then((response) => {
       if (response.status === 200) {
         console.log("Printing response", response);
-        console.log("Printing Event List", response.data);
+        console.log("Printing  List", response.data);
         this.setState({
           order: response.data,
           filteredOrder: paginate(response.data, 1, 10),
@@ -164,6 +164,7 @@ class UOrderStatusCheck extends React.Component {
             <Moment format="D MMM YYYY HH:MM">{order.ts}</Moment>
           </td>
           <td>{order._id}</td>
+          <td>{order.restaurant_name}</td>
 
           <td>{order.deliverymode}</td>
           <td>{order.orderstatus}</td>
@@ -232,6 +233,7 @@ class UOrderStatusCheck extends React.Component {
                       <tr className="tbl-header">
                         <th>Date/Time</th>
                         <th>Order ID</th>
+                        <th>Restaurant Name</th>
                         <th>Delivery Mode</th>
                         <th>Current Status</th>
                         <th>View Details</th>

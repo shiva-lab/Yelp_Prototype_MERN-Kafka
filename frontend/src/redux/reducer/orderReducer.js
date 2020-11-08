@@ -1,23 +1,52 @@
-import{ORDER_PLACED} from '../action/type'
+import{SET_LOADED_ORDER_STATE} from '../action/type'
+import isEmpty from '../../validation/is-empty';
 
-console.log("hello From Order reducer");
+
 const initialState = {
-    items: [],
-    data: [],
-    deliverymode:""    
+  isOrderPlaced: false,
+  deliverymode: null
 };
 
-export default function orderReducer(state = [], action) {
+export default function(state = initialState, action) {
   switch (action.type) {
-      case ORDER_PLACED:
-          {
-              const order = action.payload;
-              return {
-                  ...state,
-                  order
-              };
-          }
-      default:
-          return state;
+    case SET_LOADED_ORDER_STATE:
+      console.log(action.payload,state)
+      return Object.assign({}, state, {
+        
+        isOrderPlaced: !isEmpty(action.payload),
+        deliverymode: action.payload.deliverymode
+      });
+    default:
+      return state;
   }
 }
+
+
+// console.log("hello From menu reducer");
+// const initialState = {
+//     order: [],
+//     filter: "",
+//     value:""
+    
+// };
+// export function setLoadedOrderState(order) {
+//   return {
+//     type: SET_LOADED_ORDER_STATE,
+//     order,
+ 
+//   };
+// }
+// export default function (state = initialState, action) {
+//   switch (action.type) {
+//     case SET_LOADED_ORDER_STATE:
+      
+//         return   {
+//           ... state,
+//           order:action.order
+//       };
+     
+
+//     default:
+//       return state;
+//   }
+// }

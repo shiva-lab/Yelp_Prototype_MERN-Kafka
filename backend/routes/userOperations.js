@@ -58,7 +58,7 @@ var app = express(),
   
   userroute.post("/uviewmenu",(req, res) => {
   console.log(req.body.restaurant_id);
-  console.log(req.body.restaurant_id);
+ // console.log(req.body.restaurant_id);
   Restaurant.find({ _id: req.body.restaurant_id },{'menu':[]}, (error, result) => {
     if (error) {
       console.log(error)
@@ -191,17 +191,17 @@ userroute.post("/usersifollow", async (req, res, next) => {
 
 
 userroute.post("/addtocart", async(req, res) => {
-  const { itemname,price,path,restaurant_id,user_id,_id,user_name} = req.body;
+  const { itemname,price,path,restaurant_id,restaurant_name,user_id,_id,user_name} = req.body;
 
   var cartstatus="New"
   var orderstatus=" "
-  console.log(itemname, restaurant_id, price, user_id, path, cartstatus,user_name);
+  console.log(itemname, restaurant_id,restaurant_name, price, user_id, path, cartstatus,user_name);
 
 
 
   Order.findOneAndUpdate(
     { user_id:req.body.user_id,restaurant_id: req.body.restaurant_id, orderstatus:" "},
-    {  restaurant_id: req.body.restaurant_id,user_name:req.body.user_name,orderstatus:orderstatus, $push: { cart:{itemname:req.body.itemname ,itemid:req.body._id,price:req.body.price,path:req.body.path,cartstatus:cartstatus,user_id:req.body.user_id,restaurant_id:req.body.restaurant_id ,  user_name:req.body.user_name} }},{upsert:true},(error, data) => {
+    {  restaurant_id: req.body.restaurant_id,restaurant_name: req.body.restaurant_name,user_name:req.body.user_name,orderstatus:orderstatus, $push: { cart:{itemname:req.body.itemname ,itemid:req.body._id,price:req.body.price,path:req.body.path,cartstatus:cartstatus,user_id:req.body.user_id,restaurant_id:req.body.restaurant_id ,  user_name:req.body.user_name,restaurant_name:req.body.restaurant_name} }},{upsert:true},(error, data) => {
    
 // order = new Order({
 //   user_id:req.body.user_id,

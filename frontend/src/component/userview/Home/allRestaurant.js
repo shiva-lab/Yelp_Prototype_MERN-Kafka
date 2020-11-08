@@ -109,6 +109,7 @@ class AllRestaurant extends React.Component {
               <button
                 onClick={() => {
                   localStorage.setItem("restaurant_id_allrest", food._id);
+                  localStorage.setItem("restaurant_name_allrest", food.restaurantname);
                 }}
               >
                 View Restaurant
