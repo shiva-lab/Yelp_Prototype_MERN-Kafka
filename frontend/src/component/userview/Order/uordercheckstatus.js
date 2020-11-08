@@ -6,6 +6,7 @@ import axios from "axios"
 import Navbar from "../uNavbar";
 import Moment from 'react-moment';
 import 'moment-timezone';
+import { paginate, pages } from "../../../helperFunctions/paginate";
 
 // import Modal from 'react-modal';
 class UOrderStatusCheck extends React.Component {
@@ -14,6 +15,7 @@ class UOrderStatusCheck extends React.Component {
     this.state = {
       order: [],
       filter: "",
+      filteredOrder: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.submit = this.submit.bind(this);
@@ -24,14 +26,20 @@ class UOrderStatusCheck extends React.Component {
     const order_id = cookie.load('order_id');
     const user_id = cookie.load('cookie1');
     const data = { order_id, user_id };
-    axios.post("/userorderstatus",data)
-      .then((response) => {
-        console.log("Data", response.data)
-        self.setState({ order: response.data });
-      })
-      .catch((err) => {
-        console.log("caught it!", err);
-      });
+    axios.post("/userorderstatus", data).then((response) => {
+      if (response.status === 200) {
+        console.log("Printing response", response);
+        console.log("Printing Event List", response.data);
+        this.setState({
+          order: response.data,
+          filteredOrder: paginate(response.data, 1, 10),
+          pages: pages(response.data, 10),
+        });
+        console.log(pages);
+      } else {
+        console.log("error");
+      }
+    });
   }
 
   handleChange = ({ target }) => {
@@ -84,14 +92,20 @@ class UOrderStatusCheck extends React.Component {
     const order_id = cookie.load('order_id');
     const user_id = cookie.load('cookie1');
     const data = { order_id, user_id };
-    axios.post("/userorderstatus",data)
-      .then((response) => {
-        console.log("Data", response.data)
-        self.setState({ order: response.data });
-      })
-      .catch((err) => {
-        console.log("caught it!", err);
-      });
+    axios.post("/userorderstatus", data).then((response) => {
+      if (response.status === 200) {
+        console.log("Printing response", response);
+        console.log("Printing Event List", response.data);
+        this.setState({
+          order: response.data,
+          filteredOrder: paginate(response.data, 1, 10),
+          pages: pages(response.data, 10),
+        });
+        console.log(pages);
+      } else {
+        console.log("error");
+      }
+    })
     
     
   }
@@ -101,29 +115,84 @@ class UOrderStatusCheck extends React.Component {
     const order_id = cookie.load('order_id');
     const user_id = cookie.load('cookie1');
     const data = { order_id, user_id };
-    axios.post("/userorderstatusdesc",data)
-      .then((response) => {
-        console.log("Data", response.data)
-        self.setState({ order: response.data });
-      })
-      .catch((err) => {
-        console.log("caught it!", err);
-      });
+    axios.post("/userorderstatusdesc", data).then((response) => {
+      if (response.status === 200) {
+        console.log("Printing response", response);
+        console.log("Printing Event List", response.data);
+        this.setState({
+          order: response.data,
+          filteredOrder: paginate(response.data, 1, 10),
+          pages: pages(response.data, 10),
+        });
+        console.log(pages);
+      } else {
+        console.log("error");
+      }
+    })
     
   }
 
+  paginatinon = (e) => {
+    this.setState({
+      filteredOrder: paginate(this.state.order, e, 10),
+    });
+  };
+
 
   render() {
-    let redirectVar = null;
-
-    if (!cookie.load("cookie1")) {
-      redirectVar = <Redirect to="/" />;
+    let links = [];
+    if (this.state.pages > 0) {
+      console.log(this.state.pages);
+      for (let i = 1; i <= this.state.pages; i++) {
+        links.push(
+          <li className="page-item" key={i}>
+            <a
+              className="page-link"
+              onClick={() => {
+                this.paginatinon(i);
+              }}
+            >
+              {i}
+            </a>
+          </li>
+        );
+      }
     }
 
+    let orderdata = this.state.filteredOrder.map((order) => {
+      return (
+        <tr>
+                              <td><Moment format="D MMM YYYY HH:MM">{order.ts}</Moment></td>
+                              <td>{order._id}</td>
+                           
+                              <td>{order.deliverymode}</td>
+                              <td>{order.orderstatus}</td>
+                              <td>
+                                <Link to="/uorderdetails">
+                                  <button
+                                    onClick={this.handleClick(order._id)}
+                                  >
+                                    View Details
+                                  </button>
+                                </Link>
+                              </td>
+                              <td>
+                                <Link to="/addreview">
+                                  <button
+                                    onClick={this.handleReviewClick(order._id, order.restaurant_id, order.user_id)}
+                                  >
+                                    Rate Order
+                                  </button>
+                                </Link>
+                              </td>
+                            </tr>
+
+        );
+    });
+   
+
     return (
-      <div>
-        {redirectVar}
-        <div>
+      
           <div>
             <Navbar />
             <div className="container">
@@ -173,33 +242,8 @@ class UOrderStatusCheck extends React.Component {
                           </tr>
                         </thead>
                         <tbody>
-                          {this.state.order.map(order => (
-                            <tr>
-                              <td><Moment format="D MMM YYYY HH:MM">{order.ts}</Moment></td>
-                              <td>{order._id}</td>
-                           
-                              <td>{order.deliverymode}</td>
-                              <td>{order.orderstatus}</td>
-                              <td>
-                                <Link to="/uorderdetails">
-                                  <button
-                                    onClick={this.handleClick(order._id)}
-                                  >
-                                    View Details
-                                  </button>
-                                </Link>
-                              </td>
-                              <td>
-                                <Link to="/addreview">
-                                  <button
-                                    onClick={this.handleReviewClick(order._id, order.restaurant_id, order.user_id)}
-                                  >
-                                    Rate Order
-                                  </button>
-                                </Link>
-                              </td>
-                            </tr>
-                          ))}
+                        {orderdata}
+                    <ul className="pagination">{links}</ul>
                         </tbody>
                       </table>
                     </div>
@@ -208,8 +252,7 @@ class UOrderStatusCheck extends React.Component {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        
     );
   }
 }
