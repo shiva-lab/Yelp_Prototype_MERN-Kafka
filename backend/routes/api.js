@@ -31,7 +31,7 @@ var upload = multer({
 
 
 
-router.post("/viewhome", (req, res) => {
+router.post("/viewhome",checkAuth, (req, res) => {
   console.log(req.body.restaurant_id);
   Restaurant.find({ _id: req.body.restaurant_id }, (error, result) => {
     if (error) {

@@ -18,7 +18,7 @@ class ViewMenu extends React.Component {
   }
 
   componentDidMount() {
-    axios.defaults.withCredentials = true;
+    
     const self = this;
     const restaurant_id = localStorage.getItem("restaurant_id");
     const data = { restaurant_id };
@@ -26,11 +26,11 @@ class ViewMenu extends React.Component {
     // make a post request with the user data
     axios.defaults.withCredentials = true;
     axios.defaults.headers.common["authorization"] = localStorage.getItem(
-      "token"
+      'token'
     );
     axios.post("/viewmenu", data).then((response) => {
       if (response.status === 200) {
-        // console.log("Printing response",response)
+        console.log("Printing response",response)
         console.log("Printing Menu", response.data[0].menu);
         this.setState({
           menu: response.data,
@@ -52,27 +52,7 @@ class ViewMenu extends React.Component {
     };
   }
 
-  // handleClickdelete(_id) {
-  //   return function () {
-  //     const self = this;
-  //     console.log(_id);
-  //     const restaurant_id = localStorage.getItem("restaurant_id");
-  //     const newdata = { _id,restaurant_id };
-  //     console.log(newdata);
-  //     // make a post request with the user data
-  //   // axios.defaults.withCredentials = true;
-  //   // axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
-  //   //   axios.post("/deletefrommenu", newdata)
-  //   fetch("/deletefrommenu", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(newdata),
-  //   })
-  //     .then(res => res.json());
-  //   };
-  // }
+
 
   paginatinon = (e) => {
     this.setState({
