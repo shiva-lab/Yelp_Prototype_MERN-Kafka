@@ -5,15 +5,21 @@ import { Link } from "react-router-dom";
 import cookie from "react-cookies";
 import { Redirect } from "react-router";
 import Navbar from "../uNavbar";
-import axios from "axios";
+//import axios from "axios";
+//import PropTypes from "prop-types";
+//import { connect } from "react-redux";
+import { placeOrder } from "../../../redux/action/orderAction";
+import store from "../../../redux/store";
+
+import { Provider } from "react-redux";
 
 class UPlaceOrder extends React.Component {
   constructor(props) {
-    super();
+    super(props);
     this.state = {
       items: [],
       data: [],
-      deliverymode: "",
+      deliverymode: null,
     };
   }
 
@@ -23,12 +29,9 @@ class UPlaceOrder extends React.Component {
     // let restaurant_id = localStorage.getItem("restaurant_id");
     const data = { user_id };
     //axios.post("/uviewcart",data)
-    var bearer = localStorage.getItem("token");
-    console.log("Token :", bearer);
     fetch("/uviewcart", {
       method: "POST",
       headers: {
-        Authorization: bearer,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
@@ -43,11 +46,12 @@ class UPlaceOrder extends React.Component {
       .then((data) => {
         console.log("data - ID", data[0]._id);
         console.log("data", data[0]._id);
+
         self.setState({ items: data[0].cart });
         localStorage.setItem("order_id", data[0]._id);
       })
       .catch((err) => {
-        console.log("Error - caught it!", err);
+        console.log("caught it!", err);
       });
   }
 
@@ -79,12 +83,9 @@ class UPlaceOrder extends React.Component {
         cart_id,
       };
       console.log(newdata);
-      var bearer = localStorage.getItem("token");
-      console.log("Token :", bearer);
       fetch("/deletefromcart", {
         method: "POST",
         headers: {
-          Authorization: bearer,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newdata),
@@ -110,26 +111,26 @@ class UPlaceOrder extends React.Component {
   submit = (event) => {
     event.preventDefault();
     let user_id = cookie.load("cookie1");
-    console.log("user_id:", user_id);
+    console.log("user_id:", user_id)
     var order_id = localStorage.getItem("order_id");
     const payload = {
       deliverymode: this.state.deliverymode,
       order_id,
       user_id,
     };
-
-    axios({
-      url: "/createorder",
-      method: "POST",
-      data: payload,
-    })
-      .then(function (response) {
-        alert("Order Placed Successfully");
-        console.log(response);
-      })
-      .catch(() => {
-        console.log("Internal server error");
-      });
+    this.props.placeOrder(payload);
+    // axios({
+    //   url: "/createorder",
+    //   method: "POST",
+    //   data: payload,
+    // })
+    //   .then(function (response) {
+    //     alert("Order Placed Successfully");
+    //     console.log(response);
+    //   })
+    //   .catch(() => {
+    //     console.log("Internal server error");
+    //   });
   };
 
   render() {
@@ -230,4 +231,16 @@ class UPlaceOrder extends React.Component {
   }
 }
 
-export default UPlaceOrder;
+const mapStateToProps = (state) => ({
+  placeOrder: state.order.deliverymode
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+      placeOrder : (data) => dispatch(placeOrder(data)),
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(UPlaceOrder);
+//export default UPlaceOrder;

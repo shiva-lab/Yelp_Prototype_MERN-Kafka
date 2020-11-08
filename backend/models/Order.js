@@ -36,9 +36,7 @@ const orderSchema = new Schema({
     },
 
    
-    // _cart: [{ type: Schema.ObjectId, ref: "Cart" }],
-    // _user: { type: Schema.ObjectId, ref: "User" },
-    // _restaurant: { type: Schema.ObjectId, ref: "Restaurant" },
+    
     cart:[{
         itemname:  {type: String},
         itemid:  {type: String},

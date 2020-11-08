@@ -144,4 +144,4 @@ function mapDispatchToProps(dispatch) {
   };
 };
 const Messages = connect(mapStateToProps, mapDispatchToProps)(MessagesPage);
-export default Messages;
+export default Messages;  

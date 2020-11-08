@@ -1,13 +1,13 @@
 const express = require("express");
-//const connection = require("../models/yelpschema");
+
 const Restaurant = require('../models/Restaurant');
 const User = require('../models/User');
-//const Cart = require('../models/Cart');
+
 const orderroute = express.Router();
-//const User = require('../models/User');
+
 const Order = require('../models/Order');
-//const Restaurant = require("../models/Restaurant");
-//const Cart = require("../models/Cart");
+
+
 const passport = require("passport");
 const checkAuth =require('../config/checkAuth')
 
@@ -61,25 +61,6 @@ const checkAuth =require('../config/checkAuth')
 
 
 orderroute.post("/userorderstatus",(req, res) => {
-    Order.find({ user_id: req.body.user_id,orderstatus:{ $ne: " " }} , (error, result) => {
-      if (error) {
-        console.log(error)
-        res.writeHead(500, {
-          "Content-Type": "text/plain",
-        });
-        res.end();
-      } else {
-        res.writeHead(200, {
-          "Content-Type": "application/json",
-        });
-        console.log("result")
-        console.log(result);
-        res.end(JSON.stringify(result));
-      }
-    }).sort({ts:1});
-  });
-
-  orderroute.post("/userorderstatusdesc",(req, res) => {
     Order.find({ user_id: req.body.user_id,orderstatus:{ $ne: " " }} , (error, result) => {
       if (error) {
         console.log(error)
