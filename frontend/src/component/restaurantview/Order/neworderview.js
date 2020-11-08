@@ -62,15 +62,21 @@ class NewOrderView extends React.Component {
     axios.defaults.headers.common["authorization"] = localStorage.getItem(
       "token"
     );
-    axios.post("/filterorderrestsearch", data)
-      .then((response) => {
-        console.log("Filtered Data: ", response.data);
-        temp.setState({ order: response.data });
-      })
-      .catch((err) => {
-        console.log("caught it! - ERROR", err);
-      });
-  };
+    axios.post("/filterorderrestsearch", data).then((response) => {
+      if (response.status === 200) {
+        console.log("Printing response", response);
+        console.log("Printing Event", response.data);
+        this.setState({
+          order: response.data,
+          filteredOrder: paginate(response.data, 1, 10),
+          pages: pages(response.data, 10),
+        });
+        console.log(pages);
+      } else {
+        console.log("error");
+      }
+    });
+  }
 
   handleUpdate(_id) {
     return function () {
@@ -159,7 +165,7 @@ class NewOrderView extends React.Component {
             >
               <option>Update Status</option>
               <option value="Accepted">Accepted</option>
-              <option value="In Progress">Preparing</option>
+              <option value="In Progress">In Progress</option>
               <option value="On the way">On the way </option>
               <option value="Delivered">Delivered</option>
               <option value="Pickup ready">Pick Up Reday</option>
@@ -198,7 +204,7 @@ class NewOrderView extends React.Component {
                     >
                       <option>Filter</option>
                       <option value="new order">New Order</option>
-                      <option value="Preparing">Preparing</option>
+                      <option value="In Progress">In Progress</option>
                       <option value="Delivered">Delivered</option>
                       <option value="Picked up">Picked Up</option>
                       <option value="Rejected">Rejected</option>
