@@ -60,24 +60,63 @@ const checkAuth =require('../config/checkAuth')
 // });
 
 
+// orderroute.post("/userorderstatus",(req, res) => {
+//     Order.find({ user_id: req.body.user_id,orderstatus:{ $ne: " " }} , (error, result) => {
+//       if (error) {
+//         console.log(error)
+//         res.writeHead(500, {
+//           "Content-Type": "text/plain",
+//         });
+//         res.end();
+//       } else {
+//         res.writeHead(200, {
+//           "Content-Type": "application/json",
+//         });
+//         console.log("result")
+//         console.log(result);
+//         res.end(JSON.stringify(result));
+//       }
+//     }).sort({ts:-1});
+//   });
 orderroute.post("/userorderstatus",(req, res) => {
-    Order.find({ user_id: req.body.user_id,orderstatus:{ $ne: " " }} , (error, result) => {
-      if (error) {
-        console.log(error)
-        res.writeHead(500, {
-          "Content-Type": "text/plain",
-        });
-        res.end();
-      } else {
-        res.writeHead(200, {
-          "Content-Type": "application/json",
-        });
-        console.log("result")
-        console.log(result);
-        res.end(JSON.stringify(result));
-      }
-    }).sort({ts:-1});
-  });
+  Order.find({ user_id: req.body.user_id,orderstatus:{ $ne: " " }} , (error, result) => {
+    if (error) {
+      console.log(error)
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end();
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      console.log("result")
+      console.log(result);
+      res.end(JSON.stringify(result));
+    }
+  }).sort({ts:1});
+});
+
+orderroute.post("/userorderstatusdesc",(req, res) => {
+  Order.find({ user_id: req.body.user_id,orderstatus:{ $ne: " " }} , (error, result) => {
+    if (error) {
+      console.log(error)
+      res.writeHead(500, {
+        "Content-Type": "text/plain",
+      });
+      res.end();
+    } else {
+      res.writeHead(200, {
+        "Content-Type": "application/json",
+      });
+      console.log("result")
+      console.log(result);
+      res.end(JSON.stringify(result));
+    }
+  }).sort({ts:-1});
+});
+
+
 
   orderroute.post("/filterordersearch",(req, res) => {
     //console.log(req.body.user_id,req.body.filter);
