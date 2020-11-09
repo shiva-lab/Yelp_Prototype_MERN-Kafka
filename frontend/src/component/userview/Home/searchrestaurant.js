@@ -28,27 +28,16 @@ class SearchRestaurant extends React.Component {
     //axios.post("/restaurantsearch",data)
     var bearer = localStorage.getItem("token");
     console.log("Token :", bearer);
-    fetch("/restaurantsearch", {
-      method: "POST",
-      headers: {
-        Authorization: bearer,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    axios.post("/restaurantsearch",data)
       .then(function (response) {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
         }
-        return response.json();
-      })
-      .then(function (data) {
-        console.log("Search Result", data);
+        console.log("Search Result",response.data)
         self.setState({
-          resturantlist: data,
-          latlng: data.map((d) => ({ latitude: d.lat, longitude: d.lng })),
+          resturantlist: response.data.data, latlng: [response.data.data].map((d) => ({ latitude: d.lat, longitude: d.lng })),
         });
-        //  self.setState({ resturantlist: data });
+      //  self.setState({ resturantlist: data });
       })
       .catch((err) => {
         console.log("caught it!", err);
@@ -76,24 +65,13 @@ class SearchRestaurant extends React.Component {
     const temp = this;
     var bearer = localStorage.getItem("token");
     console.log("Token :", bearer);
-    fetch("/filterrestaurantsearch", {
-      method: "POST",
-      headers: {
-        Authorization: bearer,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    axios.post("/filterrestaurantsearch", data)
       .then(function (response) {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
         }
-
-        return response.json();
-      })
-      .then(function (data) {
-        console.log(data);
-        temp.setState({ resturantlist: data });
+        console.log(response);
+        temp.setState({ resturantlist: response.data.data });
       })
       .catch((err) => {
         console.log("caught it!", err);

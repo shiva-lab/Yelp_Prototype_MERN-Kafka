@@ -36,21 +36,16 @@ export const userLogout = () => dispatch => dispatch({ type: USER_LOGOUT });
 
 export const restLogin = loginData => (dispatch) => {
   // axios.defaults.withCredentials = true;
-  axios.post("/restaurantlogin", loginData,
-    {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
+  axios.post("/restaurantlogin", loginData)
     .then(res => {
       // Save to localStorage
       const { token } = res.data;
       // Set token to ls
-      localStorage.setItem('token', token);
+      localStorage.setItem('token', res.data.data);
       // Set token to Auth header
-      setAuthToken(token);
+      setAuthToken(res.data.data);
       // Decode token to get user data
-      const decoded = jwt_decode(token);
+      const decoded = jwt_decode(res.data.data);
       // Set current user
       dispatch(setCurrentUser(decoded));
     }).catch((error) => {
@@ -67,21 +62,15 @@ export const restLogin = loginData => (dispatch) => {
 
 export const userLogin = loginData => (dispatch) => {
   // axios.defaults.withCredentials = true;
-  axios.post("/userlogin", loginData,
-    {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
+  axios.post("/userlogin", loginData)
     .then(res => {
       // Save to localStorage
-      const { token } = res.data;
       // Set token to ls
-      localStorage.setItem('token', token);
+      localStorage.setItem('token', res.data.data);
       // Set token to Auth header
-      setAuthToken(token);
+      setAuthToken(res.data.data);
       // Decode token to get user data
-      const decoded = jwt_decode(token);
+      const decoded = jwt_decode(res.data.data);
       
       // Set current user
       dispatch(setCurrentUser(decoded));

@@ -34,33 +34,33 @@ class ListAllUsers extends React.Component {
   }
   componentDidMount() {
     axios.defaults.withCredentials = true;
-    const self = this;
-    const user_id = localStorage.getItem("user_id");
+    const user_id = localStorage.getItem('user_id');
     const data = { user_id };
-    axios.defaults.headers.common["authorization"] = localStorage.getItem(
-      "token"
-    );
-    axios.post("/viewuserlist", data).then((response) => {
-      if (response.status === 200) {
-        console.log("Printing response", response);
-        console.log("Printing User Data", response.data);
-        this.setState({
-          userdata: response.data,
-          filteredUserdata: paginate(response.data, 1, 10),
-          pages: pages(response.data, 10),
-        });
-        console.log(pages);
-      } else {
-        console.log("error");
-      }
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.post('/viewuserlist',data)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Printing response",response)
+          console.log("Printing User Data",response.data)
+            this.setState({
+              userdata: response.data,
+              filteredUserdata : paginate(response.data.data,1,10),
+              pages: pages(response.data.data, 10)
+
+            })
+            console.log(pages);
+        } else {
+            console.log("error");
+        }
     });
   }
 
   paginatinon = (e) => {
     this.setState({
-      filteredUserdata: paginate(this.state.userdata, e, 10),
-    });
-  };
+      filteredUserdata: paginate(this.state.userdata,e, 10)
+    })
+}
+
 
   handleChange = ({ target }) => {
     const { name, value } = target;

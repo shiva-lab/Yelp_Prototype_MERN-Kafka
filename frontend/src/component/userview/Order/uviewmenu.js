@@ -26,11 +26,11 @@ class UViewMenu extends React.Component {
     axios.post("/uviewmenu", data).then((response) => {
       if (response.status === 200) {
         console.log("Printing response", response);
-        console.log("Printing User Data", response.data[0].menu);
+        console.log("Printing User Data", response.data.data[0].menu);
         this.setState({
-          menu: response.data[0].menu,
-          filteredMenu: paginate(response.data[0].menu, 1, 10),
-          pages: pages(response.data[0].menu, 10),
+          menu: response.data.data[0].menu,
+          filteredMenu: paginate(response.data.data[0].menu, 1, 10),
+          pages: pages(response.data.data[0].menu, 10),
         });
         console.log(pages);
       } else {
@@ -59,14 +59,7 @@ class UViewMenu extends React.Component {
       console.log(newdata);
       var bearer = localStorage.getItem("token");
       console.log("Token :", bearer);
-      fetch("/addtocart", {
-        method: "POST",
-        headers: {
-          Authorization: bearer,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newdata),
-      })
+      axios.post("/addtocart", newdata)
         .then((response) => {
           if (response.status == 200) {
             swal.fire({

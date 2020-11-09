@@ -50,20 +50,18 @@ class uupdateprofile extends React.Component {
     axios.defaults.headers.common["authorization"] = localStorage.getItem(
       "token"
     );
-    axios.post("/uviewprofile", data).then((response) => {
-      if (response.status === 200) {
-        console.log("Printing Response", response);
-        console.log("Printing User Profile", response.data);
-
-        this.setState({
-          profile: response.data,
-        });
-      } else {
-        console.log("error");
+    axios.get(`/uviewprofile/${user_id}`)
+    .then((response) => {
+      if (response.status >= 400) {
+        throw new Error("Bad response from server");
       }
+      console.log(response);
+      this.setState({ profile: [response.data.data] });
+    })
+    .catch((err) => {
+      console.log("caught it!", err);
     });
-  }
-
+}
   submit = (event) => {
     event.preventDefault();
     let user_id = cookie.load("cookie1");

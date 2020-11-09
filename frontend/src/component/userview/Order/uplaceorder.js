@@ -24,31 +24,19 @@ class UPlaceOrder extends React.Component {
   }
 
   componentDidMount() {
-    const self = this;
     const user_id = cookie.load("cookie1");
     // let restaurant_id = localStorage.getItem("restaurant_id");
     const data = { user_id };
-    //axios.post("/uviewcart",data)
-    fetch("/uviewcart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    axios.defaults.withCredentials = true;
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+    axios.post("/uviewcart",data)
       .then((response) => {
         console.log(response);
         if (response.status >= 400) {
           throw new Error("Bad response from server");
         }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("data - ID", data[0]._id);
-        console.log("data", data[0]._id);
-
-        self.setState({ items: data[0].cart });
-        localStorage.setItem("order_id", data[0]._id);
+        this.setState({ items: response.data.data[0].cart });
+        localStorage.setItem("order_id", response.data.data[0]._id);
       })
       .catch((err) => {
         console.log("caught it!", err);
@@ -83,13 +71,7 @@ class UPlaceOrder extends React.Component {
         cart_id,
       };
       console.log(newdata);
-      fetch("/deletefromcart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newdata),
-      })
+      axios.post("/deletefromcart", newdata)
         .then((response) => {
           if (response.status == 200) {
             //throw new Error("Bad response from server");

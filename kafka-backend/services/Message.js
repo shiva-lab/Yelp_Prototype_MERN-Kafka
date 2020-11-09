@@ -2,19 +2,15 @@ const Message = require('../models/Message');
 
 function handle_request(msg, callBack) {
     if (msg.path === "get_messages") {
-        console.log("----------In Get Message Service -----------")
-
         Message.find({ $or: [{ 'user1.id': msg.id }, { 'user2.id': msg.id }] }, (error, result) => {
             if (error) {
                 callBack(error);
             }
-            console.log(result);
+            console.log("Result in Kafka Message ----------", result);
             return callBack(null, result);
         });
     }
     else if (msg.path === "add_message") {
-        console.log("----------In Add Message Service -----------", JSON.stringify(msg.data))
-
         let data = msg.data;
         var newChat = {
             "from": data.from,
@@ -22,7 +18,7 @@ function handle_request(msg, callBack) {
             "chat": data.chat,
             "time": new Date().toISOString()
         }
-        Message.update({ _id: data.id }, { $push: { chats: newChat } }, { upsert: false }, (error, results) => {
+        Message.updateOne({ _id: data.id }, { $push: { chats: newChat } }, { upsert: false }, (error, results) => {
             if (error) {
                 callBack(error);
             }
@@ -31,7 +27,6 @@ function handle_request(msg, callBack) {
         );
     }
     else if (msg.path === "create_message") {
-        console.log("----------In Create Message Service -----------")
         let data = msg.data;
         Message.findOne({
             $or: [
@@ -50,8 +45,6 @@ function handle_request(msg, callBack) {
                 return callBack(null);
             }
             else {
-                console.log(data)
-
                 var newMessage = new Message({
                     'user1.id' : data.user1.id,
                     'user2.id' : data.user2.id,
@@ -60,7 +53,6 @@ function handle_request(msg, callBack) {
                     chats: []
                 });
                 newMessage.save()
-                console.log("=========== Data ===========", newMessage)
                 return callBack(null, data)
             }
         })

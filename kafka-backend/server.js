@@ -3,6 +3,8 @@ const ConnectionProvider = require( './kafka/connection.js')
 const Message = require('./services/Message.js')
 const User = require('./services/User.js')
 const Restaurant = require('./services/Restaurant.js')
+const Order = require('./services/Order.js')
+const Event = require('./services/Event.js')
 const mongoose = require('mongoose');
 
 var options = {
@@ -55,3 +57,5 @@ function handleTopicRequest(topic_name,fname){
 handleTopicRequest("message",Message)
 handleTopicRequest("restaurant",Restaurant)
 handleTopicRequest("user",User)
+handleTopicRequest("event",Event)
+handleTopicRequest("order",Order)

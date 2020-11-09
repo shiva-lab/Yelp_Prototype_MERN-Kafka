@@ -16,26 +16,18 @@ class ViewSocialProfile extends React.Component {
     const self = this;
     // const user_id = cookie.load("cookie1");
     const user_id = localStorage.getItem("user_id_profileview");
-    const data = { user_id };
-    var bearer = localStorage.getItem("token");
-    console.log("Token :", bearer);
-    fetch("/uviewprofile", {
-      method: "POST",
-      headers: {
-        Authorization: bearer,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+  
+    axios.defaults.withCredentials = true;
+    axios.defaults.headers.common["authorization"] = localStorage.getItem(
+      "token"
+    );
+    axios.get(`/uviewprofile/${user_id}`)
       .then((response) => {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
         }
-        return response.json();
-      })
-      .then((response) => {
-        console.log(response);
-        self.setState({ profile: response });
+
+        self.setState({ profile: [response.data.data] });
       })
       .catch((err) => {
         console.log("caught it!", err);
@@ -44,34 +36,31 @@ class ViewSocialProfile extends React.Component {
 
   FollowUserHandler(_id, fname, lname, city, Emailid, headline) {
     return function () {
-      const user_id = localStorage.getItem("user_id");
-      console.log(_id, user_id);
+      const user_id = localStorage.getItem('user_id');
+      console.log(_id, user_id,);
       const newdata = { _id, user_id, fname, lname, city, Emailid, headline };
       console.log(newdata);
-      axios.defaults.headers.common["authorization"] = localStorage.getItem(
-        "token"
-      );
-      axios
-        .post("/followuserprofile", newdata)
-        .then((response) => {
-          console.log("inside success");
+      axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+      axios.post('/followuserprofile', newdata)
+        .then(response => {
+          console.log("inside success")
           console.log("Status Code : ", response.status);
           if (response.status === 200) {
-            console.log("success", response);
-
+            console.log("success", response)
+            //alert("Success Following User")
             swal.fire({
-              title: "Success!",
-              text: "Successfully Followed User",
-              icon: "success",
-            });
+              title: 'Success!',
+              text: 'Successfully Followed User',
+              icon: 'success'
+            })
             //window.location.reload();
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log("In error");
           console.log(err);
-          alert("Failed", "Update failed! Please try again", err);
-        });
+          alert("Failed", "Update failed! Please try again", err)
+        })
     };
   }
 

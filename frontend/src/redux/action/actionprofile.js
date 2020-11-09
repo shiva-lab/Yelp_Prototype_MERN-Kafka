@@ -23,6 +23,8 @@ import swal from 'sweetalert2';
 // }
 
 export const updateRestProfile = (restdata,config) => (dispatch) => {
+  axios.defaults.withCredentials = true;
+  axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
   axios.post('/restaurantupdate', restdata,config)
     .then((response) => {
       console.log("response is ", response);
@@ -36,7 +38,7 @@ export const updateRestProfile = (restdata,config) => (dispatch) => {
       dispatch({
 
         type: UPDATE_PROFILE,
-        payload: response.data
+        payload: response.data.data
       });
     })
     .catch((error) => {
@@ -51,6 +53,8 @@ export const updateRestProfile = (restdata,config) => (dispatch) => {
 
 
 export const updateUserProfile = userdata => (dispatch) => {
+  axios.defaults.withCredentials = true;
+  axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
   axios.post("/uupdateprofile", userdata)
     .then((response) => {
       console.log("response is ", response);
@@ -58,7 +62,7 @@ export const updateUserProfile = userdata => (dispatch) => {
       dispatch({
 
         type: UPDATE_USER_PROFILE,
-        payload: response.data
+        payload: response.data.data
       });
     })
     .catch((error) => {

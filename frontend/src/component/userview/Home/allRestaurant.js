@@ -38,9 +38,9 @@ class AllRestaurant extends React.Component {
           })),
         });
         this.setState({
-          resturantlist: response.data,
+          resturantlist: response.data.data,
           filteredRestaurant: paginate(response.data, 1, 7),
-          pages: pages(response.data, 7),
+          pages: pages(response.data.data, 7),
         });
         console.log(pages);
       } else {

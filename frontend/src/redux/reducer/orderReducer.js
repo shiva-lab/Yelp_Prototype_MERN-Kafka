@@ -4,7 +4,9 @@ import isEmpty from '../../validation/is-empty';
 
 const initialState = {
   isOrderPlaced: false,
-  deliverymode: null
+  deliverymode: null,
+  updatestatus: null,
+  isOrderStatusChanged: false
 };
 
 export default function(state = initialState, action) {
@@ -15,6 +17,12 @@ export default function(state = initialState, action) {
         
         isOrderPlaced: !isEmpty(action.payload),
         deliverymode: action.payload.deliverymode
+      });
+      case SET_ORDER_STATUS:
+      console.log(action.payload, state)
+      return Object.assign({}, state, {
+        isOrderStatusChanged: !isEmpty(action.payload),
+        updatestatus: action.payload.orderstatus
       });
     default:
       return state;

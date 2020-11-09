@@ -41,6 +41,8 @@ class AddReview extends React.Component {
         "content-type": "multipart/form-data",
       },
     };
+    axios.defaults.withCredentials = true;
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
     axios
       .post("/addreview", formData, config)
       .then((response) => {

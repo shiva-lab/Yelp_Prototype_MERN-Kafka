@@ -53,6 +53,7 @@ const UserSchema = new mongoose.Schema(
     headline: { type: String },
 
     registeredEvents: { type: Array, max: 100 },
+    yelpingsince: { type: Date },
   },
   {
     versionKey: false,

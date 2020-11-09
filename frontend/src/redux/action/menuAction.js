@@ -7,7 +7,8 @@ export const addMenu = (formData, config) => (dispatch) => {
     
 
             console.log("Add menu called from action");
-            // axios.defaults.withCredentials = true;
+            axios.defaults.withCredentials = true;
+            axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
             axios.post("/addmenu",formData,config)
               .then((response) => {
                 console.log("response is ", response);

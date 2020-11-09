@@ -18,22 +18,12 @@ class UViewRestaurant extends React.Component {
     var bearer = localStorage.getItem("token");
     console.log("Token :", bearer);
 
-    fetch("/uviewrestaurant", {
-      method: "POST",
-      headers: {
-        Authorization: bearer,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    axios.post("/uviewrestaurant", data)
       .then((response) => {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
         }
-        return response.json();
-      })
-      .then((data) => {
-        self.setState({ resturantlist: data });
+        self.setState({ resturantlist: response.data.data });
       })
       .catch((err) => {
         console.log("caught it!", err);

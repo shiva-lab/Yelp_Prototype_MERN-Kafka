@@ -99,7 +99,7 @@ class Home extends React.Component{
              
                <div class="u-text-centered homepage-hero_photo-owner u-size-full">
                   <div data-hypernova-key="homepage__4df10ec47b3a69a592bdc358e7cc029de9ded942__homepage__PhotoAuthorText__dynamic" data-hypernova-id="6a46b050-6a68-4e95-9749-d748d5a58dee">
-                     <p>Photo by <a class="homepage-hero_photo-owner-link" href="#"><strong>Shiva Pandey</strong></a></p>
+                    <p>Photo by <a className="homepage-hero_photo-owner-link" ><strong>Shiva Pandey</strong></a></p>
                   </div>
                  
                </div>

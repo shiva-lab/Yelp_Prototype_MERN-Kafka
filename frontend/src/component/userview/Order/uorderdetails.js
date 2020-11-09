@@ -14,31 +14,15 @@ class UOrderDetails extends React.Component {
   componentDidMount() {
     const self = this;
     const order_id = localStorage.getItem("order_id_details");
-    const data = { order_id };
-    var bearer = localStorage.getItem('token');
-    console.log('Token :', bearer)
-    fetch("/uorderdetails", {
-      method: "POST",
-      headers: {
-        'Authorization': bearer,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-    
-
+    axios.get(`/uorderdetails/${order_id}`)
       .then((response) => {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
         }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Data: ",data[0].cart);
-        self.setState({ items: data[0].cart });
+        self.setState({ items: response.data.data[0].cart });
       })
       .catch((err) => {
-        console.log("Error - Caught it!", err);
+        console.log("caught it!", err);
       });
   }
 
